@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+
+
+<?php
+    include "config.php";
+?>
+
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -40,7 +46,7 @@
             </div>
         </div>
         <!-- Top bar End -->
-        
+
         <!-- Nav Bar Start -->
         <div class="nav">
             <div class="container-fluid">
@@ -52,18 +58,18 @@
 
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto">
-                            <a href="index.html" class="nav-item nav-link">Home</a>
-                            <a href="product-list.html" class="nav-item nav-link active">Products</a>
-                            <a href="product-detail.html" class="nav-item nav-link">Product Detail</a>
-                            <a href="cart.html" class="nav-item nav-link">Cart</a>
-                            <a href="checkout.html" class="nav-item nav-link">Checkout</a>
-                            <a href="my-account.html" class="nav-item nav-link">My Account</a>
+                            <a href="index.php" class="nav-item nav-link">Home</a>
+                            <a href="product-list.php" class="nav-item nav-link active">Products</a>
+                            <a href="product-detail.php" class="nav-item nav-link">Product Detail</a>
+                            <a href="cart.php" class="nav-item nav-link">Cart</a>
+                            <a href="checkout.php" class="nav-item nav-link">Checkout</a>
+                            <a href="my-account.php" class="nav-item nav-link">My Account</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">More Pages</a>
                                 <div class="dropdown-menu">
-                                    <a href="wishlist.html" class="dropdown-item">Wishlist</a>
-                                    <a href="login.html" class="dropdown-item">Login & Register</a>
-                                    <a href="contact.html" class="dropdown-item">Contact Us</a>
+                                    <a href="wishlist.php" class="dropdown-item">Wishlist</a>
+                                    <a href="login.php" class="dropdown-item">Login & Register</a>
+                                    <a href="contact.php" class="dropdown-item">Contact Us</a>
                                 </div>
                             </div>
                         </div>
@@ -80,15 +86,15 @@
                 </nav>
             </div>
         </div>
-        <!-- Nav Bar End -->      
-        
+        <!-- Nav Bar End -->
+
         <!-- Bottom Bar Start -->
         <div class="bottom-bar">
             <div class="container-fluid">
                 <div class="row align-items-center">
                     <div class="col-md-3">
                         <div class="logo">
-                            <a href="index.html">
+                            <a href="index.php">
                                 <img src="img/logo.png" alt="Logo">
                             </a>
                         </div>
@@ -101,11 +107,11 @@
                     </div>
                     <div class="col-md-3">
                         <div class="user">
-                            <a href="wishlist.html" class="btn wishlist">
+                            <a href="wishlist.php" class="btn wishlist">
                                 <i class="fa fa-heart"></i>
                                 <span>(0)</span>
                             </a>
-                            <a href="cart.html" class="btn cart">
+                            <a href="cart.php" class="btn cart">
                                 <i class="fa fa-shopping-cart"></i>
                                 <span>(0)</span>
                             </a>
@@ -114,8 +120,8 @@
                 </div>
             </div>
         </div>
-        <!-- Bottom Bar End -->  
-        
+        <!-- Bottom Bar End -->
+
         <!-- Breadcrumb Start -->
         <div class="breadcrumb-wrap">
             <div class="container-fluid">
@@ -127,7 +133,7 @@
             </div>
         </div>
         <!-- Breadcrumb End -->
-        
+
         <!-- Product List Start -->
         <div class="product-view">
             <div class="container-fluid">
@@ -177,7 +183,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-4">
                                 <div class="product-item">
                                     <div class="product-title">
@@ -191,7 +197,7 @@
                                         </div>
                                     </div>
                                     <div class="product-image">
-                                        <a href="product-detail.html">
+                                        <a href="product-detail.php">
                                             <img src="img/product-1.jpg" alt="Product Image">
                                         </a>
                                         <div class="product-action">
@@ -219,7 +225,7 @@
                                         </div>
                                     </div>
                                     <div class="product-image">
-                                        <a href="product-detail.html">
+                                        <a href="product-detail.php">
                                             <img src="img/product-2.jpg" alt="Product Image">
                                         </a>
                                         <div class="product-action">
@@ -247,7 +253,7 @@
                                         </div>
                                     </div>
                                     <div class="product-image">
-                                        <a href="product-detail.html">
+                                        <a href="product-detail.php">
                                             <img src="img/product-3.jpg" alt="Product Image">
                                         </a>
                                         <div class="product-action">
@@ -275,7 +281,7 @@
                                         </div>
                                     </div>
                                     <div class="product-image">
-                                        <a href="product-detail.html">
+                                        <a href="product-detail.php">
                                             <img src="img/product-4.jpg" alt="Product Image">
                                         </a>
                                         <div class="product-action">
@@ -303,7 +309,7 @@
                                         </div>
                                     </div>
                                     <div class="product-image">
-                                        <a href="product-detail.html">
+                                        <a href="product-detail.php">
                                             <img src="img/product-5.jpg" alt="Product Image">
                                         </a>
                                         <div class="product-action">
@@ -331,7 +337,7 @@
                                         </div>
                                     </div>
                                     <div class="product-image">
-                                        <a href="product-detail.html">
+                                        <a href="product-detail.php">
                                             <img src="img/product-6.jpg" alt="Product Image">
                                         </a>
                                         <div class="product-action">
@@ -359,7 +365,7 @@
                                         </div>
                                     </div>
                                     <div class="product-image">
-                                        <a href="product-detail.html">
+                                        <a href="product-detail.php">
                                             <img src="img/product-7.jpg" alt="Product Image">
                                         </a>
                                         <div class="product-action">
@@ -387,7 +393,7 @@
                                         </div>
                                     </div>
                                     <div class="product-image">
-                                        <a href="product-detail.html">
+                                        <a href="product-detail.php">
                                             <img src="img/product-8.jpg" alt="Product Image">
                                         </a>
                                         <div class="product-action">
@@ -415,7 +421,7 @@
                                         </div>
                                     </div>
                                     <div class="product-image">
-                                        <a href="product-detail.html">
+                                        <a href="product-detail.php">
                                             <img src="img/product-9.jpg" alt="Product Image">
                                         </a>
                                         <div class="product-action">
@@ -431,7 +437,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Pagination Start -->
                         <div class="col-md-12">
                             <nav aria-label="Page navigation example">
@@ -449,8 +455,8 @@
                             </nav>
                         </div>
                         <!-- Pagination Start -->
-                    </div>           
-                    
+                    </div>
+
                     <!-- Side Bar Start -->
                     <div class="col-lg-4 sidebar">
                         <div class="sidebar-widget category">
@@ -475,7 +481,7 @@
                                 </ul>
                             </nav>
                         </div>
-                        
+
                         <div class="sidebar-widget widget-slider">
                             <div class="sidebar-slider normal-slider">
                                 <div class="product-item">
@@ -490,7 +496,7 @@
                                         </div>
                                     </div>
                                     <div class="product-image">
-                                        <a href="product-detail.html">
+                                        <a href="product-detail.php">
                                             <img src="img/product-10.jpg" alt="Product Image">
                                         </a>
                                         <div class="product-action">
@@ -516,7 +522,7 @@
                                         </div>
                                     </div>
                                     <div class="product-image">
-                                        <a href="product-detail.html">
+                                        <a href="product-detail.php">
                                             <img src="img/product-9.jpg" alt="Product Image">
                                         </a>
                                         <div class="product-action">
@@ -542,7 +548,7 @@
                                         </div>
                                     </div>
                                     <div class="product-image">
-                                        <a href="product-detail.html">
+                                        <a href="product-detail.php">
                                             <img src="img/product-8.jpg" alt="Product Image">
                                         </a>
                                         <div class="product-action">
@@ -558,7 +564,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="sidebar-widget brands">
                             <h2 class="title">Our Brands</h2>
                             <ul>
@@ -570,7 +576,7 @@
                                 <li><a href="#">Sagittis</a><span>(28)</span></li>
                             </ul>
                         </div>
-                        
+
                         <div class="sidebar-widget tag">
                             <h2 class="title">Tags Cloud</h2>
                             <a href="#">Lorem ipsum</a>
@@ -591,8 +597,8 @@
                 </div>
             </div>
         </div>
-        <!-- Product List End -->  
-        
+        <!-- Product List End -->
+
         <!-- Brand Start -->
         <div class="brand">
             <div class="container-fluid">
@@ -607,7 +613,7 @@
             </div>
         </div>
         <!-- Brand End -->
-        
+
         <!-- Footer Start -->
         <div class="footer">
             <div class="container-fluid">
@@ -622,7 +628,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="col-lg-3 col-md-6">
                         <div class="footer-widget">
                             <h2>Follow Us</h2>
@@ -660,7 +666,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="row payment align-items-center">
                     <div class="col-md-6">
                         <div class="payment-method">
@@ -680,7 +686,7 @@
             </div>
         </div>
         <!-- Footer End -->
-        
+
         <!-- Footer Bottom Start -->
         <div class="footer-bottom">
             <div class="container">
@@ -695,17 +701,17 @@
                 </div>
             </div>
         </div>
-        <!-- Footer Bottom End -->       
-        
+        <!-- Footer Bottom End -->
+
         <!-- Back to Top -->
         <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
-        
+
         <!-- JavaScript Libraries -->
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
         <script src="lib/easing/easing.min.js"></script>
         <script src="lib/slick/slick.min.js"></script>
-        
+
         <!-- Template Javascript -->
         <script src="js/main.js"></script>
     </body>

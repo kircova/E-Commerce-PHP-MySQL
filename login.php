@@ -1,4 +1,106 @@
 <!DOCTYPE html>
+
+
+
+<?php
+
+require_once "config.php";
+
+$name = $surname  = $email = $password = $confirm_password = "";
+$name_err = $surname_err  = $email_err = $password_err = $confirm_password_err = "";
+
+// REGISTER
+
+if($_SERVER["REQUEST_METHOD"] == "POST") {
+  // Name validation
+
+  if(empty($_POST['name'])) {
+    $name_err = "Please enter a name.";
+  }
+  else {
+    $name = test_input($_POST['name']);
+  }
+
+  // Surname validation
+
+  if(empty($_POST['surname'])) {
+    $surname_err = "Please enter a surname.";
+  }
+  else {
+    $surname = test_input($_POST['surname']);
+  }
+
+  // Password Validation
+
+  if(empty($_POST["password"])){
+      $password_err = "Please enter a password.";
+  } elseif(strlen(test_input($_POST["password"])) < 6){
+      $password_err = "Password must have atleast 6 characters.";
+  } else{
+      $password = test_input($_POST["password"]);
+  }
+
+  if(empty($_POST["password2"])){
+      $confirm_password_err = "Please confirm password.";
+  } else{
+      $confirm_password = test_input($_POST["password2"]);
+      if(empty($password_err) && ($password != $confirm_password)){
+          $confirm_password_err = "Password did not match.";
+      }
+  }
+
+  // E-mail Validation
+
+  if(empty($_POST["email"])) {
+    $email_err = "Please enter an e-mail.";
+  }
+  else {
+    $email = test_input($_POST["email"]);
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+      $email_err = "Invalid email format";
+    }
+  }
+
+  if(empty($name_err) && empty($surname_err) && empty($email_err) && empty($password_err) && empty($confirm_password_err)){
+
+    $sql_statement = "INSERT INTO person(name, surname, email, pass) VALUES (?, ?, ?, ?)";
+
+    if($stmt = mysqli_prepare($db, $sql_statement)){
+      // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt, "ssss", $param_name, $param_surname, $param_email, $param_password);
+
+            // I did this so if we need to edit the data we can interfere these variables.
+            $param_name = $name;
+            $param_surname = $surname;
+            $param_email = $email;
+            $param_password = $password; // raw form
+
+            if(mysqli_stmt_execute($stmt)){
+               // Redirect to login page
+               header("location: index.php");
+            } else{
+               echo "Something went wrong. Please try again later.";
+            }
+            mysqli_stmt_close($stmt);
+
+    }
+
+    mysqli_close($db);
+  }
+}
+
+
+function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+  }
+
+?>
+
+
+
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -40,7 +142,7 @@
             </div>
         </div>
         <!-- Top bar End -->
-        
+
         <!-- Nav Bar Start -->
         <div class="nav">
             <div class="container-fluid">
@@ -52,18 +154,18 @@
 
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto">
-                            <a href="index.html" class="nav-item nav-link">Home</a>
-                            <a href="product-list.html" class="nav-item nav-link">Products</a>
-                            <a href="product-detail.html" class="nav-item nav-link">Product Detail</a>
-                            <a href="cart.html" class="nav-item nav-link">Cart</a>
-                            <a href="checkout.html" class="nav-item nav-link">Checkout</a>
-                            <a href="my-account.html" class="nav-item nav-link">My Account</a>
+                            <a href="index.php" class="nav-item nav-link">Home</a>
+                            <a href="product-list.php" class="nav-item nav-link">Products</a>
+                            <a href="product-detail.php" class="nav-item nav-link">Product Detail</a>
+                            <a href="cart.php" class="nav-item nav-link">Cart</a>
+                            <a href="checkout.php" class="nav-item nav-link">Checkout</a>
+                            <a href="my-account.php" class="nav-item nav-link">My Account</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle active" data-toggle="dropdown">More Pages</a>
                                 <div class="dropdown-menu">
-                                    <a href="wishlist.html" class="dropdown-item">Wishlist</a>
-                                    <a href="login.html" class="dropdown-item">Login & Register</a>
-                                    <a href="contact.html" class="dropdown-item active">Contact Us</a>
+                                    <a href="wishlist.php" class="dropdown-item">Wishlist</a>
+                                    <a href="login.php" class="dropdown-item active">Login & Register</a>
+                                    <a href="contact.php" class="dropdown-item">Contact Us</a>
                                 </div>
                             </div>
                         </div>
@@ -80,15 +182,15 @@
                 </nav>
             </div>
         </div>
-        <!-- Nav Bar End -->      
-        
+        <!-- Nav Bar End -->
+
         <!-- Bottom Bar Start -->
         <div class="bottom-bar">
             <div class="container-fluid">
                 <div class="row align-items-center">
                     <div class="col-md-3">
                         <div class="logo">
-                            <a href="index.html">
+                            <a href="index.php">
                                 <img src="img/logo.png" alt="Logo">
                             </a>
                         </div>
@@ -101,11 +203,11 @@
                     </div>
                     <div class="col-md-3">
                         <div class="user">
-                            <a href="wishlist.html" class="btn wishlist">
+                            <a href="wishlist.php" class="btn wishlist">
                                 <i class="fa fa-heart"></i>
                                 <span>(0)</span>
                             </a>
-                            <a href="cart.html" class="btn cart">
+                            <a href="cart.php" class="btn cart">
                                 <i class="fa fa-shopping-cart"></i>
                                 <span>(0)</span>
                             </a>
@@ -115,84 +217,85 @@
             </div>
         </div>
         <!-- Bottom Bar End -->
-        
+
         <!-- Breadcrumb Start -->
         <div class="breadcrumb-wrap">
             <div class="container-fluid">
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
                     <li class="breadcrumb-item"><a href="#">Products</a></li>
-                    <li class="breadcrumb-item active">Contact</li>
+                    <li class="breadcrumb-item active">Login & Register</li>
                 </ul>
             </div>
         </div>
         <!-- Breadcrumb End -->
-        
-        <!-- Contact Start -->
-        <div class="contact">
+
+        <!-- Login Start -->
+        <div class="login">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-4">
-                        <div class="contact-info">
-                            <h2>Our Office</h2>
-                            <h3><i class="fa fa-map-marker"></i>123 Office, Los Angeles, CA, USA</h3>
-                            <h3><i class="fa fa-envelope"></i>office@example.com</h3>
-                            <h3><i class="fa fa-phone"></i>+123-456-7890</h3>
-                            <div class="social">
-                                <a href=""><i class="fab fa-twitter"></i></a>
-                                <a href=""><i class="fab fa-facebook-f"></i></a>
-                                <a href=""><i class="fab fa-linkedin-in"></i></a>
-                                <a href=""><i class="fab fa-instagram"></i></a>
-                                <a href=""><i class="fab fa-youtube"></i></a>
+                    <div class="col-lg-6">
+                        <form class="register-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>First Name</label>
+                                    <input class="form-control <?php echo (!empty($name_err)) ? 'has-error' : ''; ?>" type="text" name="name" placeholder="First Name" value="<?php echo $name;?>">
+                                    <span class="help-block"><?php echo $name_err; ?></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Last Name</label>
+                                    <input class="form-control <?php echo (!empty($surname_err)) ? 'has-error' : ''; ?>" type="text" name="surname" placeholder="Last Name" value="<?php echo $surname;?>">
+                                    <span class="help-block"><?php echo $surname_err; ?></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>E-mail</label>
+                                    <input class="form-control <?php echo (!empty($email_err)) ? 'has-error' : ''; ?>" type="text" name="email" placeholder="E-mail" value="<?php echo $email;?>">
+                                    <span class="help-block"><?php echo $email_err; ?></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Password</label>
+                                    <input class="form-control <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>" type="text" name="password" placeholder="Password">
+                                    <span class="help-block"><?php echo $password_err; ?></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Retype Password</label>
+                                    <input class="form-control <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>" type="text" name="password2" placeholder="Password">
+                                    <span class="help-block"><?php echo $confirm_password_err; ?></span>
+                                </div>
+                                <div class="col-md-12">
+                                    <button class="btn">Submit</button>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
-                    <div class="col-lg-4">
-                        <div class="contact-info">
-                            <h2>Our Store</h2>
-                            <h3><i class="fa fa-map-marker"></i>123 Store, Los Angeles, CA, USA</h3>
-                            <h3><i class="fa fa-envelope"></i>store@example.com</h3>
-                            <h3><i class="fa fa-phone"></i>+123-456-7890</h3>
-                            <div class="social">
-                                <a href=""><i class="fab fa-twitter"></i></a>
-                                <a href=""><i class="fab fa-facebook-f"></i></a>
-                                <a href=""><i class="fab fa-linkedin-in"></i></a>
-                                <a href=""><i class="fab fa-instagram"></i></a>
-                                <a href=""><i class="fab fa-youtube"></i></a>
+                    <div class="col-lg-6">
+                        <form class="login-form" action="login-api.php" method="POST">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>E-mail</label>
+                                    <input class="form-control" type="text" name="email" placeholder="E-mail" value="<?php echo $email;?>">
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Password</label>
+                                    <input class="form-control" type="text" name="password" placeholder="Password">
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="newaccount">
+                                        <label class="custom-control-label" for="newaccount">Keep me signed in</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <button class="btn">Submit</button>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="contact-form">
-                            <form>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <input type="text" class="form-control" placeholder="Your Name" />
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="email" class="form-control" placeholder="Your Email" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Subject" />
-                                </div>
-                                <div class="form-group">
-                                    <textarea class="form-control" rows="5" placeholder="Message"></textarea>
-                                </div>
-                                <div><button class="btn" type="submit">Send Message</button></div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="contact-map">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3305.733248043701!2d-118.24532098539802!3d34.05071312525937!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2c648fa1d4803%3A0xdec27bf11f9fd336!2s123%20S%20Los%20Angeles%20St%2C%20Los%20Angeles%2C%20CA%2090012%2C%20USA!5e0!3m2!1sen!2sbd!4v1585634930544!5m2!1sen!2sbd" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Contact End -->
-        
+        <!-- Login End -->
+
         <!-- Footer Start -->
         <div class="footer">
             <div class="container-fluid">
@@ -207,7 +310,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="col-lg-3 col-md-6">
                         <div class="footer-widget">
                             <h2>Follow Us</h2>
@@ -245,7 +348,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="row payment align-items-center">
                     <div class="col-md-6">
                         <div class="payment-method">
@@ -265,7 +368,7 @@
             </div>
         </div>
         <!-- Footer End -->
-        
+
         <!-- Footer Bottom Start -->
         <div class="footer-bottom">
             <div class="container">
@@ -280,17 +383,17 @@
                 </div>
             </div>
         </div>
-        <!-- Footer Bottom End -->       
-        
+        <!-- Footer Bottom End -->
+
         <!-- Back to Top -->
         <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
-        
+
         <!-- JavaScript Libraries -->
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
         <script src="lib/easing/easing.min.js"></script>
         <script src="lib/slick/slick.min.js"></script>
-        
+
         <!-- Template Javascript -->
         <script src="js/main.js"></script>
     </body>

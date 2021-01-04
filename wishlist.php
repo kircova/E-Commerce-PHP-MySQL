@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+
+
+<?php
+    include "config.php";
+?>
+
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -40,7 +46,7 @@
             </div>
         </div>
         <!-- Top bar End -->
-        
+
         <!-- Nav Bar Start -->
         <div class="nav">
             <div class="container-fluid">
@@ -52,18 +58,18 @@
 
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto">
-                            <a href="index.html" class="nav-item nav-link">Home</a>
-                            <a href="product-list.html" class="nav-item nav-link">Products</a>
-                            <a href="product-detail.html" class="nav-item nav-link">Product Detail</a>
-                            <a href="cart.html" class="nav-item nav-link">Cart</a>
-                            <a href="checkout.html" class="nav-item nav-link">Checkout</a>
-                            <a href="my-account.html" class="nav-item nav-link">My Account</a>
+                            <a href="index.php" class="nav-item nav-link">Home</a>
+                            <a href="product-list.php" class="nav-item nav-link">Products</a>
+                            <a href="product-detail.php" class="nav-item nav-link">Product Detail</a>
+                            <a href="cart.php" class="nav-item nav-link">Cart</a>
+                            <a href="checkout.php" class="nav-item nav-link">Checkout</a>
+                            <a href="my-account.php" class="nav-item nav-link">My Account</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle active" data-toggle="dropdown">More Pages</a>
                                 <div class="dropdown-menu">
-                                    <a href="wishlist.html" class="dropdown-item">Wishlist</a>
-                                    <a href="login.html" class="dropdown-item active">Login & Register</a>
-                                    <a href="contact.html" class="dropdown-item">Contact Us</a>
+                                    <a href="wishlist.php" class="dropdown-item active">Wishlist</a>
+                                    <a href="login.php" class="dropdown-item">Login & Register</a>
+                                    <a href="contact.php" class="dropdown-item">Contact Us</a>
                                 </div>
                             </div>
                         </div>
@@ -80,15 +86,15 @@
                 </nav>
             </div>
         </div>
-        <!-- Nav Bar End -->      
-        
+        <!-- Nav Bar End -->
+
         <!-- Bottom Bar Start -->
         <div class="bottom-bar">
             <div class="container-fluid">
                 <div class="row align-items-center">
                     <div class="col-md-3">
                         <div class="logo">
-                            <a href="index.html">
+                            <a href="index.php">
                                 <img src="img/logo.png" alt="Logo">
                             </a>
                         </div>
@@ -101,11 +107,11 @@
                     </div>
                     <div class="col-md-3">
                         <div class="user">
-                            <a href="wishlist.html" class="btn wishlist">
+                            <a href="wishlist.php" class="btn wishlist">
                                 <i class="fa fa-heart"></i>
                                 <span>(0)</span>
                             </a>
-                            <a href="cart.html" class="btn cart">
+                            <a href="cart.php" class="btn cart">
                                 <i class="fa fa-shopping-cart"></i>
                                 <span>(0)</span>
                             </a>
@@ -114,85 +120,138 @@
                 </div>
             </div>
         </div>
-        <!-- Bottom Bar End --> 
-        
+        <!-- Bottom Bar End -->
+
         <!-- Breadcrumb Start -->
         <div class="breadcrumb-wrap">
             <div class="container-fluid">
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
                     <li class="breadcrumb-item"><a href="#">Products</a></li>
-                    <li class="breadcrumb-item active">Login & Register</li>
+                    <li class="breadcrumb-item active">Wishlist</li>
                 </ul>
             </div>
         </div>
         <!-- Breadcrumb End -->
-        
-        <!-- Login Start -->
-        <div class="login">
+
+        <!-- Wishlist Start -->
+        <div class="wishlist-page">
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-6">    
-                        <div class="register-form">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>First Name</label>
-                                    <input class="form-control" type="text" placeholder="First Name">
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Last Name"</label>
-                                    <input class="form-control" type="text" placeholder="Last Name">
-                                </div>
-                                <div class="col-md-6">
-                                    <label>E-mail</label>
-                                    <input class="form-control" type="text" placeholder="E-mail">
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Mobile No</label>
-                                    <input class="form-control" type="text" placeholder="Mobile No">
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Password</label>
-                                    <input class="form-control" type="text" placeholder="Password">
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Retype Password</label>
-                                    <input class="form-control" type="text" placeholder="Password">
-                                </div>
-                                <div class="col-md-12">
-                                    <button class="btn">Submit</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="login-form">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label>E-mail / Username</label>
-                                    <input class="form-control" type="text" placeholder="E-mail / Username">
-                                </div>
-                                <div class="col-md-6">
-                                    <label>Password</label>
-                                    <input class="form-control" type="text" placeholder="Password">
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="newaccount">
-                                        <label class="custom-control-label" for="newaccount">Keep me signed in</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <button class="btn">Submit</button>
-                                </div>
+                <div class="wishlist-page-inner">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Price</th>
+                                            <th>Quantity</th>
+                                            <th>Add to Cart</th>
+                                            <th>Remove</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="align-middle">
+                                        <tr>
+                                            <td>
+                                                <div class="img">
+                                                    <a href="#"><img src="img/product-6.jpg" alt="Image"></a>
+                                                    <p>Product Name</p>
+                                                </div>
+                                            </td>
+                                            <td>$99</td>
+                                            <td>
+                                                <div class="qty">
+                                                    <button class="btn-minus"><i class="fa fa-minus"></i></button>
+                                                    <input type="text" value="1">
+                                                    <button class="btn-plus"><i class="fa fa-plus"></i></button>
+                                                </div>
+                                            </td>
+                                            <td><button class="btn-cart">Add to Cart</button></td>
+                                            <td><button><i class="fa fa-trash"></i></button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="img">
+                                                    <a href="#"><img src="img/product-7.jpg" alt="Image"></a>
+                                                    <p>Product Name</p>
+                                                </div>
+                                            </td>
+                                            <td>$99</td>
+                                            <td>
+                                                <div class="qty">
+                                                    <button class="btn-minus"><i class="fa fa-minus"></i></button>
+                                                    <input type="text" value="1">
+                                                    <button class="btn-plus"><i class="fa fa-plus"></i></button>
+                                                </div>
+                                            </td>
+                                            <td><button class="btn-cart">Add to Cart</button></td>
+                                            <td><button><i class="fa fa-trash"></i></button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="img">
+                                                    <a href="#"><img src="img/product-8.jpg" alt="Image"></a>
+                                                    <p>Product Name</p>
+                                                </div>
+                                            </td>
+                                            <td>$99</td>
+                                            <td>
+                                                <div class="qty">
+                                                    <button class="btn-minus"><i class="fa fa-minus"></i></button>
+                                                    <input type="text" value="1">
+                                                    <button class="btn-plus"><i class="fa fa-plus"></i></button>
+                                                </div>
+                                            </td>
+                                            <td><button class="btn-cart">Add to Cart</button></td>
+                                            <td><button><i class="fa fa-trash"></i></button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="img">
+                                                    <a href="#"><img src="img/product-9.jpg" alt="Image"></a>
+                                                    <p>Product Name</p>
+                                                </div>
+                                            </td>
+                                            <td>$99</td>
+                                            <td>
+                                                <div class="qty">
+                                                    <button class="btn-minus"><i class="fa fa-minus"></i></button>
+                                                    <input type="text" value="1">
+                                                    <button class="btn-plus"><i class="fa fa-plus"></i></button>
+                                                </div>
+                                            </td>
+                                            <td><button class="btn-cart">Add to Cart</button></td>
+                                            <td><button><i class="fa fa-trash"></i></button></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="img">
+                                                    <a href="#"><img src="img/product-10.jpg" alt="Image"></a>
+                                                    <p>Product Name</p>
+                                                </div>
+                                            </td>
+                                            <td>$99</td>
+                                            <td>
+                                                <div class="qty">
+                                                    <button class="btn-minus"><i class="fa fa-minus"></i></button>
+                                                    <input type="text" value="1">
+                                                    <button class="btn-plus"><i class="fa fa-plus"></i></button>
+                                                </div>
+                                            </td>
+                                            <td><button class="btn-cart">Add to Cart</button></td>
+                                            <td><button><i class="fa fa-trash"></i></button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Login End -->
-        
+        <!-- Wishlist End -->
+
         <!-- Footer Start -->
         <div class="footer">
             <div class="container-fluid">
@@ -207,7 +266,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="col-lg-3 col-md-6">
                         <div class="footer-widget">
                             <h2>Follow Us</h2>
@@ -245,7 +304,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="row payment align-items-center">
                     <div class="col-md-6">
                         <div class="payment-method">
@@ -265,7 +324,7 @@
             </div>
         </div>
         <!-- Footer End -->
-        
+
         <!-- Footer Bottom Start -->
         <div class="footer-bottom">
             <div class="container">
@@ -280,17 +339,17 @@
                 </div>
             </div>
         </div>
-        <!-- Footer Bottom End -->       
-        
+        <!-- Footer Bottom End -->
+
         <!-- Back to Top -->
         <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
-        
+
         <!-- JavaScript Libraries -->
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
         <script src="lib/easing/easing.min.js"></script>
         <script src="lib/slick/slick.min.js"></script>
-        
+
         <!-- Template Javascript -->
         <script src="js/main.js"></script>
     </body>
