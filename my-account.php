@@ -1,4 +1,21 @@
 <!DOCTYPE html>
+
+
+<?php
+    require_once "config.php";
+?>
+
+<?php
+// Initialize the session
+session_start();
+
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+    header("location: login.php");
+    exit;
+}
+?>
+
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -40,7 +57,7 @@
             </div>
         </div>
         <!-- Top bar End -->
-        
+
         <!-- Nav Bar Start -->
         <div class="nav">
             <div class="container-fluid">
@@ -52,18 +69,18 @@
 
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto">
-                            <a href="index.html" class="nav-item nav-link">Home</a>
-                            <a href="product-list.html" class="nav-item nav-link">Products</a>
-                            <a href="product-detail.html" class="nav-item nav-link">Product Detail</a>
-                            <a href="cart.html" class="nav-item nav-link">Cart</a>
-                            <a href="checkout.html" class="nav-item nav-link">Checkout</a>
-                            <a href="my-account.html" class="nav-item nav-link active">My Account</a>
+                            <a href="index.php" class="nav-item nav-link">Home</a>
+                            <a href="product-list.php" class="nav-item nav-link">Products</a>
+                            <a href="product-detail.php" class="nav-item nav-link">Product Detail</a>
+                            <a href="cart.php" class="nav-item nav-link">Cart</a>
+                            <a href="checkout.php" class="nav-item nav-link">Checkout</a>
+                            <a href="my-account.php" class="nav-item nav-link active">My Account</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">More Pages</a>
                                 <div class="dropdown-menu">
-                                    <a href="wishlist.html" class="dropdown-item">Wishlist</a>
-                                    <a href="login.html" class="dropdown-item">Login & Register</a>
-                                    <a href="contact.html" class="dropdown-item">Contact Us</a>
+                                    <a href="wishlist.php" class="dropdown-item">Wishlist</a>
+                                    <a href="login.php" class="dropdown-item">Login & Register</a>
+                                    <a href="contact.php" class="dropdown-item">Contact Us</a>
                                 </div>
                             </div>
                         </div>
@@ -80,15 +97,15 @@
                 </nav>
             </div>
         </div>
-        <!-- Nav Bar End -->      
-        
+        <!-- Nav Bar End -->
+
         <!-- Bottom Bar Start -->
         <div class="bottom-bar">
             <div class="container-fluid">
                 <div class="row align-items-center">
                     <div class="col-md-3">
                         <div class="logo">
-                            <a href="index.html">
+                            <a href="index.php">
                                 <img src="img/logo.png" alt="Logo">
                             </a>
                         </div>
@@ -101,11 +118,11 @@
                     </div>
                     <div class="col-md-3">
                         <div class="user">
-                            <a href="wishlist.html" class="btn wishlist">
+                            <a href="wishlist.php" class="btn wishlist">
                                 <i class="fa fa-heart"></i>
                                 <span>(0)</span>
                             </a>
-                            <a href="cart.html" class="btn cart">
+                            <a href="cart.php" class="btn cart">
                                 <i class="fa fa-shopping-cart"></i>
                                 <span>(0)</span>
                             </a>
@@ -114,8 +131,8 @@
                 </div>
             </div>
         </div>
-        <!-- Bottom Bar End --> 
-        
+        <!-- Bottom Bar End -->
+
         <!-- Breadcrumb Start -->
         <div class="breadcrumb-wrap">
             <div class="container-fluid">
@@ -127,7 +144,7 @@
             </div>
         </div>
         <!-- Breadcrumb End -->
-        
+
         <!-- My Account Start -->
         <div class="my-account">
             <div class="container-fluid">
@@ -139,7 +156,7 @@
                             <a class="nav-link" id="payment-nav" data-toggle="pill" href="#payment-tab" role="tab"><i class="fa fa-credit-card"></i>Payment Method</a>
                             <a class="nav-link" id="address-nav" data-toggle="pill" href="#address-tab" role="tab"><i class="fa fa-map-marker-alt"></i>address</a>
                             <a class="nav-link" id="account-nav" data-toggle="pill" href="#account-tab" role="tab"><i class="fa fa-user"></i>Account Details</a>
-                            <a class="nav-link" href="index.html"><i class="fa fa-sign-out-alt"></i>Logout</a>
+                            <a class="nav-link" href="logout.php"><i class="fa fa-sign-out-alt"></i>Logout</a>
                         </div>
                     </div>
                     <div class="col-md-9">
@@ -148,7 +165,7 @@
                                 <h4>Dashboard</h4>
                                 <p>
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. In condimentum quam ac mi viverra dictum. In efficitur ipsum diam, at dignissim lorem tempor in. Vivamus tempor hendrerit finibus. Nulla tristique viverra nisl, sit amet bibendum ante suscipit non. Praesent in faucibus tellus, sed gravida lacus. Vivamus eu diam eros. Aliquam et sapien eget arcu rhoncus scelerisque.
-                                </p> 
+                                </p>
                             </div>
                             <div class="tab-pane fade" id="orders-tab" role="tabpanel" aria-labelledby="orders-nav">
                                 <div class="table-responsive">
@@ -196,7 +213,7 @@
                                 <h4>Payment Method</h4>
                                 <p>
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. In condimentum quam ac mi viverra dictum. In efficitur ipsum diam, at dignissim lorem tempor in. Vivamus tempor hendrerit finibus. Nulla tristique viverra nisl, sit amet bibendum ante suscipit non. Praesent in faucibus tellus, sed gravida lacus. Vivamus eu diam eros. Aliquam et sapien eget arcu rhoncus scelerisque.
-                                </p> 
+                                </p>
                             </div>
                             <div class="tab-pane fade" id="address-tab" role="tabpanel" aria-labelledby="address-nav">
                                 <h4>Address</h4>
@@ -260,7 +277,7 @@
             </div>
         </div>
         <!-- My Account End -->
-        
+
         <!-- Footer Start -->
         <div class="footer">
             <div class="container-fluid">
@@ -275,7 +292,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="col-lg-3 col-md-6">
                         <div class="footer-widget">
                             <h2>Follow Us</h2>
@@ -313,7 +330,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="row payment align-items-center">
                     <div class="col-md-6">
                         <div class="payment-method">
@@ -333,7 +350,7 @@
             </div>
         </div>
         <!-- Footer End -->
-        
+
         <!-- Footer Bottom Start -->
         <div class="footer-bottom">
             <div class="container">
@@ -348,17 +365,17 @@
                 </div>
             </div>
         </div>
-        <!-- Footer Bottom End -->       
-        
+        <!-- Footer Bottom End -->
+
         <!-- Back to Top -->
         <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
-        
+
         <!-- JavaScript Libraries -->
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
         <script src="lib/easing/easing.min.js"></script>
         <script src="lib/slick/slick.min.js"></script>
-        
+
         <!-- Template Javascript -->
         <script src="js/main.js"></script>
     </body>
