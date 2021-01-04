@@ -1,91 +1,186 @@
 <!DOCTYPE html>
 
+<?php
+  require_once "config.php";
+?>
 
 
 <?php
+// Initialize the session
+session_start();
 
-require_once "config.php";
+// Check if the user is logged in, if not then redirect him to login page
+  if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+    header("location: my-account.php");
+    exit;
+}
+?>
+
+<?php
+
 
 $name = $surname  = $email = $password = $confirm_password = "";
 $name_err = $surname_err  = $email_err = $password_err = $confirm_password_err = "";
 
-// REGISTER
+$login_email = $login_password = "";
+$login_email_err = $login_password_err = "";
+
+
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
-  // Name validation
 
-  if(empty($_POST['name'])) {
-    $name_err = "Please enter a name.";
-  }
-  else {
-    $name = test_input($_POST['name']);
-  }
+// LOGIN USER
 
-  // Surname validation
+if(isset($_POST['login-user'])) {
 
-  if(empty($_POST['surname'])) {
-    $surname_err = "Please enter a surname.";
-  }
-  else {
-    $surname = test_input($_POST['surname']);
-  }
-
-  // Password Validation
-
-  if(empty($_POST["password"])){
-      $password_err = "Please enter a password.";
-  } elseif(strlen(test_input($_POST["password"])) < 6){
-      $password_err = "Password must have atleast 6 characters.";
-  } else{
-      $password = test_input($_POST["password"]);
-  }
-
-  if(empty($_POST["password2"])){
-      $confirm_password_err = "Please confirm password.";
-  } else{
-      $confirm_password = test_input($_POST["password2"]);
-      if(empty($password_err) && ($password != $confirm_password)){
-          $confirm_password_err = "Password did not match.";
-      }
-  }
-
-  // E-mail Validation
-
-  if(empty($_POST["email"])) {
-    $email_err = "Please enter an e-mail.";
-  }
-  else {
-    $email = test_input($_POST["email"]);
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $email_err = "Invalid email format";
+    // Email validation
+    if(empty($_POST["email_login"])) {
+      $login_email = "Please enter an e-mail.";
     }
-  }
+    else {
+      $login_email = test_input($_POST["email_login"]);
+    }
 
-  if(empty($name_err) && empty($surname_err) && empty($email_err) && empty($password_err) && empty($confirm_password_err)){
+    // Password Validation
 
-    $sql_statement = "INSERT INTO person(name, surname, email, pass) VALUES (?, ?, ?, ?)";
+    if(empty($_POST["password_login"])){
+        $login_password_err = "Please enter a password.";
+    } else{
+        $login_password = trim($_POST["password_login"]);
+    }
 
-    if($stmt = mysqli_prepare($db, $sql_statement)){
-      // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssss", $param_name, $param_surname, $param_email, $param_password);
+    if(empty($login_email_err) && empty($login_password_err)){
 
-            // I did this so if we need to edit the data we can interfere these variables.
-            $param_name = $name;
-            $param_surname = $surname;
-            $param_email = $email;
-            $param_password = $password; // raw form
+       $sql_statement = "SELECT pid, email, pass FROM person WHERE email = ?";
+       if($stmt = mysqli_prepare($db, $sql_statement)){
+            // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt, "s", $param_login_email);
+
+            // Set parameters
+            $param_login_email = $login_email;
 
             if(mysqli_stmt_execute($stmt)){
-               // Redirect to login page
-               header("location: index.php");
-            } else{
-               echo "Something went wrong. Please try again later.";
-            }
-            mysqli_stmt_close($stmt);
+               mysqli_stmt_store_result($stmt);
+               // Check if username exists, if yes then verify password
+               if(mysqli_stmt_num_rows($stmt) == 1){
+                  // Bind result variables
+                  mysqli_stmt_bind_result($stmt, $id, $login_email, $retrieved_pass);
+                  if(mysqli_stmt_fetch($stmt)) {
+                    if($login_password == $retrieved_pass) {
+                        // Password is correct, so start a new session
+                        session_start();
 
+                        // Store data in session variables
+                        $_SESSION["loggedin"] = true;
+                        $_SESSION["pid"] = $id;
+                        $_SESSION["email"] = $login_email;
+
+                        // Redirect user to welcome page
+                        header("location: index.php");
+                    } else{
+                        // Display an error message if password is not valid
+                        $login_password_err = "The password you entered was not valid.";
+                    }
+                  }
+
+              }
+              else{
+                    // Display an error message if mail doesn't exist
+                    $login_email_err = "No account found with that mail.";
+            }
+        } else {
+            echo "Oops! Something went wrong. Please try again later.";
+        }
+      }
+    }
+  }
+
+  // REGISTER USER
+
+  if(isset($_POST['register-user'])) {
+
+    // Name validation
+
+    if(empty($_POST['name'])) {
+      $name_err = "Please enter a name.";
+    }
+    else {
+      $name = test_input($_POST['name']);
     }
 
-    mysqli_close($db);
+    // Surname validation
+
+    if(empty($_POST['surname'])) {
+      $surname_err = "Please enter a surname.";
+    }
+    else {
+      $surname = test_input($_POST['surname']);
+    }
+
+    // Password Validation
+
+    if(empty($_POST["password"])){
+        $password_err = "Please enter a password.";
+    } elseif(strlen(trim($_POST["password"])) < 6){
+        $password_err = "Password must have atleast 6 characters.";
+    } else{
+        $password = trim($_POST["password"]);
+    }
+
+    if(empty($_POST["password2"])){
+        $confirm_password_err = "Please confirm password.";
+    } else{
+        $confirm_password = trim($_POST["password2"]);
+        if(empty($password_err) && ($password != $confirm_password)){
+            $confirm_password_err = "Password did not match.";
+        }
+    }
+
+    // E-mail Validation
+
+    if(empty($_POST["email"])) {
+      $email_err = "Please enter an e-mail.";
+    }
+    else {
+      $email = test_input($_POST["email"]);
+      if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $email_err = "Invalid email format";
+      }
+    }
+
+    if(empty($name_err) && empty($surname_err) && empty($email_err) && empty($password_err) && empty($confirm_password_err)){
+
+      $sql_statement = "INSERT INTO person(name, surname, email, pass) VALUES (?, ?, ?, ?)";
+
+      if($stmt = mysqli_prepare($db, $sql_statement)){
+        // Bind variables to the prepared statement as parameters
+              mysqli_stmt_bind_param($stmt, "ssss", $param_name, $param_surname, $param_email, $param_password);
+
+              // I did this so if we need to edit the data we can interfere these variables.
+              $param_name = $name;
+              $param_surname = $surname;
+              $param_email = $email;
+              $param_password = $password; // raw form
+
+              if(mysqli_stmt_execute($stmt)){
+                session_start();
+
+                // Store data in session variables
+                $_SESSION["loggedin"] = true;
+                $_SESSION["pid"] = $id;
+                $_SESSION["email"] = $param_email;
+
+                // Redirect user to welcome page
+                header("location: index.php");
+              } else{
+                 echo "Something went wrong. Please try again later.";
+              }
+              mysqli_stmt_close($stmt);
+
+      }
+
+      mysqli_close($db);
+    }
   }
 }
 
@@ -263,21 +358,23 @@ function test_input($data) {
                                     <span class="help-block"><?php echo $confirm_password_err; ?></span>
                                 </div>
                                 <div class="col-md-12">
-                                    <button class="btn">Submit</button>
+                                    <button type="submit" class="btn" name="register-user">Submit</button>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="col-lg-6">
-                        <form class="login-form" action="login-api.php" method="POST">
+                        <form class="login-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
                             <div class="row">
                                 <div class="col-md-6">
                                     <label>E-mail</label>
-                                    <input class="form-control" type="text" name="email" placeholder="E-mail" value="<?php echo $email;?>">
+                                    <input class="form-control <?php echo (!empty($login_email_err)) ? 'has-error' : ''; ?>" type="text" name="email_login" placeholder="E-mail" value="<?php echo $login_email;?>">
+                                    <span class="help-block"><?php echo $login_email_err; ?></span>
                                 </div>
                                 <div class="col-md-6">
                                     <label>Password</label>
-                                    <input class="form-control" type="text" name="password" placeholder="Password">
+                                    <input class="form-control <?php echo (!empty($login_password_err)) ? 'has-error' : ''; ?>" type="text" name="password_login" placeholder="Password">
+                                    <span class="help-block"><?php echo $login_password_err; ?></span>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="custom-control custom-checkbox">
@@ -286,7 +383,7 @@ function test_input($data) {
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <button class="btn">Submit</button>
+                                    <button type="submit" class="btn" name="login-user">Submit</button>
                                 </div>
                             </div>
                         </form>
