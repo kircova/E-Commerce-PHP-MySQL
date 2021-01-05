@@ -122,7 +122,7 @@ if(isset($_POST['login-user'])) {
     if(empty($_POST["password"])){
         $password_err = "Please enter a password.";
     } elseif(strlen(trim($_POST["password"])) < 6){
-        $password_err = "Password must have atleast 6 characters.";
+        $password_err = "Password must have at least 6 characters.";
     } else{
         $password = trim($_POST["password"]);
     }
@@ -266,11 +266,7 @@ function test_input($data) {
                         </div>
                         <div class="navbar-nav ml-auto">
                             <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User Account</a>
-                                <div class="dropdown-menu">
-                                    <a href="#" class="dropdown-item">Login</a>
-                                    <a href="#" class="dropdown-item">Register</a>
-                                </div>
+                                <a href="login.php" class="nav-item nav-link">Login & Register</a>
                             </div>
                         </div>
                     </div>

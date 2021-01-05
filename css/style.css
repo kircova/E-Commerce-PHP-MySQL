@@ -223,7 +223,7 @@ h2 {
     .top-bar {
         border-bottom: 1px solid rgba(255,255,255,.1);
     }
-    
+
     .top-bar .col-sm-6:first-child,
     .top-bar .col-sm-6:last-child {
         text-align: center;
@@ -267,17 +267,17 @@ h2 {
     .nav .navbar {
         background: #FF6F61 !important;
     }
-    
+
     .nav .navbar-brand {
         display: none;
     }
-    
+
     .nav .navbar-dark a.nav-link {
         color: #ffffff;
         font-size: 14px;
         text-transform: uppercase;
     }
-    
+
     .nav .navbar-dark a.nav-link:hover,
     .nav .navbar-dark a.nav-link.active {
         color: #000000;
@@ -288,16 +288,16 @@ h2 {
     .nav {
         padding: 5px 0;
     }
-    
+
     .nav,
     .nav .navbar {
         background: #000000 !important;
     }
-    
+
     .nav a.nav-link {
         padding: 5px 0;
     }
-    
+
     .nav .dropdown-menu {
         box-shadow: none;
     }
@@ -393,7 +393,7 @@ h2 {
         text-align: center;
         margin-bottom: 15px;
     }
-    
+
     .bottom-bar .user {
         margin-bottom: 0;
     }
@@ -513,9 +513,9 @@ h2 {
 }
 
 .header .img-item img {
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .header .img-text {
@@ -532,7 +532,7 @@ h2 {
 }
 
 .header .img-text:hover {
-    opacity: 1;     
+    opacity: 1;
 }
 
 .header .img-text p {
@@ -546,7 +546,7 @@ h2 {
 }
 
 .header .img-text:hover p {
-    margin: 0;       
+    margin: 0;
 }
 
 
@@ -603,9 +603,9 @@ h2 {
 }
 
 .category .category-item img {
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .category .category-name {
@@ -622,7 +622,7 @@ h2 {
 }
 
 .category .category-name:hover {
-    opacity: 1;     
+    opacity: 1;
 }
 
 .category .category-name p {
@@ -636,7 +636,7 @@ h2 {
 }
 
 .category .category-name:hover p {
-    margin: 0;       
+    margin: 0;
 }
 
 
@@ -733,13 +733,18 @@ h2 {
 }
 
 .product-item .product-image a {
+    object-fit: cover;
+    height:372px;
+    width:372px;
     display: block;
     background: #ffffff;
     transition: .3s;
 }
 
 .product-item .product-image img {
-    width: 100%; 
+    display:block;
+    overflow:hidden;
+    width: 100%;
     transition: all .3s;
 }
 
@@ -764,7 +769,7 @@ h2 {
 }
 
 .product-item:hover .product-image .product-action {
-    opacity: 1; 
+    opacity: 1;
 }
 
 .product-item .product-image .product-action a {
@@ -1348,11 +1353,11 @@ h2 {
 }
 
 .sidebar-widget.brands ul li {
-    margin-bottom: 12px; 
+    margin-bottom: 12px;
 }
 
 .sidebar-widget.brands ul li:last-child {
-    margin-bottom: 0; 
+    margin-bottom: 0;
 }
 
 .sidebar-widget.brands ul li a {
@@ -1381,7 +1386,7 @@ h2 {
 }
 
 .sidebar-widget.brands ul li a:hover {
-    padding-left: 10px; 
+    padding-left: 10px;
 }
 
 .sidebar-widget.brands ul li span {
@@ -1906,7 +1911,7 @@ h2 {
     .call-to-action .col-md-6:last-child {
         text-align: center;
     }
-    
+
     .call-to-action h1 {
         margin-bottom: 20px;
     }
@@ -1966,11 +1971,11 @@ h2 {
     .newsletter {
         text-align: center;
     }
-    
+
     .newsletter h1 {
         margin-bottom: 20px;
     }
-    
+
     .newsletter .form {
         margin: 0 auto;
     }
@@ -1988,12 +1993,12 @@ h2 {
 }
 
 .brand .brand-item {
-    text-align: center; 
+    text-align: center;
 }
 
 .brand .brand-item img {
     max-width: 100%;
-    margin: auto; 
+    margin: auto;
 }
 
 .brand .slick-prev,
@@ -2081,9 +2086,9 @@ h2 {
 }
 
 .review .review-img img {
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .review .review-text {
@@ -2227,7 +2232,7 @@ h2 {
 .footer .footer-widget h2 {
     font-size: 25px;
     white-space: nowrap;
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
 }
 
 .footer .footer-widget ul {
@@ -2237,11 +2242,11 @@ h2 {
 }
 
 .footer .footer-widget ul li {
-    margin-bottom: 12px; 
+    margin-bottom: 12px;
 }
 
 .footer .footer-widget ul li:last-child {
-    margin-bottom: 0; 
+    margin-bottom: 0;
 }
 
 .footer .footer-widget ul li a {
@@ -2332,11 +2337,11 @@ h2 {
     .footer .payment-method {
         margin-bottom: 15px;
     }
-    
+
     .footer .payment-method,
     .footer .payment-security {
-        text-align: center; 
-    } 
+        text-align: center;
+    }
 }
 
 .footer .payment-method h2,
@@ -2391,6 +2396,6 @@ h2 {
 @media (max-width: 768.98px) {
     .footer-bottom .copyright,
     .footer-bottom .template-by {
-        text-align: center; 
-    } 
+        text-align: center;
+    }
 }
