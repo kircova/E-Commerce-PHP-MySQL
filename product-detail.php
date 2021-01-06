@@ -55,7 +55,16 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
       while($row = mysqli_fetch_array($check)) {
         array_push($myarr, $row);
       }
+      $sql_statement = "SELECT prid, songname, TrackNumber
+                                  FROM `songs`
+                                  WHERE prid='$prid'
+                                  ORDER BY TrackNumber ASC";
+      $check = mysqli_query($db, $sql_statement);
+      $songs_arr = array();
 
+      while($row = mysqli_fetch_array($check)) {
+        array_push($songs_arr, $row);
+      }
 
 
   }
@@ -233,6 +242,9 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                     <li class="nav-item">
                                         <a class="nav-link active" data-toggle="pill" href="#description">Description</a>
                                     </li>
+                                    <li class="nav-item">
+                                       <a class="nav-link" data-toggle="pill" href="#songs">Songs</a>
+                                   </li>
                                 </ul>
 
                                 <div class="tab-content">
@@ -241,6 +253,19 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                         <p>
                                             <?php echo $description ?>
                                         </p>
+                                    </div>
+                                    <div id="songs" class="container tab-pane fade">
+                                        <h4>Songs</h4>
+                                        <ul>
+                                          <?php
+                                            $songs_row_number = count($songs_arr);
+                                            for($i=0; $i<$songs_row_number; $i++) {
+                                                $song_name = $songs_arr[$i]['songname'];
+                                                $trackNo = $songs_arr[$i]['TrackNumber'];
+                                              ?><li><?php echo $trackNo?>. <?php echo $song_name?></li><?php
+                                            }
+                                          ?>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>

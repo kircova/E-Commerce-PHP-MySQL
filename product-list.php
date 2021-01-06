@@ -179,13 +179,6 @@
                               <div class="product-item">
                                   <div class="product-title">
                                       <a href="#">Product Name</a>
-                                      <div class="ratting">
-                                          <i class="fa fa-star"></i>
-                                          <i class="fa fa-star"></i>
-                                          <i class="fa fa-star"></i>
-                                          <i class="fa fa-star"></i>
-                                          <i class="fa fa-star"></i>
-                                      </div>
                                   </div>
                                   <div class="product-image">
                                       <a href="product-detail.php">
