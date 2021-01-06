@@ -420,10 +420,17 @@ h2 {
     background: #ffffff !important;
 }
 
+
 .header .navbar-nav {
     width: 100%;
     padding: 15px 0;
 }
+
+.header .navbar bg-light {
+    width: 100%;
+    padding: 15px 0;
+}
+
 
 .header .navbar li {
     padding: 0 30px;
