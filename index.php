@@ -60,7 +60,6 @@
                         <div class="navbar-nav mr-auto">
                             <a href="index.php" class="nav-item nav-link active">Home</a>
                             <a href="product-list.php" class="nav-item nav-link">Products</a>
-                            <a href="product-detail.php" class="nav-item nav-link">Product Detail</a>
                             <a href="cart.php" class="nav-item nav-link">Cart</a>
                             <a href="checkout.php" class="nav-item nav-link">Checkout</a>
                             <a href="my-account.php" class="nav-item nav-link">My Account</a>

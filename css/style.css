@@ -1290,6 +1290,7 @@ h2 {
 /********** Sidebar CSS ***********/
 /**********************************/
 .sidebar-widget {
+    margin-left: initial;
     padding: 30px;
     background: #ffffff;
 }
