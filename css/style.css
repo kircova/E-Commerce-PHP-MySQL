@@ -460,6 +460,9 @@ h2 {
 
 .header-slider .header-slider-item {
     position: relative;
+    text-align: center;
+    margin-right: 300px;
+    margin-left: 300px;
 }
 
 .header-slider .header-slider-caption {
@@ -497,6 +500,7 @@ h2 {
 .header .header-img {
     position: relative;
     display: flex;
+    padding: 10px;
     flex-wrap: wrap;
     align-items: center;
     height: 100%;

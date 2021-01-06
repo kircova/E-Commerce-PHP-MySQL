@@ -25,7 +25,7 @@
   }
   else
   {
-      $query = "SELECT *FROM `product` WHERE isVisible=1 ";
+      $query = "SELECT *FROM `product` WHERE isVisible=1";
       $search_result = filterTable($query, $db);
   }
 
@@ -143,7 +143,7 @@
                     <div class="col-md-3">
                         <div class="logo">
                             <a href="index.php">
-                                <img src="img/logo.png" alt="Logo">
+                                <img src="img/logo - Copy.png" alt="Logo">
                             </a>
                         </div>
                     </div>
@@ -174,8 +174,8 @@
         <div class="breadcrumb-wrap">
             <div class="container-fluid">
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Products</a></li>
+                    <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+                    <li class="breadcrumb-item"><a href="product-list.php">Products</a></li>
                     <li class="breadcrumb-item active">Product List</li>
                 </ul>
             </div>
@@ -199,7 +199,7 @@
                                           $genres = $genrecategory[$a]['genre'];
                                     
                                         ?>
-                                        <a class="nav-link" href='product-list.php?genres=<?php echo $genres?>'> <i class="fa fa-search"></i><?php echo $genres?> </a>
+                                        <a class="nav-link" href='product-list.php?genres=<?php echo $genres?>'> <i class="fa fa-music"></i><?php echo ucwords(strtolower($genres))?> </a>
                                         <?php
                                         }
                                         ?>

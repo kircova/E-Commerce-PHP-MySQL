@@ -143,7 +143,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                     <div class="col-md-3">
                         <div class="logo">
                             <a href="index.php">
-                                <img src="img/logo.png" alt="Logo">
+                                <img src="img/logo - Copy.png" alt="Logo">
                             </a>
                         </div>
                     </div>
