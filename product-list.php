@@ -238,10 +238,11 @@
                                         <div class="col-md-4">
                                             <div class="product-short">
                                                 <div class="dropdown">
-                                                    <div class="dropdown-toggle" data-toggle="dropdown">Product short by</div>
+                                                    <div class="dropdown-toggle" data-toggle="dropdown">Product sort by</div>
                                                     <div class="dropdown-menu dropdown-menu-right">
-                                                        <a href="#" class="dropdown-item">Newest</a>
-                                                        <a href="#" class="dropdown-item">Popular</a>
+                                                        <a href="#" class="dropdown-item">Lowest Price</a>
+                                                        <a href="#" class="dropdown-item">Highest Price</a>
+                                                        <a href="#" class="dropdown-item">Alphabetical</a>
                                                         <a href="#" class="dropdown-item">Most sale</a>
                                                     </div>
                                                 </div>
@@ -252,16 +253,10 @@
                                                 <div class="dropdown">
                                                     <div class="dropdown-toggle" data-toggle="dropdown">Product price range</div>
                                                     <div class="dropdown-menu dropdown-menu-right">
-                                                        <a href="#" class="dropdown-item">$0 to $50</a>
-                                                        <a href="#" class="dropdown-item">$51 to $100</a>
-                                                        <a href="#" class="dropdown-item">$101 to $150</a>
-                                                        <a href="#" class="dropdown-item">$151 to $200</a>
-                                                        <a href="#" class="dropdown-item">$201 to $250</a>
-                                                        <a href="#" class="dropdown-item">$251 to $300</a>
-                                                        <a href="#" class="dropdown-item">$301 to $350</a>
-                                                        <a href="#" class="dropdown-item">$351 to $400</a>
-                                                        <a href="#" class="dropdown-item">$401 to $450</a>
-                                                        <a href="#" class="dropdown-item">$451 to $500</a>
+                                                        <a href="#" class="dropdown-item">0₺ to 100₺</a>
+                                                        <a href="#" class="dropdown-item">101₺ to 200₺</a>
+                                                        <a href="#" class="dropdown-item">201₺ to 300₺</a>
+                                                        <a href="#" class="dropdown-item">301₺ or higher</a>
                                                     </div>
                                                 </div>
                                             </div>

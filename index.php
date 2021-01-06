@@ -15,7 +15,6 @@
 
 ?>
 
-
 <?php
   $sql_statement = "SELECT genre
                               FROM `product`
