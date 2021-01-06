@@ -21,6 +21,30 @@
 ?>
 
 
+
+
+<?php
+
+  $sql_statement = "SELECT genre
+                              FROM `product`
+                              WHERE isVisible=1 ";
+  $check = mysqli_query($db, $sql_statement);
+
+  $genrecategory=array();
+
+  while($rows = mysqli_fetch_array($check)) {
+    array_push($genrecategory, $rows);
+  }
+
+
+    $genrecategory = array_unique($genrecategory, SORT_REGULAR);
+    $row_number=count($genrecategory);
+
+?>
+
+
+
+
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -150,29 +174,33 @@
             <div class="container-fluid">
                 <div class="row">
                   <!-- Side Bar Start -->
-                  <div class="col-lg-4 sidebar">
-                      <div class="sidebar-widget category">
-                          <h2 class="title">Category</h2>
-                          <nav class="navbar bg-light">
-                              <ul class="navbar-nav">
-                                  <li class="nav-item">
-                                      <a class="nav-link" href="#"><i class="fa fa-female"></i>Fashion & Beauty</a>
-                                  </li>
-                                  <li class="nav-item">
-                                      <a class="nav-link" href="#"><i class="fa fa-child"></i>Kids & Babies Clothes</a>
-                                  </li>
-                                  <li class="nav-item">
-                                      <a class="nav-link" href="#"><i class="fa fa-tshirt"></i>Men & Women Clothes</a>
-                                  </li>
-                                  <li class="nav-item">
-                                      <a class="nav-link" href="#"><i class="fa fa-mobile-alt"></i>Gadgets & Accessories</a>
-                                  </li>
-                                  <li class="nav-item">
-                                      <a class="nav-link" href="#"><i class="fa fa-microchip"></i>Electronics & Accessories</a>
-                                  </li>
-                              </ul>
-                          </nav>
-                      </div>
+
+
+                      <div class="col-lg-4 sidebar">
+                          <div class="sidebar-widget category">
+                              <h2 class="title">Genre</h2>
+                              <nav class="navbar bg-light">
+                                  <ul class="navbar-nav">
+                                      <li class="nav-item">
+                                        <?php
+                                        for($a=0;$a<$row_number - 1;$a++)
+                                        {
+                                          $genres = $genrecategory[$a]['genre'];
+                                    
+                                        ?>
+
+                                        <a class="nav-link" href='product-list.php?genres=<?php echo $genres?>'> <i class="fa fa-search"></i><?php echo $genres?> </a>
+
+                                        <?php
+                                        }
+                                        ?>
+                                      </li>
+
+                                  </ul>
+                              </nav>
+                          </div>
+
+
 
                       <div class="sidebar-widget widget-slider">
                           <div class="sidebar-slider normal-slider">
