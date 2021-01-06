@@ -6,15 +6,22 @@
     require_once "config.php";
 ?>
 
-
 <?php
-
+  $search_err = '';
 
   if(isset($_GET['genres'])) 
   {
       $genres = $_GET['genres'];
       $query = "SELECT *FROM `product`WHERE genre = '$genres'";
       $search_result = filterTable($query, $db);
+  }
+  else if(isset($_GET["product_search"])) 
+  {
+    $query = $_GET["product_search"];
+    $sql_statement = "SELECT prid, pname, artist, genre, price, categoryId, productImgUrl, isVisible
+                              FROM `product`
+                              WHERE isVisible=1 AND (pname LIKE '%$query%') OR (artist LIKE '%$query%')";
+    $search_result = filterTable($sql_statement, $db);
   }
   else
   {
@@ -30,37 +37,26 @@
   }
 
   $myarr=array();
-
   while($row = mysqli_fetch_array($search_result)) {
     array_push($myarr, $row);
   }
 
 ?>
 
-
-
-
 <?php
-
   $sql_statement = "SELECT genre
                               FROM `product`
                               WHERE isVisible=1 ";
   $search_result = mysqli_query($db, $sql_statement);
 
-  $genrecategory=array();
+  $genrecategory= array();
 
   while($rows = mysqli_fetch_array($search_result)) {
     array_push($genrecategory, $rows);
   }
-
-
     $genrecategory = array_unique($genrecategory, SORT_REGULAR);
-    $row_number=count($genrecategory);
-
+    $row_number_genre=count($genrecategory);
 ?>
-
-
-
 
 <html lang="en">
     <head>
@@ -191,8 +187,6 @@
             <div class="container-fluid">
                 <div class="row">
                   <!-- Side Bar Start -->
-
-
                       <div class="col-lg-4 sidebar">
                           <div class="sidebar-widget category">
                               <h2 class="title">Genre</h2>
@@ -200,7 +194,7 @@
                                   <ul class="navbar-nav">
                                       <li class="nav-item">
                                         <?php
-                                        for($a=0;$a<$row_number - 1;$a++)
+                                        for($a=0;$a<$row_number_genre - 1;$a++)
                                         {
                                           $genres = $genrecategory[$a]['genre'];
                                     
@@ -236,9 +230,9 @@
                                 <div class="product-view-top">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <form class="product-search" action= 'product-list.php?search=' method="GET">
-                                                <input type="email" value="Search">
-                                                <button href = href="product-list.php?genres=<?php echo $genres?>">> <i class="fa fa-search"></i></button>
+                                            <form class="product-search" action="product-list.php" method="GET">
+                                                <input type="text" name="product_search">
+                                                <button><i class="fa fa-search"></i></button>
                                             </form>
                                         </div>
                                         <div class="col-md-4">
@@ -276,6 +270,19 @@
                                 </div>
                             </div>
                             <?php
+
+                               if(count($myarr)==0)
+                                  {
+                                    ?>
+                                        <div class="col-md-4">
+                                          <span class="text"> No Products are found!</span>
+                                        </div>
+                                    <?php 
+                                  }
+                              ?>
+
+                              <?php
+
                               $row_number=count($myarr);
 
                               for($i=0;$i<$row_number;$i++)
@@ -289,7 +296,9 @@
                                $productImgUrl = $myarr[$i]['productImgUrl'];
 
                               ?>
+     
                               <div class="col-md-4">
+
                                   <div class="product-item">
                                       <div class="product-title"  >
                                           <a href='product-detail.php?id=<?php echo $id?>'><?php echo $name?></a>
@@ -308,7 +317,6 @@
                                       </div>
                                   </div>
                               </div>
-
                             <?php
                              }
                              ?>

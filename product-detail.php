@@ -15,36 +15,23 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
     if(isset($_GET['id'])) {
       $id = $_GET['id'];
 
-
       $sql_statement = "SELECT prid, pname, artist, genre, description, price, categoryId, productImgUrl, stock, isVisible
                                   FROM `product`
-                                  WHERE IsVisible=1 AND prid = ?";
+                                  WHERE IsVisible=1 AND prid = '$id'";
+      $check = mysqli_query($db, $sql_statement);
+      $row = mysqli_fetch_array($check);
 
+      $prid = $row['prid'];
+      $pname = $row['pname'];
+      $artist = $row['artist'];
+      $genre = $row['genre'];
+      $description = $row['description'];
+      $price = $row['price'];
+      $categoryId = $row['categoryId'];
+      $productImgUrl = $row['productImgUrl'];
+      $stock = $row['stock'];
+      $isVisible = $row['isVisible'];
 
-
-
-      if($stmt = mysqli_prepare($db, $sql_statement)){
-          mysqli_stmt_bind_param($stmt, "s", $param_id);
-
-          $param_id = $id;
-
-          if(mysqli_stmt_execute($stmt)){
-             mysqli_stmt_store_result($stmt);
-             // Check if id exists, if yes then verify password
-             if(mysqli_stmt_num_rows($stmt) == 1){
-                // Bind result variables
-                mysqli_stmt_bind_result($stmt, $prid, $pname, $artist, $genre, $description, $price, $categoryId, $productImgUrl, $stock, $isVisible);
-                mysqli_stmt_fetch($stmt);
-
-            }
-            else{
-                  // Display an error message if product with $id doesn't exist
-                  $id_err = "No product was found.";
-            }
-
-      }
-      mysqli_stmt_close($stmt);
-      }
       $sql_statement = "SELECT prid, pname, genre, price, productImgUrl, isVisible
                                   FROM `product`
                                   WHERE IsVisible=1 AND genre = '$genre'";
@@ -286,13 +273,11 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                      $slider_name = $myarr[$i]['pname'];
                                      $slider_price = $myarr[$i]['price'];
                                      $slider_productImgUrl = $myarr[$i]['productImgUrl'];
-
-
                                 ?>
                                   <div class="col-lg-3">
                                       <div class="product-item">
                                           <div class="product-title">
-                                              <a href="#"><?php echo $slider_name?></a>
+                                              <a href="product-detail.php?id=<?php echo $slider_id?>"><?php echo $slider_name?></a>
                                           </div>
                                           <div class="product-image">
                                               <a href="product-detail.php">
