@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 
+
 <?php
     require_once "config.php";
 ?>
@@ -8,16 +9,32 @@
 
 <?php
 
-  $sql_statement = "SELECT prid, pname, artist, genre, price, categoryId, productImgUrl, isVisible
-                              FROM `product`
-                              WHERE isVisible=1 ";
-  $check = mysqli_query($db, $sql_statement);
+
+  if(isset($_GET['genres'])) 
+  {
+      $genres = $_GET['genres'];
+      $query = "SELECT *FROM `product`WHERE genre = '$genres'";
+      $search_result = filterTable($query, $db);
+  }
+  else
+  {
+      $query = "SELECT *FROM `product` WHERE isVisible=1 ";
+      $search_result = filterTable($query, $db);
+  }
+
+
+  function filterTable($query, $db)
+  {
+    $filter_result = mysqli_query($db,$query);
+    return $filter_result;
+  }
 
   $myarr=array();
 
-  while($row = mysqli_fetch_array($check)) {
+  while($row = mysqli_fetch_array($search_result)) {
     array_push($myarr, $row);
   }
+
 ?>
 
 
@@ -28,11 +45,11 @@
   $sql_statement = "SELECT genre
                               FROM `product`
                               WHERE isVisible=1 ";
-  $check = mysqli_query($db, $sql_statement);
+  $search_result = mysqli_query($db, $sql_statement);
 
   $genrecategory=array();
 
-  while($rows = mysqli_fetch_array($check)) {
+  while($rows = mysqli_fetch_array($search_result)) {
     array_push($genrecategory, $rows);
   }
 
@@ -188,9 +205,7 @@
                                           $genres = $genrecategory[$a]['genre'];
                                     
                                         ?>
-
                                         <a class="nav-link" href='product-list.php?genres=<?php echo $genres?>'> <i class="fa fa-search"></i><?php echo $genres?> </a>
-
                                         <?php
                                         }
                                         ?>
@@ -201,82 +216,6 @@
                           </div>
 
 
-
-                      <div class="sidebar-widget widget-slider">
-                          <div class="sidebar-slider normal-slider">
-                              <div class="product-item">
-                                  <div class="product-title">
-                                      <a href="#">Product Name</a>
-                                  </div>
-                                  <div class="product-image">
-                                      <a href="product-detail.php">
-                                          <img src="img/product-10.jpg" alt="Product Image">
-                                      </a>
-                                      <div class="product-action">
-                                          <a href="#"><i class="fa fa-cart-plus"></i></a>
-                                          <a href="#"><i class="fa fa-heart"></i></a>
-                                          <a href="#"><i class="fa fa-search"></i></a>
-                                      </div>
-                                  </div>
-                                  <div class="product-price">
-                                      <h3><span>$</span>99</h3>
-                                      <a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
-                                  </div>
-                              </div>
-                              <div class="product-item">
-                                  <div class="product-title">
-                                      <a href="#">Product Name</a>
-                                      <div class="ratting">
-                                          <i class="fa fa-star"></i>
-                                          <i class="fa fa-star"></i>
-                                          <i class="fa fa-star"></i>
-                                          <i class="fa fa-star"></i>
-                                          <i class="fa fa-star"></i>
-                                      </div>
-                                  </div>
-                                  <div class="product-image">
-                                      <a href="product-detail.php">
-                                          <img src="img/product-9.jpg" alt="Product Image">
-                                      </a>
-                                      <div class="product-action">
-                                          <a href="#"><i class="fa fa-cart-plus"></i></a>
-                                          <a href="#"><i class="fa fa-heart"></i></a>
-                                          <a href="#"><i class="fa fa-search"></i></a>
-                                      </div>
-                                  </div>
-                                  <div class="product-price">
-                                      <h3><span>$</span>99</h3>
-                                      <a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
-                                  </div>
-                              </div>
-                              <div class="product-item">
-                                  <div class="product-title">
-                                      <a href="#">Product Name</a>
-                                      <div class="ratting">
-                                          <i class="fa fa-star"></i>
-                                          <i class="fa fa-star"></i>
-                                          <i class="fa fa-star"></i>
-                                          <i class="fa fa-star"></i>
-                                          <i class="fa fa-star"></i>
-                                      </div>
-                                  </div>
-                                  <div class="product-image">
-                                      <a href="product-detail.php">
-                                          <img src="img/product-8.jpg" alt="Product Image">
-                                      </a>
-                                      <div class="product-action">
-                                          <a href="#"><i class="fa fa-cart-plus"></i></a>
-                                          <a href="#"><i class="fa fa-heart"></i></a>
-                                          <a href="#"><i class="fa fa-search"></i></a>
-                                      </div>
-                                  </div>
-                                  <div class="product-price">
-                                      <h3><span>$</span>99</h3>
-                                      <a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
 
                       <div class="sidebar-widget brands">
                           <h2 class="title">Our Brands</h2>
@@ -289,22 +228,6 @@
                               <li><a href="#">Sagittis</a><span>(28)</span></li>
                           </ul>
                       </div>
-
-                      <div class="sidebar-widget tag">
-                          <h2 class="title">Tags Cloud</h2>
-                          <a href="#">Lorem ipsum</a>
-                          <a href="#">Vivamus</a>
-                          <a href="#">Phasellus</a>
-                          <a href="#">pulvinar</a>
-                          <a href="#">Curabitur</a>
-                          <a href="#">Fusce</a>
-                          <a href="#">Sem quis</a>
-                          <a href="#">Mollis metus</a>
-                          <a href="#">Sit amet</a>
-                          <a href="#">Vel posuere</a>
-                          <a href="#">orci luctus</a>
-                          <a href="#">Nam lorem</a>
-                      </div>
                   </div>
                   <!-- Side Bar End -->
                     <div class="col-lg-8">
@@ -313,10 +236,10 @@
                                 <div class="product-view-top">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <div class="product-search">
+                                            <form class="product-search" action= 'product-list.php?search=' method="GET">
                                                 <input type="email" value="Search">
-                                                <button><i class="fa fa-search"></i></button>
-                                            </div>
+                                                <button href = href="product-list.php?genres=<?php echo $genres?>">> <i class="fa fa-search"></i></button>
+                                            </form>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="product-short">
