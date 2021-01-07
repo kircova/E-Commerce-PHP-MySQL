@@ -5,6 +5,12 @@
     require_once "config.php";
 ?>
 
+
+<?php
+// Initialize the session
+session_start();
+?>
+
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -74,9 +80,23 @@
                         </div>
 
                           <div class="navbar-nav ml-auto">
-                              <div class="nav-item dropdown">
-                                  <a href="login.php" class="nav-item nav-link">Login & Register</a>
-                              </div>
+                            <div class="nav-item dropdown">
+                                <?php
+                                    // Check if the user is logged in, if not then redirect him to login page
+                                      if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)
+                                      {
+                                        ?> 
+                                        <a href="login.php" class="nav-item nav-link"> Welcome back, <?php echo $_SESSION["name"]?>!</a>
+                                        <?php
+                                      }
+                                      else
+                                      {
+                                        ?> 
+                                        <a href="login.php" class="nav-item nav-link">Login & Register</a>
+                                        <?php
+                                      }  
+                                    ?>
+                            </div>
                           </div>
 
                     </div>
@@ -145,100 +165,16 @@
                                         <input class="form-control" type="text" placeholder="First Name">
                                     </div>
                                     <div class="col-md-6">
-                                        <label>Last Name"</label>
+                                        <label>Last Name</label>
                                         <input class="form-control" type="text" placeholder="Last Name">
                                     </div>
                                     <div class="col-md-6">
                                         <label>E-mail</label>
                                         <input class="form-control" type="text" placeholder="E-mail">
                                     </div>
-                                    <div class="col-md-6">
-                                        <label>Mobile No</label>
-                                        <input class="form-control" type="text" placeholder="Mobile No">
-                                    </div>
                                     <div class="col-md-12">
                                         <label>Address</label>
                                         <input class="form-control" type="text" placeholder="Address">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label>Country</label>
-                                        <select class="custom-select">
-                                            <option selected>United States</option>
-                                            <option>Afghanistan</option>
-                                            <option>Albania</option>
-                                            <option>Algeria</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label>City</label>
-                                        <input class="form-control" type="text" placeholder="City">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label>State</label>
-                                        <input class="form-control" type="text" placeholder="State">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label>ZIP Code</label>
-                                        <input class="form-control" type="text" placeholder="ZIP Code">
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="newaccount">
-                                            <label class="custom-control-label" for="newaccount">Create an account</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="shipto">
-                                            <label class="custom-control-label" for="shipto">Ship to different address</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="shipping-address">
-                                <h2>Shipping Address</h2>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>First Name</label>
-                                        <input class="form-control" type="text" placeholder="First Name">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label>Last Name"</label>
-                                        <input class="form-control" type="text" placeholder="Last Name">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label>E-mail</label>
-                                        <input class="form-control" type="text" placeholder="E-mail">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label>Mobile No</label>
-                                        <input class="form-control" type="text" placeholder="Mobile No">
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label>Address</label>
-                                        <input class="form-control" type="text" placeholder="Address">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label>Country</label>
-                                        <select class="custom-select">
-                                            <option selected>United States</option>
-                                            <option>Afghanistan</option>
-                                            <option>Albania</option>
-                                            <option>Algeria</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label>City</label>
-                                        <input class="form-control" type="text" placeholder="City">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label>State</label>
-                                        <input class="form-control" type="text" placeholder="State">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label>ZIP Code</label>
-                                        <input class="form-control" type="text" placeholder="ZIP Code">
                                     </div>
                                 </div>
                             </div>

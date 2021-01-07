@@ -5,6 +5,60 @@
     require_once "config.php";
 ?>
 
+
+<?php
+// Initialize the session
+session_start();
+?>
+
+
+<?php
+
+   function filterTable($query, $db)
+  {
+    $filter_result = mysqli_query($db,$query);
+    return $filter_result;
+  }
+
+?>
+
+
+
+
+
+
+<?php
+// Check if the user is logged in, if not then redirect him to login page
+   $cart_err = "";
+  if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)
+  { 
+         $userid = $_SESSION["pid"];
+          $sql_statement = "SELECT product.prid, product.productImgUrl,product.pname, cartdetails.price, cartdetails.quantity
+                                    FROM `cart`, `cartdetails`, `product`
+                                    WHERE '$userid' = cart.pid && cart.cid = cartdetails.cid && product.prid = cartdetails.prid
+                                    GROUP BY cartdetails.prid";
+          $search_result = mysqli_query($db, $sql_statement);
+
+          $usercart= array();
+          while($rows = mysqli_fetch_array($search_result)) {
+            array_push($usercart, $rows);
+          }
+
+            if(count($usercart) == 0)
+            {
+                $cart_err = "Your cart is empty";
+            }
+  }
+  else if(isset($_SESSION["cart"]) && count($_SESSION["cart"]) != 0)
+  {
+
+  }
+  else
+  {
+     $cart_err = "Your cart is empty";
+  }
+?>
+
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -73,11 +127,23 @@
                             </div>
                         </div>
                         <div class="navbar-nav ml-auto">
-
-                              <div class="nav-item dropdown">
-                                  <a href="login.php" class="nav-item nav-link">Login & Register</a>
-                              </div>
-
+                                 <div class="nav-item dropdown">
+                                <?php
+                                    // Check if the user is logged in, if not then redirect him to login page
+                                      if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)
+                                      {
+                                        ?> 
+                                        <a href="login.php" class="nav-item nav-link"> Welcome back, <?php echo $_SESSION["name"]?>!</a>
+                                        <?php
+                                      }
+                                      else
+                                      {
+                                        ?> 
+                                        <a href="login.php" class="nav-item nav-link">Login & Register</a>
+                                        <?php
+                                      }  
+                                    ?>
+                            </div>
                         </div>
                     </div>
                 </nav>
@@ -140,6 +206,12 @@
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead class="thead-dark">
+                                    <?php
+                                    if($cart_err == '')
+                                    {
+
+                                        
+                                        ?>
                                         <tr>
                                             <th>Product</th>
                                             <th>Price</th>
@@ -148,97 +220,45 @@
                                             <th>Remove</th>
                                         </tr>
                                     </thead>
+
                                     <tbody class="align-middle">
-                                        <tr>
-                                            <td>
-                                                <div class="img">
-                                                    <a href="#"><img src="img/product-1.jpg" alt="Image"></a>
-                                                    <p>Product Name</p>
-                                                </div>
-                                            </td>
-                                            <td>$99</td>
-                                            <td>
-                                                <div class="qty">
-                                                    <button class="btn-minus"><i class="fa fa-minus"></i></button>
-                                                    <input type="text" value="1">
-                                                    <button class="btn-plus"><i class="fa fa-plus"></i></button>
-                                                </div>
-                                            </td>
-                                            <td>$99</td>
-                                            <td><button><i class="fa fa-trash"></i></button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="img">
-                                                    <a href="#"><img src="img/product-2.jpg" alt="Image"></a>
-                                                    <p>Product Name</p>
-                                                </div>
-                                            </td>
-                                            <td>$99</td>
-                                            <td>
-                                                <div class="qty">
-                                                    <button class="btn-minus"><i class="fa fa-minus"></i></button>
-                                                    <input type="text" value="1">
-                                                    <button class="btn-plus"><i class="fa fa-plus"></i></button>
-                                                </div>
-                                            </td>
-                                            <td>$99</td>
-                                            <td><button><i class="fa fa-trash"></i></button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="img">
-                                                    <a href="#"><img src="img/product-3.jpg" alt="Image"></a>
-                                                    <p>Product Name</p>
-                                                </div>
-                                            </td>
-                                            <td>$99</td>
-                                            <td>
-                                                <div class="qty">
-                                                    <button class="btn-minus"><i class="fa fa-minus"></i></button>
-                                                    <input type="text" value="1">
-                                                    <button class="btn-plus"><i class="fa fa-plus"></i></button>
-                                                </div>
-                                            </td>
-                                            <td>$99</td>
-                                            <td><button><i class="fa fa-trash"></i></button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="img">
-                                                    <a href="#"><img src="img/product-4.jpg" alt="Image"></a>
-                                                    <p>Product Name</p>
-                                                </div>
-                                            </td>
-                                            <td>$99</td>
-                                            <td>
-                                                <div class="qty">
-                                                    <button class="btn-minus"><i class="fa fa-minus"></i></button>
-                                                    <input type="text" value="1">
-                                                    <button class="btn-plus"><i class="fa fa-plus"></i></button>
-                                                </div>
-                                            </td>
-                                            <td>$99</td>
-                                            <td><button><i class="fa fa-trash"></i></button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="img">
-                                                    <a href="#"><img src="img/product-5.jpg" alt="Image"></a>
-                                                    <p>Product Name</p>
-                                                </div>
-                                            </td>
-                                            <td>$99</td>
-                                            <td>
-                                                <div class="qty">
-                                                    <button class="btn-minus"><i class="fa fa-minus"></i></button>
-                                                    <input type="text" value="1">
-                                                    <button class="btn-plus"><i class="fa fa-plus"></i></button>
-                                                </div>
-                                            </td>
-                                            <td>$99</td>
-                                            <td><button><i class="fa fa-trash"></i></button></td>
-                                        </tr>
+                                        <?php
+                                                $rowcount = count($usercart);
+                                                for($a=0;$a< $rowcount;$a++)
+                                                {
+                                                  $productname = $usercart[$a]['pname'];
+                                                  $price = $usercart[$a]['price'];
+                                                  $productimg = $usercart[$a]['productImgUrl']; 
+                                                  $quantity = $usercart[$a]['quantity']; 
+                                                  $prid = $usercart[$a]['prid']; 
+                                                  ?>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="img">
+                                                                <a href='product-detail.php?id=<?php echo $prid?>'><img src="<?php echo $productimg?>" alt="Image"></a>
+                                                                <a href='product-detail.php?id=<?php echo $prid?>' ><?php echo $productname?></a>
+                                                            </div>
+                                                        </td>
+                                                        <td><?php echo $price?><span>₺</span></td>
+                                                        <td>
+                                                            <div class="qty">
+                                                                <button class="btn-minus"><i class="fa fa-minus"></i></button>
+                                                                <input type="text" value= <?php echo $quantity?>>
+                                                                <button class="btn-plus"><i class="fa fa-plus"></i></button>
+                                                            </div>
+                                                        </td>
+                                                        <td><?php echo  number_format((float)($quantity * $price), 2, '.', '') ?><span>₺</span></td>
+                                                        <td><button><i class="fa fa-trash"></i></button></td>
+                                                    </tr>
+                                                  <?php
+                                                }
+                                            }
+                                            else
+                                            {
+                                                 ?>  <span class = "help-block">  Your cart is empty </span> <?php
+                                            }
+                                        ?>
+
                                     </tbody>
                                 </table>
                             </div>
@@ -247,12 +267,6 @@
                     <div class="col-lg-4">
                         <div class="cart-page-inner">
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div class="coupon">
-                                        <input type="text" placeholder="Coupon Code">
-                                        <button>Apply Code</button>
-                                    </div>
-                                </div>
                                 <div class="col-md-12">
                                     <div class="cart-summary">
                                         <div class="cart-content">

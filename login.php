@@ -35,7 +35,7 @@ if(isset($_POST['login-user'])) {
 
     // Email validation
     if(empty($_POST["email_login"])) {
-      $login_email = "Please enter an e-mail.";
+      $login_email_err = "Please enter an e-mail.";
     }
     else {
       $login_email = test_input($_POST["email_login"]);
@@ -51,7 +51,7 @@ if(isset($_POST['login-user'])) {
 
     if(empty($login_email_err) && empty($login_password_err)){
 
-       $sql_statement = "SELECT pid, email, pass FROM person WHERE email = ?";
+       $sql_statement = "SELECT pid, email, pass, name FROM person WHERE email = ?";
        if($stmt = mysqli_prepare($db, $sql_statement)){
             // Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "s", $param_login_email);
@@ -64,15 +64,14 @@ if(isset($_POST['login-user'])) {
                // Check if username exists, if yes then verify password
                if(mysqli_stmt_num_rows($stmt) == 1){
                   // Bind result variables
-                  mysqli_stmt_bind_result($stmt, $id, $login_email, $retrieved_pass);
+                  mysqli_stmt_bind_result($stmt, $id, $login_email, $retrieved_pass, $retrieved_name);
                   if(mysqli_stmt_fetch($stmt)) {
                     if($login_password == $retrieved_pass) {
                         // Password is correct, so start a new session
-                        session_start();
-
                         // Store data in session variables
                         $_SESSION["loggedin"] = true;
                         $_SESSION["pid"] = $id;
+                        $_SESSION["name"] = $retrieved_name;
                         $_SESSION["email"] = $login_email;
 
                         // Redirect user to welcome page
@@ -82,8 +81,7 @@ if(isset($_POST['login-user'])) {
                         $login_password_err = "The password you entered was not valid.";
                     }
                   }
-
-              }
+                }
               else{
                     // Display an error message if mail doesn't exist
                     $login_email_err = "No account found with that mail.";
@@ -163,12 +161,12 @@ if(isset($_POST['login-user'])) {
               $param_password = $password; // raw form
 
               if(mysqli_stmt_execute($stmt)){
-                session_start();
 
                 // Store data in session variables
                 $_SESSION["loggedin"] = true;
                 $_SESSION["pid"] = $id;
                 $_SESSION["email"] = $param_email;
+                $_SESSION["name"] = $param_name;
 
                 // Redirect user to welcome page
                 header("location: index.php");
@@ -264,8 +262,22 @@ function test_input($data) {
                             </div>
                         </div>
                         <div class="navbar-nav ml-auto">
-                            <div class="nav-item dropdown">
-                                <a href="login.php" class="nav-item nav-link">Login & Register</a>
+                               <div class="nav-item dropdown">
+                                <?php
+                                    // Check if the user is logged in, if not then redirect him to login page
+                                      if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)
+                                      {
+                                        ?> 
+                                        <a href="login.php" class="nav-item nav-link"> Welcome back, <?php echo $_SESSION["name"]?>!</a>
+                                        <?php
+                                      }
+                                      else
+                                      {
+                                        ?> 
+                                        <a href="login.php" class="nav-item nav-link">Login & Register</a>
+                                        <?php
+                                      }  
+                                    ?>
                             </div>
                         </div>
                     </div>

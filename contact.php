@@ -5,6 +5,11 @@
     require_once "config.php";
 ?>
 
+<?php
+// Initialize the session
+session_start();
+?>
+
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -73,10 +78,22 @@
                             </div>
                         </div>
                         <div class="navbar-nav ml-auto">
-                            <div class="navbar-nav ml-auto">
-                                <div class="nav-item dropdown">
-                                    <a href="login.php" class="nav-item nav-link">Login & Register</a>
-                                </div>
+                            <div class="nav-item dropdown">
+                                <?php
+                                    // Check if the user is logged in, if not then redirect him to login page
+                                      if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)
+                                      {
+                                        ?> 
+                                        <a href="login.php" class="nav-item nav-link"> Welcome back, <?php echo $_SESSION["name"]?>!</a>
+                                        <?php
+                                      }
+                                      else
+                                      {
+                                        ?> 
+                                        <a href="login.php" class="nav-item nav-link">Login & Register</a>
+                                        <?php
+                                      }  
+                                    ?>
                             </div>
                         </div>
                     </div>
