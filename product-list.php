@@ -18,9 +18,11 @@
   else if(isset($_GET["product_search"])) 
   {
     $query = $_GET["product_search"];
-    $sql_statement = "SELECT prid, pname, artist, genre, price, categoryId, productImgUrl, isVisible
-                              FROM `product`
-                              WHERE isVisible=1 AND (pname LIKE '%$query%') OR (artist LIKE '%$query%')";
+    $sql_statement = "SELECT *
+                            FROM product, songs
+                            WHERE isVisible=1 AND 
+                          (product.pname LIKE '%$query%') OR (product.artist LIKE '%$query%')  OR (product.description LIKE '%$query%')  OR ( songs.songname LIKE '%$query%') AND product.prid = songs.prid
+                          GROUP BY product.prid";
     $search_result = filterTable($sql_statement, $db);
   }
   else if(isset($_GET["lowtohigh"])) 
@@ -106,6 +108,7 @@
   while($row = mysqli_fetch_array($search_result)) {
     array_push($myarr, $row);
   }
+  $myarr = array_unique($myarr, SORT_REGULAR);
 
 ?>
 

@@ -52,10 +52,23 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
       while($row = mysqli_fetch_array($check)) {
         array_push($songs_arr, $row);
       }
-
-
   }
 }
+?>
+
+<?php
+  $sql_statement = "SELECT genre
+                              FROM `product`
+                              WHERE isVisible=1 ";
+  $search_result = mysqli_query($db, $sql_statement);
+
+  $genrecategory= array();
+
+  while($rows = mysqli_fetch_array($search_result)) {
+    array_push($genrecategory, $rows);
+  }
+    $genrecategory = array_unique($genrecategory, SORT_REGULAR);
+    $row_number_genre=count($genrecategory);
 ?>
 
 <html lang="en">
@@ -201,7 +214,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                     <div class="product-content">
                                         <div class="title"><h1><?php echo $pname?></h1></div>
                                         <div class="title"><h2><?php echo $artist?></h2></div>
-                                        <div class="title"><h3><?php echo $genre?></h3></div>
+                                        <div class="title"><h3><?php echo ucwords(strtolower($genre))?></h3></div>
                                         <div class="price">
                                             <h4>Price:</h4>
                                             <p><?php echo $price?>₺</p>
@@ -311,20 +324,17 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                             <h2 class="title">Category</h2>
                             <nav class="navbar bg-light">
                                 <ul class="navbar-nav">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#"><i class="fa fa-female"></i>Fashion & Beauty</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#"><i class="fa fa-child"></i>Kids & Babies Clothes</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#"><i class="fa fa-tshirt"></i>Men & Women Clothes</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#"><i class="fa fa-mobile-alt"></i>Gadgets & Accessories</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#"><i class="fa fa-microchip"></i>Electronics & Accessories</a>
+                                    <li class="nav-item">   
+                                        <?php
+                                          for($a=0;$a<$row_number_genre - 1;$a++)
+                                          {
+                                           $genres = $genrecategory[$a]['genre'];
+                                                        
+                                             ?>
+                                             <a class="nav-link" href='product-list.php?genres=<?php echo $genres?>'> <i class="fa fa-music"></i><?php echo ucwords(strtolower($genres))?> </a>
+                                            <?php
+                                            }
+                                          ?>
                                     </li>
                                 </ul>
                             </nav>
