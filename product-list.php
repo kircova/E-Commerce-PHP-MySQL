@@ -23,6 +23,72 @@
                               WHERE isVisible=1 AND (pname LIKE '%$query%') OR (artist LIKE '%$query%')";
     $search_result = filterTable($sql_statement, $db);
   }
+  else if(isset($_GET["lowtohigh"])) 
+  {
+    $query = $_GET["lowtohigh"];
+    $sql_statement = "SELECT * FROM `product` 
+                                    WHERE 1
+                                    ORDER BY price";
+    $search_result = filterTable($sql_statement, $db);
+  }
+  else if(isset($_GET["hightolow"])) 
+  {
+    $query = $_GET["hightolow"];
+    $sql_statement = "SELECT * FROM `product` 
+                                    WHERE 1
+                                    ORDER BY price DESC";
+    $search_result = filterTable($sql_statement, $db);
+  }
+  else if(isset($_GET["alphabetical"])) 
+  {
+    $query = $_GET["alphabetical"];
+    $sql_statement = "SELECT * FROM `product` 
+                                    WHERE 1
+                                    ORDER BY pname";
+    $search_result = filterTable($sql_statement, $db);
+  }
+  else if(isset($_GET["mostsale"])) 
+  {
+    $query = $_GET["mostsale"];
+    $sql_statement = "SELECT * 
+                          FROM product, order_table, orderdetails
+                            WHERE product.prid = orderdetails.prid AND order_table.oid = orderdetails.oid
+                              GROUP BY product.prid
+                                  ORDER BY orderdetails.quantity DESC";
+    $search_result = filterTable($sql_statement, $db);
+  }
+  else if(isset($_GET["0to100"])) 
+  {
+    $query = $_GET["0to100"];
+    $sql_statement = "SELECT * 
+                        FROM product
+                        WHERE product.price >= 0 AND 100>= product.price";
+    $search_result = filterTable($sql_statement, $db);
+  }
+  else if(isset($_GET["101to200"])) 
+  {
+    $query = $_GET["101to200"];
+    $sql_statement = "SELECT * 
+                        FROM product
+                        WHERE product.price >= 101 AND 200>= product.price";
+    $search_result = filterTable($sql_statement, $db);
+  }
+  else if(isset($_GET["201to300"])) 
+  {
+    $query = $_GET["201to300"];
+    $sql_statement = "SELECT * 
+                        FROM product
+                        WHERE product.price >= 201 AND 300>= product.price";
+    $search_result = filterTable($sql_statement, $db);
+  }
+  else if(isset($_GET["301to"])) 
+  {
+    $query = $_GET["301to"];
+    $sql_statement = "SELECT * 
+                        FROM product
+                        WHERE product.price >= 301";
+    $search_result = filterTable($sql_statement, $db);
+  }
   else
   {
       $query = "SELECT *FROM `product` WHERE isVisible=1";
@@ -148,10 +214,10 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="search">
-                            <input type="text" placeholder="Search">
+                        <form class="search" action="product-list.php" method="GET">
+                            <input type="text" placeholder="Search" name="product_search">
                             <button><i class="fa fa-search"></i></button>
-                        </div>
+                        </form>
                     </div>
                     <div class="col-md-3">
                         <div class="user">
@@ -231,7 +297,7 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <form class="product-search" action="product-list.php" method="GET">
-                                                <input type="text" name="product_search">
+                                                <input type="text" placeholder="Search in Products" name="product_search">
                                                 <button><i class="fa fa-search"></i></button>
                                             </form>
                                         </div>
@@ -240,10 +306,10 @@
                                                 <div class="dropdown">
                                                     <div class="dropdown-toggle" data-toggle="dropdown">Product sort by</div>
                                                     <div class="dropdown-menu dropdown-menu-right">
-                                                        <a href="#" class="dropdown-item">Lowest Price</a>
-                                                        <a href="#" class="dropdown-item">Highest Price</a>
-                                                        <a href="#" class="dropdown-item">Alphabetical</a>
-                                                        <a href="#" class="dropdown-item">Most sale</a>
+                                                        <a href='product-list.php?lowtohigh' class="dropdown-item">Lowest Price</a>
+                                                        <a href='product-list.php?hightolow' class="dropdown-item">Highest Price</a>
+                                                        <a href='product-list.php?alphabetical' class="dropdown-item">Alphabetical</a>
+                                                        <a href='product-list.php?mostsale' class="dropdown-item">Most sale</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -253,10 +319,10 @@
                                                 <div class="dropdown">
                                                     <div class="dropdown-toggle" data-toggle="dropdown">Product price range</div>
                                                     <div class="dropdown-menu dropdown-menu-right">
-                                                        <a href="#" class="dropdown-item">0₺ to 100₺</a>
-                                                        <a href="#" class="dropdown-item">101₺ to 200₺</a>
-                                                        <a href="#" class="dropdown-item">201₺ to 300₺</a>
-                                                        <a href="#" class="dropdown-item">301₺ or higher</a>
+                                                        <a href='product-list.php?0to100'class="dropdown-item">0₺ to 100₺</a>
+                                                        <a href='product-list.php?101to200' class="dropdown-item">101₺ to 200₺</a>
+                                                        <a href='product-list.php?201to300' class="dropdown-item">201₺ to 300₺</a>
+                                                        <a href='product-list.php?301to' class="dropdown-item">301₺ or higher</a>
                                                     </div>
                                                 </div>
                                             </div>

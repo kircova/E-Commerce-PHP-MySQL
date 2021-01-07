@@ -97,10 +97,10 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="search">
-                            <input type="text" placeholder="Search">
+                        <form class="search" action="product-list.php" method="GET">
+                            <input type="text" placeholder="Search" name="product_search">
                             <button><i class="fa fa-search"></i></button>
-                        </div>
+                        </form>
                     </div>
                     <div class="col-md-3">
                         <div class="user">
