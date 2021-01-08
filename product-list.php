@@ -14,84 +14,84 @@ session_start();
 <?php
   $search_err = '';
 
-  if(isset($_GET['genres'])) 
+  if(isset($_GET['genres']))
   {
       $genres = $_GET['genres'];
       $query = "SELECT *FROM `product`WHERE genre = '$genres'";
       $search_result = filterTable($query, $db);
   }
-  else if(isset($_GET["product_search"])) 
+  else if(isset($_GET["product_search"]))
   {
     $query = $_GET["product_search"];
     $sql_statement = "SELECT *
                             FROM product, songs
-                            WHERE isVisible=1 AND 
+                            WHERE isVisible=1 AND
                           (product.pname LIKE '%$query%') OR (product.artist LIKE '%$query%')  OR (product.description LIKE '%$query%')  OR ( songs.songname LIKE '%$query%') AND product.prid = songs.prid
                           GROUP BY product.prid";
     $search_result = filterTable($sql_statement, $db);
   }
-  else if(isset($_GET["lowtohigh"])) 
+  else if(isset($_GET["lowtohigh"]))
   {
     $query = $_GET["lowtohigh"];
-    $sql_statement = "SELECT * FROM `product` 
+    $sql_statement = "SELECT * FROM `product`
                                     WHERE 1
                                     ORDER BY price";
     $search_result = filterTable($sql_statement, $db);
   }
-  else if(isset($_GET["hightolow"])) 
+  else if(isset($_GET["hightolow"]))
   {
     $query = $_GET["hightolow"];
-    $sql_statement = "SELECT * FROM `product` 
+    $sql_statement = "SELECT * FROM `product`
                                     WHERE 1
                                     ORDER BY price DESC";
     $search_result = filterTable($sql_statement, $db);
   }
-  else if(isset($_GET["alphabetical"])) 
+  else if(isset($_GET["alphabetical"]))
   {
     $query = $_GET["alphabetical"];
-    $sql_statement = "SELECT * FROM `product` 
+    $sql_statement = "SELECT * FROM `product`
                                     WHERE 1
                                     ORDER BY pname";
     $search_result = filterTable($sql_statement, $db);
   }
-  else if(isset($_GET["mostsale"])) 
+  else if(isset($_GET["mostsale"]))
   {
     $query = $_GET["mostsale"];
-    $sql_statement = "SELECT * 
+    $sql_statement = "SELECT *
                           FROM product, order_table, orderdetails
                             WHERE product.prid = orderdetails.prid AND order_table.oid = orderdetails.oid
                               GROUP BY product.prid
                                   ORDER BY orderdetails.quantity DESC";
     $search_result = filterTable($sql_statement, $db);
   }
-  else if(isset($_GET["0to100"])) 
+  else if(isset($_GET["0to100"]))
   {
     $query = $_GET["0to100"];
-    $sql_statement = "SELECT * 
+    $sql_statement = "SELECT *
                         FROM product
                         WHERE product.price >= 0 AND 100>= product.price";
     $search_result = filterTable($sql_statement, $db);
   }
-  else if(isset($_GET["101to200"])) 
+  else if(isset($_GET["101to200"]))
   {
     $query = $_GET["101to200"];
-    $sql_statement = "SELECT * 
+    $sql_statement = "SELECT *
                         FROM product
                         WHERE product.price >= 101 AND 200>= product.price";
     $search_result = filterTable($sql_statement, $db);
   }
-  else if(isset($_GET["201to300"])) 
+  else if(isset($_GET["201to300"]))
   {
     $query = $_GET["201to300"];
-    $sql_statement = "SELECT * 
+    $sql_statement = "SELECT *
                         FROM product
                         WHERE product.price >= 201 AND 300>= product.price";
     $search_result = filterTable($sql_statement, $db);
   }
-  else if(isset($_GET["301to"])) 
+  else if(isset($_GET["301to"]))
   {
     $query = $_GET["301to"];
-    $sql_statement = "SELECT * 
+    $sql_statement = "SELECT *
                         FROM product
                         WHERE product.price >= 301";
     $search_result = filterTable($sql_statement, $db);
@@ -157,106 +157,11 @@ session_start();
     </head>
 
     <body>
-        <!-- Top bar Start -->
-        <div class="top-bar">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <i class="fa fa-envelope"></i>
-                        support@email.com
-                    </div>
-                    <div class="col-sm-6">
-                        <i class="fa fa-phone-alt"></i>
-                        +012-345-6789
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Top bar End -->
+        <?php include "top-bar.php";?>
 
-        <!-- Nav Bar Start -->
-        <div class="nav">
-            <div class="container-fluid">
-                <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-                    <a href="#" class="navbar-brand">MENU</a>
-                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+        <?php include "nav-bar.php";?>
 
-                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                        <div class="navbar-nav mr-auto">
-                            <a href="index.php" class="nav-item nav-link">Home</a>
-                            <a href="product-list.php" class="nav-item nav-link active">Products</a>
-                            <a href="cart.php" class="nav-item nav-link">Cart</a>
-                            <a href="checkout.php" class="nav-item nav-link">Checkout</a>
-                            <a href="my-account.php" class="nav-item nav-link">My Account</a>
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">More Pages</a>
-                                <div class="dropdown-menu">
-                                    <a href="wishlist.php" class="dropdown-item">Wishlist</a>
-                                    <a href="login.php" class="dropdown-item">Login & Register</a>
-                                    <a href="contact.php" class="dropdown-item">Contact Us</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="navbar-nav ml-auto">
-                            <div class="nav-item dropdown">
-                                <?php
-                                    // Check if the user is logged in, if not then redirect him to login page
-                                      if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)
-                                      {
-                                        ?> 
-                                        <a href="login.php" class="nav-item nav-link"> Welcome back, <?php echo $_SESSION["name"]?>!</a>
-                                        <?php
-                                      }
-                                      else
-                                      {
-                                        ?> 
-                                        <a href="login.php" class="nav-item nav-link">Login & Register</a>
-                                        <?php
-                                      }  
-                                    ?>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </div>
-        <!-- Nav Bar End -->
-
-        <!-- Bottom Bar Start -->
-        <div class="bottom-bar">
-            <div class="container-fluid">
-                <div class="row align-items-center">
-                    <div class="col-md-3">
-                        <div class="logo">
-                            <a href="index.php">
-                                <img src="img/logo - Copy.png" alt="Logo">
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <form class="search" action="product-list.php" method="GET">
-                            <input type="text" placeholder="Search" name="product_search">
-                            <button><i class="fa fa-search"></i></button>
-                        </form>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="user">
-                            <a href="wishlist.php" class="btn wishlist">
-                                <i class="fa fa-heart"></i>
-                                <span>(0)</span>
-                            </a>
-                            <a href="cart.php" class="btn cart">
-                                <i class="fa fa-shopping-cart"></i>
-                                <span>(0)</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Bottom Bar End -->
+        <?php include "bottom-bar.php"?>
 
         <!-- Breadcrumb Start -->
         <div class="breadcrumb-wrap">
@@ -285,7 +190,7 @@ session_start();
                                         for($a=0;$a<$row_number_genre - 1;$a++)
                                         {
                                           $genres = $genrecategory[$a]['genre'];
-                                    
+
                                         ?>
                                         <a class="nav-link" href='product-list.php?genres=<?php echo $genres?>'> <i class="fa fa-music"></i><?php echo ucwords(strtolower($genres))?> </a>
                                         <?php
@@ -360,7 +265,7 @@ session_start();
                                         <div class="col-md-4">
                                           <span class="text"> No Products are found!</span>
                                         </div>
-                                    <?php 
+                                    <?php
                                   }
                               ?>
 
@@ -379,7 +284,7 @@ session_start();
                                $productImgUrl = $myarr[$i]['productImgUrl'];
 
                               ?>
-     
+
                               <div class="col-md-4">
 
                                   <div class="product-item">

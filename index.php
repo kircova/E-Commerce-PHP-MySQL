@@ -36,7 +36,7 @@ session_start();
 ?>
 
 <?php
-    
+
   $sql_statement = "SELECT *
                     FROM `product`
                     WHERE isVisible=1 AND (prid = 11 OR prid = 16 OR prid = 14 OR prid = 13 OR prid =15 OR prid = 12)";
@@ -52,7 +52,7 @@ session_start();
 ?>
 
 <?php
-  $sql_statement = "SELECT * 
+  $sql_statement = "SELECT *
                         FROM product, order_table, orderdetails
                         WHERE product.prid = orderdetails.prid AND orderdetails.oid = order_table.oid
                         GROUP BY product.prid
@@ -110,106 +110,11 @@ session_start();
     </head>
 
     <body>
-        <!-- Top bar Start -->
-        <div class="top-bar">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <i class="fa fa-envelope"></i>
-                        support@email.com
-                    </div>
-                    <div class="col-sm-6">
-                        <i class="fa fa-phone-alt"></i>
-                        +012-345-6789
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Top bar End -->
+        <?php include "top-bar.php";?>
 
-        <!-- Nav Bar Start -->
-        <div class="nav">
-            <div class="container-fluid">
-                <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-                    <a href="#" class="navbar-brand">MENU</a>
-                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+        <?php include "nav-bar.php";?>
 
-                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                        <div class="navbar-nav mr-auto">
-                            <a href="index.php" class="nav-item nav-link active">Home</a>
-                            <a href="product-list.php" class="nav-item nav-link">Products</a>
-                            <a href="cart.php" class="nav-item nav-link">Cart</a>
-                            <a href="checkout.php" class="nav-item nav-link">Checkout</a>
-                            <a href="my-account.php" class="nav-item nav-link">My Account</a>
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">More Pages</a>
-                                <div class="dropdown-menu">
-                                    <a href="wishlist.php" class="dropdown-item">Wishlist</a>
-                                    <a href="login.php" class="dropdown-item">Login & Register</a>
-                                    <a href="contact.php" class="dropdown-item">Contact Us</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="navbar-nav ml-auto">
-                            <div class="nav-item dropdown">
-                                <?php
-                                    // Check if the user is logged in, if not then redirect him to login page
-                                      if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)
-                                      {
-                                        ?> 
-                                        <a href="login.php" class="nav-item nav-link"> Welcome back, <?php echo $_SESSION["name"]?>!</a>
-                                        <?php
-                                      }
-                                      else
-                                      {
-                                        ?> 
-                                        <a href="login.php" class="nav-item nav-link">Login & Register</a>
-                                        <?php
-                                      }  
-                                    ?>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </div>
-        <!-- Nav Bar End -->
-
-        <!-- Bottom Bar Start -->
-        <div class="bottom-bar">
-            <div class="container-fluid">
-                <div class="row align-items-center">
-                    <div class="col-md-3">
-                        <div class="logo">
-                            <a href="index.php">
-                                <img src="img/logo - Copy.png" alt="Logo">
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <form class="search" action="product-list.php" method="GET">
-                            <input type="text" placeholder="Search" name="product_search">
-                            <button><i class="fa fa-search"></i></button>
-                        </form>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="user">
-                            <a href="wishlist.php" class="btn wishlist">
-                                <i class="fa fa-heart"></i>
-                                <span>(0)</span>
-                            </a>
-                            <a href="cart.php" class="btn cart">
-                                <i class="fa fa-shopping-cart"></i>
-                                <span>(0)</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Bottom Bar End -->
+        <?php include "bottom-bar.php"?>
 
         <!-- Main Slider Start -->
         <div class="header">
@@ -225,7 +130,7 @@ session_start();
                                     for($a=0;$a<$row_number_genre - 1;$a++)
                                     {
                                         $genres = $genrecategory[$a]['genre'];
-                                    
+
                                     ?>
                                 <li class="nav-item">
                                     <a class="nav-link" href='product-list.php?genres=<?php echo $genres?>'> <i class="fa fa-music"></i><?php echo ucwords(strtolower($genres)) ?></a>
@@ -243,7 +148,7 @@ session_start();
                                 for($j=0;$j<$row_number_image;$j++)
                                 {
                                     $productImgUrl = $image_url_arr[$j]['productImgUrl'];
-                            ?>                            
+                            ?>
                                 <div class="header-slider-item">
                                     <div class = "header-image">
                                         <img src="<?php echo $productImgUrl ?>" alt="Product Image">
@@ -362,7 +267,7 @@ session_start();
                 </div>
             </div>
         </div>
-        <!-- Call to Action End -->  
+        <!-- Call to Action End -->
         <!-- Featured Product Start -->
         <div class="featured-product product">
             <div class="container-fluid">
