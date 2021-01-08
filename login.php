@@ -51,7 +51,7 @@ if(isset($_POST['login-user'])) {
 
     if(empty($login_email_err) && empty($login_password_err)){
 
-       $sql_statement = "SELECT pid, email, pass, name FROM person WHERE email = ?";
+       $sql_statement = "SELECT pid, email, pass, name, usertype FROM person WHERE email = ?";
        if($stmt = mysqli_prepare($db, $sql_statement)){
             // Bind variables to the prepared statement as parameters
             mysqli_stmt_bind_param($stmt, "s", $param_login_email);
@@ -64,7 +64,7 @@ if(isset($_POST['login-user'])) {
                // Check if username exists, if yes then verify password
                if(mysqli_stmt_num_rows($stmt) == 1){
                   // Bind result variables
-                  mysqli_stmt_bind_result($stmt, $id, $login_email, $retrieved_pass, $retrieved_name);
+                  mysqli_stmt_bind_result($stmt, $id, $login_email, $retrieved_pass, $retrieved_name, $user_type);
                   if(mysqli_stmt_fetch($stmt)) {
                     if($login_password == $retrieved_pass) {
                         // Password is correct, so start a new session
@@ -73,9 +73,23 @@ if(isset($_POST['login-user'])) {
                         $_SESSION["pid"] = $id;
                         $_SESSION["name"] = $retrieved_name;
                         $_SESSION["email"] = $login_email;
+                        $_SESSION["user_type"] = $user_type;
 
-                        // Redirect user to welcome page
-                        header("location: index.php");
+                        // Redirect user to welcome page or admin to admin page
+
+                        if($_SESSION["user_type"] == 0)
+                        {
+                          header("location: index.php");
+                        }
+                        elseif($_SESSION["user_type"] == 1)
+                        {
+                          header("location: product-admin.php");
+                        }
+                        elseif($_SESSION["user_type"] == 2)
+                        {
+                          header("location: sales-admin.php");
+                        }
+
                     } else{
                         // Display an error message if password is not valid
                         $login_password_err = "The password you entered was not valid.";
