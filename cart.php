@@ -25,13 +25,11 @@ session_start();
 
 
 
-
-
 <?php
 // Check if the user is logged in, if not then redirect him to login page
    $cart_err = "";
   if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)
-  { 
+  {
          $userid = $_SESSION["pid"];
           $sql_statement = "SELECT product.prid, product.productImgUrl,product.pname, cartdetails.price, cartdetails.quantity
                                     FROM `cart`, `cartdetails`, `product`
@@ -132,16 +130,16 @@ session_start();
                                     // Check if the user is logged in, if not then redirect him to login page
                                       if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)
                                       {
-                                        ?> 
+                                        ?>
                                         <a href="login.php" class="nav-item nav-link"> Welcome back, <?php echo $_SESSION["name"]?>!</a>
                                         <?php
                                       }
                                       else
                                       {
-                                        ?> 
+                                        ?>
                                         <a href="login.php" class="nav-item nav-link">Login & Register</a>
                                         <?php
-                                      }  
+                                      }
                                     ?>
                             </div>
                         </div>
@@ -207,10 +205,11 @@ session_start();
                                 <table class="table table-bordered">
                                     <thead class="thead-dark">
                                     <?php
+                                    $sub_price = 0;
                                     if($cart_err == '')
                                     {
 
-                                        
+
                                         ?>
                                         <tr>
                                             <th>Product</th>
@@ -228,9 +227,9 @@ session_start();
                                                 {
                                                   $productname = $usercart[$a]['pname'];
                                                   $price = $usercart[$a]['price'];
-                                                  $productimg = $usercart[$a]['productImgUrl']; 
-                                                  $quantity = $usercart[$a]['quantity']; 
-                                                  $prid = $usercart[$a]['prid']; 
+                                                  $productimg = $usercart[$a]['productImgUrl'];
+                                                  $quantity = $usercart[$a]['quantity'];
+                                                  $prid = $usercart[$a]['prid'];
                                                   ?>
                                                     <tr>
                                                         <td>
@@ -247,7 +246,7 @@ session_start();
                                                                 <button class="btn-plus"><i class="fa fa-plus"></i></button>
                                                             </div>
                                                         </td>
-                                                        <td><?php echo  number_format((float)($quantity * $price), 2, '.', '') ?><span>₺</span></td>
+                                                        <td><?php $sub_price+=($quantity * $price);echo  number_format((float)($quantity * $price), 2, '.', '') ?><span>₺</span></td>
                                                         <td><button><i class="fa fa-trash"></i></button></td>
                                                     </tr>
                                                   <?php
@@ -270,10 +269,12 @@ session_start();
                                 <div class="col-md-12">
                                     <div class="cart-summary">
                                         <div class="cart-content">
+
                                             <h1>Cart Summary</h1>
-                                            <p>Sub Total<span>$99</span></p>
-                                            <p>Shipping Cost<span>$1</span></p>
-                                            <h2>Grand Total<span>$100</span></h2>
+                                            <p>Sub Total<span><?php echo ($sub_price > 0 ? number_format((float)$sub_price, 2, '.', '') : 0)?><span>₺</span></span></p>
+                                            <p>Shipping Cost<span> <?php echo ($sub_price > 0 ? number_format((float)1, 2, '.', '') : 0 )?> <span>₺</span></span> </p>
+                                            <?php $grand_total = $sub_price + 1 ?>
+                                            <h2>Grand Total<span> <?php echo ($sub_price > 0 ?  number_format((float)$grand_total, 2, '.', '') : 0)?> <span>₺</span> </span></h2>
                                         </div>
                                         <div class="cart-btn">
                                             <button>Update Cart</button>

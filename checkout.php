@@ -11,6 +11,62 @@
 session_start();
 ?>
 
+<?php
+
+   function filterTable($query, $db)
+  {
+    $filter_result = mysqli_query($db,$query);
+    return $filter_result;
+  }
+
+?>
+
+<?php
+// Check if the user is logged in, if not then redirect him to login page
+   $cart_err = "";
+  if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)
+  {
+         $userid = $_SESSION["pid"];
+          $sql_statement = "SELECT  cartdetails.price, cartdetails.quantity
+                                    FROM `cart`, `cartdetails`, `product`
+                                    WHERE '$userid' = cart.pid && cart.cid = cartdetails.cid && product.prid = cartdetails.prid
+                                    GROUP BY cartdetails.prid";
+          $search_result = mysqli_query($db, $sql_statement);
+
+          $usercart= array();
+          while($rows = mysqli_fetch_array($search_result)) {
+            array_push($usercart, $rows);
+          }
+
+            if(count($usercart) == 0)
+            {
+                $cart_err = "Your cart is empty";
+            }
+  }
+  else if(isset($_SESSION["cart"]) && count($_SESSION["cart"]) != 0)
+  {
+
+  }
+  else
+  {
+     $cart_err = "Your cart is empty";
+  }
+
+
+  $sub_price = 0;
+
+  if($cart_err == '')
+  {
+    $rowcount = count($usercart);
+    $sub_price = 0;
+    for($a=0;$a< $rowcount;$a++)
+    {
+      $sub_price += ($usercart[$a]['price'] * $usercart[$a]['quantity']);
+    }
+  }
+
+?>
+
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -85,16 +141,16 @@ session_start();
                                     // Check if the user is logged in, if not then redirect him to login page
                                       if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)
                                       {
-                                        ?> 
+                                        ?>
                                         <a href="login.php" class="nav-item nav-link"> Welcome back, <?php echo $_SESSION["name"]?>!</a>
                                         <?php
                                       }
                                       else
                                       {
-                                        ?> 
+                                        ?>
                                         <a href="login.php" class="nav-item nav-link">Login & Register</a>
                                         <?php
-                                      }  
+                                      }
                                     ?>
                             </div>
                           </div>
@@ -184,10 +240,10 @@ session_start();
                         <div class="checkout-inner">
                             <div class="checkout-summary">
                                 <h1>Cart Total</h1>
-                                <p>Product Name<span>$99</span></p>
-                                <p class="sub-total">Sub Total<span>$99</span></p>
-                                <p class="ship-cost">Shipping Cost<span>$1</span></p>
-                                <h2>Grand Total<span>$100</span></h2>
+                                <p class="sub-total">Sub Total<span><?php echo ($sub_price > 0 ? number_format((float)$sub_price, 2, '.', '') : 0)?><span>₺</span></span></p>
+                                <p class="ship-cost">Shipping Cost<span><?php echo ($sub_price > 0 ? number_format((float)1, 2, '.', '') : 0 )?> <span>₺</span></span></p>
+                                <?php $grand_total = $sub_price + 1 ?>
+                                <h2>Grand Total<span><?php echo ($sub_price > 0 ?  number_format((float)$grand_total, 2, '.', '') : 0)?> <span>₺</span></span></h2>
                             </div>
 
                             <div class="checkout-payment">
@@ -250,7 +306,7 @@ session_start();
                                     </div>
                                 </div>
                                 <div class="checkout-btn">
-                                    <button>Place Order</button>
+                                    <button type="button" <?php if($sub_price <= 0) {echo "disabled";}?>> <?php if($sub_price <= 0) {echo "Cart is empty";} else {echo "Place Order";} ?></button>
                                 </div>
                             </div>
                         </div>
