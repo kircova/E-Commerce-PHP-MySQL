@@ -13,6 +13,7 @@ session_start();
 <?php
 
 $id_err = "";
+$comment_err = "";
 
 if($_SERVER["REQUEST_METHOD"] == "GET") {
     if(isset($_GET['id'])) {
@@ -68,8 +69,49 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
         }
 
 
+
+
+        $comment_count = 0;
+        if (count($commentarr) >0 ) {
+            $comment_count = count($commentarr);
+        }
+
+        
+
+
   }
 }
+if($_SERVER["REQUEST_METHOD"] == "POST") {
+
+
+    if(isset($_POST['comment_submit'])) {
+
+        if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)
+         {
+
+            if(empty($_POST["comment_submit"])){
+                $comment_err = "Review can not be blank.";
+
+            } elseif(strlen(trim($_POST["comment_submit"])) < 15){
+                $comment_err = "Review must have at least 15 characters.";
+
+            } else{
+                $comment_submit = trim($_POST["comment_submit"]);
+                $userid = $_SESSION["pid"];
+                $time = date(format,timestamp);
+                $sql_statement = "INSERT INTO comment (pid, prid,com_text,isVisible) VALUES ($pid, $prid,$comment_submit,0)";
+                $check = mysqli_query($db, $sql_statement);
+            }
+
+
+            }
+            $prid = $_POST['prid'];
+            header("location: product-detail.php?id=$prid");
+            exit;
+
+        }
+ }
+ 
 ?>
 
 <?php
@@ -182,7 +224,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                        <a class="nav-link" data-toggle="pill" href="#songs">Songs</a>
                                    </li>
                                    <li class="nav-item">
-                                        <a class="nav-link" data-toggle="pill" href="#reviews">Reviews (1)</a>
+                                        <a class="nav-link" data-toggle="pill" href="#reviews">Reviews (<?php echo $comment_count?>)</a>
                                     </li>
                                 </ul>
 
@@ -247,17 +289,15 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                                 <i class="far fa-star"></i>
                                             </div>
                                             <div class="row form">
-                                                <div class="col-sm-6">
-                                                    <input type="text" placeholder="Name">
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <input type="email" placeholder="Email">
-                                                </div>
                                                 <div class="col-sm-12">
-                                                    <textarea placeholder="Review"></textarea>
-                                                </div>
-                                                <div class="col-sm-12">
-                                                    <button>Submit</button>
+                                                <form class="comment-form" action='product-detail.php?id=<?php echo $id?>' method="POST">
+                                                    <input type='hidden' name='prid' value='<?php echo $prid?>' />
+                                                        <textarea placeholder="Review" name="submitted_comment"></textarea>
+                                                        <span class="help-block"><?php echo $comment_err; ?></span>
+                                                    </div>
+                                                    <div class="col-sm-12">
+                                                        <button name = 'comment_submit' <?php if(!(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)) {echo "disabled";}?>>Submit</button>
+                                                </form>  
                                                 </div>
                                             </div>
                                         </div>
