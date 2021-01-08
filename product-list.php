@@ -23,7 +23,7 @@ session_start();
   else if(isset($_GET["product_search"]))
   {
     $query = $_GET["product_search"];
-    $sql_statement = "SELECT *
+    $sql_statement = "SELECT product.prid, product.pname, product.productImgUrl, product.price, product.genre, product.categoryId, product.artist
                             FROM product, songs
                             WHERE isVisible=1 AND
                           (product.pname LIKE '%$query%') OR (product.artist LIKE '%$query%')  OR (product.description LIKE '%$query%')  OR ( songs.songname LIKE '%$query%') AND product.prid = songs.prid
@@ -287,7 +287,6 @@ session_start();
                               ?>
 
                               <div class="col-md-4">
-
                                   <div class="product-item">
                                       <div class="product-title"  >
                                           <a href='product-detail.php?id=<?php echo $id?>'><?php echo $name?></a>
