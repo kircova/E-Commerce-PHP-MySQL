@@ -54,7 +54,20 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
 
       while($row = mysqli_fetch_array($check)) {
         array_push($songs_arr, $row);
+
       }
+        $sql_statement = "SELECT cm.com_text , p.name, p.surname, cm.rating
+        FROM `comment` cm, customer c, person p
+        WHERE p.pid = c.pid and prid='$prid' and c.pid = cm.pid";
+        $check = mysqli_query($db, $sql_statement);
+        $commentarr=array();
+
+
+        while($row = mysqli_fetch_array($check)) {
+        array_push($commentarr, $row);
+        }
+
+
   }
 }
 ?>
@@ -195,17 +208,34 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                     </div>
                                     <div id="reviews" class="container tab-pane fade">
                                         <div class="reviews-submitted">
-                                            <div class="reviewer">Phasellus Gravida - <span>01 Jan 2020</span></div>
+                                        <?php
+                                            $comment_row_number = count($commentarr);
+                                            for($i=0; $i<$comment_row_number; $i++) {
+                                                $commentername= $commentarr[$i]['name'];
+                                                $commentersurname = $commentarr[$i]['surname'];
+                                                $comment = $commentarr[$i]['com_text'];
+                                                $rating = $commentarr[$i]['rating'];
+                                             
+                                
+                                          ?>
+                                            <div class="reviewer"> <?php echo $commentername?> <?php echo $commentersurname?> - <span>01 Jan 2020</span></div>
                                             <div class="ratting">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
+                                            
+                                            <?php
+                                            for($j=0; $j<$rating; $j++) {
+                                                   
+                                                ?> <i class="fa fa-star"></i><?php
+                                            }?>
+                                            
+                                           
                                             </div>
                                             <p>
-                                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.
+                                            <?php echo $comment?>
                                             </p>
+                                        <?php
+                                        } 
+                                        ?>
+
                                         </div>
                                         <div class="reviews-submit">
                                             <h4>Give your Review:</h4>
