@@ -4,6 +4,7 @@
 
 <?php
     require_once "config.php";
+
 ?>
 
 <?php
@@ -120,7 +121,8 @@ session_start();
 <?php
   $sql_statement = "SELECT genre
                               FROM `product`
-                              WHERE isVisible=1 ";
+                              WHERE isVisible=1 
+                              GROUP BY genre";
   $search_result = mysqli_query($db, $sql_statement);
 
   $genrecategory= array();
@@ -128,7 +130,6 @@ session_start();
   while($rows = mysqli_fetch_array($search_result)) {
     array_push($genrecategory, $rows);
   }
-    $genrecategory = array_unique($genrecategory, SORT_REGULAR);
     $row_number_genre=count($genrecategory);
 ?>
 
@@ -188,7 +189,7 @@ session_start();
                                   <ul class="navbar-nav">
                                       <li class="nav-item">
                                         <?php
-                                        for($a=0;$a<$row_number_genre - 1;$a++)
+                                        for($a=0;$a<$row_number_genre;$a++)
                                         {
                                           $genres = $genrecategory[$a]['genre'];
 
