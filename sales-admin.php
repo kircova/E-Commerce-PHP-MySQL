@@ -121,7 +121,7 @@
                                     <thead class="thead-dark">
                                         <tr>
                                         	<th>Order ID</th>
-                                        	<th>Customer Details </th>
+                                        	<th>Customer Details</th>
                                             <th>Products Ordered</P>
                                             <th>Order Price</th>
                                             <th>Order Date</th>
