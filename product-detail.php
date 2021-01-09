@@ -134,7 +134,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                     </div>
                                 </div>
                                 <div class="col-md-7">
-                                    <div class="product-content">
+                                    <form class="product-content" action="add-to-cart.php" method="POST">
                                         <div class="title"><h1><?php echo $pname?></h1></div>
                                         <div class="title"><h2><?php echo $artist?></h2></div>
                                         <div class="title"><h3><?php echo ucwords(strtolower($genre))?></h3></div>
@@ -145,16 +145,18 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                         <div class="quantity">
                                             <h4>Quantity:</h4>
                                             <div class="qty">
-                                                <button class="btn-minus"><i class="fa fa-minus"></i></button>
-                                                <input type="text" value="1">
-                                                <button class="btn-plus"><i class="fa fa-plus"></i></button>
+                                                <button type="button" class="btn-minus"><i class="fa fa-minus"></i></button>
+                                                <input type="text" name="quantity" value="1">
+                                                <button type="button" class="btn-plus"><i class="fa fa-plus"></i></button>
                                             </div>
                                         </div>
-                                        <div class="action">
-                                            <a class="btn" href="#"><i class="fa fa-shopping-cart"></i>Add to Cart</a>
-                                            <a class="btn" href="#"><i class="fa fa-shopping-bag"></i>Buy Now</a>
-                                        </div>
-                                    </div>
+
+                                          <input type='hidden' name='prid' value='<?php echo $prid?>' />
+                                          <input type='hidden' name='price' value='<?php echo $price?>' />
+                                          <button class="btn" ><i class="fa fa-shopping-cart"></i>Add to Cart</button>
+                                          <button class="btn" name ="buy-now"><i class="fa fa-shopping-bag"></i>Buy Now</button>
+
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -222,14 +224,23 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                               <a href="product-detail.php">
                                                   <img src="<?php echo $slider_productImgUrl?>" alt="Product Image">
                                               </a>
-                                              <div class="product-action">
-                                                  <a href="#"><i class="fa fa-cart-plus"></i></a>
-                                              </div>
+                                              <form class="product-action" action="add-to-cart.php" method="POST">
+                                                  <input type='hidden' name='quantity' value=1 />
+                                                  <input type='hidden' name='prid' value='<?php echo $slider_id?>' />
+                                                  <input type='hidden' name='price' value='<?php echo $slider_price?>' />
+                                                  <button class="btn"><i class="fa fa-cart-plus"></i></button>
+
+                                              </form>
                                           </div>
-                                          <div class="product-price">
-                                              <h3><?php echo $slider_price?><span>₺</span></h3>
-                                              <a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
-                                          </div>
+                                          <form class="product-action" action="add-to-cart.php" method="POST">
+                                            <div class="product-price">
+                                                <h3><?php echo $slider_price?><span>₺</span></h3>
+                                                <input type='hidden' name='quantity' value=1 />
+                                                <input type='hidden' name='prid' value='<?php echo $slider_id?>' />
+                                                <input type='hidden' name='price' value='<?php echo $slider_price?>' />
+                                                <button class="btn" name='buy-now' ><i class="fa fa-shopping-cart"></i>Buy Now</button>
+                                            </div>
+                                          </form>
                                       </div>
                                   </div>
                                 <?php
