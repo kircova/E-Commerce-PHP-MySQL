@@ -298,14 +298,25 @@ session_start();
                                         <a href="product-detail.php">
                                             <img src="<?php echo $productImgUrl ?>" alt="Product Image">
                                         </a>
-                                        <div class="product-action">
-                                            <a href="#"><i class="fa fa-cart-plus"></i></a>
-                                        </div>
+                                        <form class="product-action" action="add-to-cart.php" method="POST">
+                                            <input type='hidden' name='quantity' value=1 />
+                                            <input type='hidden' name='prid' value='<?php echo $id?>' />
+                                            <input type='hidden' name='price' value='<?php echo $price?>' />
+                                            <button class="btn"><i class="fa fa-cart-plus"></i></button>
+
+                                        </form>
                                     </div>
+                                    <form class="product-action" action="add-to-cart.php" method="POST">
                                     <div class="product-price">
                                         <h3><?php echo $price ?><span>₺</span></h3>
-                                        <a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
+                                        
+                                        <input type='hidden' name='quantity' value=1 />
+                                        <input type='hidden' name='prid' value='<?php echo $id?>' />
+                                        <input type='hidden' name='price' value='<?php echo $price?>' />
+                                        <button class="btn" name='buy-now' ><i class="fa fa-shopping-cart"></i>Buy Now</button>
+
                                     </div>
+                                    </form>
                                 </div>
                             </div>
                         <?php

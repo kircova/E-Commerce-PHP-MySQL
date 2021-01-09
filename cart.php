@@ -26,7 +26,7 @@ session_start();
 
 
 <?php
-// Check if the user is logged in, if not then redirect him to login page
+// Check if the user is logged in
    $cart_err = "";
   if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)
   {
@@ -146,14 +146,20 @@ session_start();
                                                         </td>
                                                         <td><?php echo $price?><span>₺</span></td>
                                                         <td>
-                                                            <div class="qty">
-                                                                <button class="btn-minus"><i class="fa fa-minus"></i></button>
-                                                                <input type="text" value= <?php echo $quantity?>>
-                                                                <button class="btn-plus"><i class="fa fa-plus"></i></button>
-                                                            </div>
+                                                            <form action="update-cart.php" method="POST">
+                                                                <button class="btn-minus" name="decrement-button"><i class="fa fa-minus"></i></button>
+                                                                <input type='hidden' name='prid' value='<?php echo $prid?>' />
+                                                                <input type="text" value= <?php echo $quantity?> readonly>
+                                                                <button class="btn-plus" name="increment-button"><i class="fa fa-plus"></i></button>
+                                                            </form>
                                                         </td>
                                                         <td><?php $sub_price+=($quantity * $price);echo  number_format((float)($quantity * $price), 2, '.', '') ?><span>₺</span></td>
-                                                        <td><button><i class="fa fa-trash"></i></button></td>
+                                                        <td>
+                                                          <form class="product-action" action="delete-from-cart.php" method="POST">
+                                                            <input type='hidden' name='prid' value='<?php echo $prid?>' />
+                                                            <button name = "delete-button"><i class="fa fa-trash"></i></button>
+                                                          </form>
+                                                        </td>
                                                     </tr>
                                                   <?php
                                                 }
@@ -183,8 +189,8 @@ session_start();
                                             <h2>Grand Total<span> <?php echo ($sub_price > 0 ?  number_format((float)$grand_total, 2, '.', '') : 0)?> <span>₺</span> </span></h2>
                                         </div>
                                         <div class="cart-btn">
-                                            <button>Update Cart</button>
-                                            <button>Checkout</button>
+
+                                            <button onclick="location.href='checkout.php'" type="button">Checkout</button>
                                         </div>
                                     </div>
                                 </div>
