@@ -32,15 +32,31 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
        $genre = $_POST['pgenre'];
        $price = $_POST['pprice'];
        $stock = $_POST['pstock'];
+       $productimg = $_POST['productimg'];
 
        $sql_statement = "UPDATE product 
-              SET product.pname = '$pname', product.artist = '$artist', product.genre = '$genre', product.price = '$price', product.stock = '$stock'
+              SET product.pname = '$pname', product.artist = '$artist', product.genre = '$genre', product.price = '$price', product.stock = '$stock',product.productImgUrl = '$productimg'
               WHERE product.prid = '$product_id';";
 
         $result = mysqli_query($db, $sql_statement);
-
-        
     }
+    if(isset($_POST['product-add']) && isset($_POST['ppname']) && isset($_POST['ppartist']))
+    {
+       $spname = $_POST['ppname'];
+       $sartist = $_POST['ppartist'];
+       $sgenre = $_POST['ppgenre'];
+       $sprice = $_POST['ppprice'];
+       $sstock = $_POST['ppstock'];
+       $sproductimg = $_POST['pproductimg'];
+
+       $sql_statement1 = "INSERT INTO product 
+                  (product.pname, product.artist, product.genre, product.price, product.categoryId, product.productImgUrl, product.stock, product.IsVisible) 
+                         VALUES
+                  ('$spname', '$sartist', '$sgenre', '$sprice', 0, '$sproductimg', '$sstock', 1);";
+
+        $result1 = mysqli_query($db, $sql_statement1);
+    }
+
   }
   header("location: product-admin.php");
   exit;

@@ -124,6 +124,7 @@
                                     <thead class="thead-dark">
                                         <tr>
                                         	<th>ProductID</th>
+                                            <th>Product Image</P>
                                             <th>Product</th>
                                             <th>Artist</th>
                                             <th>Genre</th>
@@ -133,6 +134,44 @@
                                             <th>Update Product</th>
                                         </tr>
                                     </thead>
+                                    <tbody class="align-middle">
+                                        <tr>
+                                            <form action="product-admin-post.php" method = 'POST'>
+                                                <td>
+                                                    Add Product
+                                                </td>
+                                                <td>
+                                                    <input type="text" name = 'pproductimg' value="Img Url">   
+                                                </td>
+                                                <td>
+                                                    <input type="text" name = 'ppname' value="Name">   
+                                                </td>
+                                                <td>
+                                                    <input type="text" name= 'ppartist' value="Artist">
+                                                </td>
+                                                <td>
+                                                    <input type="text" name= 'ppgenre' value="Genre">
+                                                <td>
+                                                      <div class="qty">
+                                                        <input type="text" name = 'ppprice' value="1">
+                                                    </div>
+                                                     <span>₺</span>
+                                                </td>
+                                                <td>
+                                                     <div class="qty">
+                                                        <input type="text" name='ppstock' value="1">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                </td>
+                                                <td>
+                                                    <button cls='btn' name= 'product-add'>
+                                                        <a>Add</a>
+                                                    </button>
+                                                </td>
+                                           </form>
+                                       </tr>
+                                   </tbody>
                                      <?php
 
 			                              $row_number=count($product);
@@ -157,10 +196,13 @@
                                             	<?php echo $id?>
                                             </td>
                                             <td>
-                                            	<div class="img">
-                                                    <a href="#"><img src="<?php echo $productImgUrl ?>" alt="Image"></a>
-	                                                    <input type="text" name = 'pname' value="<?php echo $name?>">	
+                                                 <div class="img">
+                                                        <a href="#"><img src="<?php echo $productImgUrl ?>" alt="Image"></a>
+                                                      <input type="text" name = 'productimg' value="<?php echo $productImgUrl?>">
                                                 </div>
+                                            </td>
+                                            <td>
+                                                    <input type="text" name = 'pname' value="<?php echo $name?>">
                                             </td>
                                             <td>
                                             	<input type="text" name= 'partist' value="<?php echo $artist?>">
