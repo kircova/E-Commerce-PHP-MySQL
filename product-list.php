@@ -189,7 +189,7 @@ session_start();
                                   <ul class="navbar-nav">
                                       <li class="nav-item">
                                         <?php
-                                        for($a=0;$a<$row_number_genre;$a++)
+                                        for($a=0;$a<$row_number_genre - 1;$a++)
                                         {
                                           $genres = $genrecategory[$a]['genre'];
 

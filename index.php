@@ -23,7 +23,8 @@ session_start();
 <?php
   $sql_statement = "SELECT genre
                               FROM `product`
-                              WHERE isVisible=1 ";
+                              WHERE isVisible=1 
+                              GROUP BY genre ";
   $search_result = mysqli_query($db, $sql_statement);
 
   $genrecategory= array();
