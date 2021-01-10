@@ -30,12 +30,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
        $pname = $_POST['pname'];
        $artist = $_POST['partist'];
        $genre = $_POST['pgenre'];
+       $description = $_POST['pdescription'];
        $price = $_POST['pprice'];
        $stock = $_POST['pstock'];
        $productimg = $_POST['productimg'];
 
        $sql_statement = "UPDATE product 
-              SET product.pname = '$pname', product.artist = '$artist', product.genre = '$genre', product.price = '$price', product.stock = '$stock',product.productImgUrl = '$productimg'
+              SET product.pname = '$pname', product.artist = '$artist', product.genre = '$genre', product.description = '$description', product.price = '$price', product.stock = '$stock',product.productImgUrl = '$productimg'
               WHERE product.prid = '$product_id';";
 
         $result = mysqli_query($db, $sql_statement);
@@ -45,14 +46,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
        $spname = $_POST['ppname'];
        $sartist = $_POST['ppartist'];
        $sgenre = $_POST['ppgenre'];
+       $sdescription = $_POST['ppdescription'];
        $sprice = $_POST['ppprice'];
        $sstock = $_POST['ppstock'];
        $sproductimg = $_POST['pproductimg'];
 
        $sql_statement1 = "INSERT INTO product 
-                  (product.pname, product.artist, product.genre, product.price, product.categoryId, product.productImgUrl, product.stock, product.IsVisible) 
+                  (product.pname, product.artist, product.genre, product.description, product.price, product.categoryId, product.productImgUrl, product.stock, product.IsVisible) 
                          VALUES
-                  ('$spname', '$sartist', '$sgenre', '$sprice', 0, '$sproductimg', '$sstock', 1);";
+                  ('$spname', '$sartist', '$sgenre','$sdescription', '$sprice', 0, '$sproductimg', '$sstock', 1);";
 
         $result1 = mysqli_query($db, $sql_statement1);
     }
