@@ -63,7 +63,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
         array_push($songs_arr, $row);
 
       }
-        $sql_statement = "SELECT cm.com_text , p.name, p.surname, cm.rating, cm.time, cm.isVisible
+        $sql_statement = "SELECT cm.com_text, cm.cid, p.pid, p.name, p.surname, cm.rating, cm.time, cm.isVisible
         FROM `comment` cm, customer c, person p
         WHERE p.pid = c.pid and prid='$prid' and c.pid = cm.pid";
         $check = mysqli_query($db, $sql_statement);
@@ -281,12 +281,33 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                             
                                            
                                             </div>
+                                            
                                             <p>
                                             <?php echo $comment?>
+                                            <?php
+                                            if(isset($_SESSION["pid"]))
+                                            {
+                                                if($commentarr[$i]['pid'] == $personid)
+                                                {
+                                                    
+                                                    ?><form action="product-detail-post.php?id=<?php echo $id?>" method = 'POST'>
+                                                    <input type='hidden' name='prid' value='<?php echo $prid?>' />
+                                                    <input type='hidden' name='commentid' value='<?php echo $commentarr[$i]['cid']?>' />
+                                                    <input type='hidden' name='id' value='<?php echo $id?>'/>
+	                                            	<button cls='btn' name= 'comment-delete'>
+	                                            		<i class="fa fa-trash"></i>
+	                                            	</button>
+                                                    </form><?php
+                                                }
+                                            }
+                                            
+                                            ?>
+                                            
                                             </p>
+                                            
                                         <?php
                                         } 
-                                    }
+                                        }
                                         ?>
 
                                         </div>
@@ -320,6 +341,10 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                                 <div class="col-sm-12">
                                                 
                                                 <?php
+                                                if(isset($_SESSION["pid"]))
+                                                {
+                                                  $personid = $_SESSION["pid"];
+                                                
                                                 $person_row_number = count($persons);
                                                 $flag = false;
                                                 for($i=0; $i<$person_row_number; $i++) {
@@ -328,7 +353,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                                         $flag = true;
                                                     }
                                                 }
-                                    
+                                                }
                                                 ?>
                                                 
                                                     <input type='hidden' name='personid' value='<?php echo  $personid?>'/>
@@ -341,7 +366,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                                     </div>
                                                     
                                                     <div class="col-sm-12">
-                                                        <button name = 'comment_submit' <?php if(!(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true && $flag === true)) {echo "disabled";}?>>Submit</button>
+                                                        <button name = 'comment-submit' <?php if(!(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true && $flag === true)) {echo "disabled";}?>>Submit</button>
                                                 </form>  
                                                 </div>
                                             </div>
