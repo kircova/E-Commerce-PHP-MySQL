@@ -49,7 +49,20 @@ session_start();
   }
   else if(isset($_SESSION["cart"]) && count($_SESSION["cart"]) != 0)
   {
-
+    $guestcart = $_SESSION["cart"];
+    $usercart = array();
+    for($i=0; $i<count($guestcart); $i++)
+    {
+      $temp_prid = $guestcart[$i][0];
+      $sql_statement = "SELECT product.prid, product.productImgUrl,product.pname
+                        FROM `product`
+                        WHERE '$temp_prid' = product.prid";
+      $search_result = mysqli_query($db, $sql_statement);
+      $row = mysqli_fetch_array($search_result);
+      $row["price"] = $guestcart[$i][1];
+      $row["quantity"] = $guestcart[$i][2];
+      array_push($usercart, $row);
+    }
   }
   else
   {
@@ -149,7 +162,7 @@ session_start();
                                                             <form action="update-cart.php" method="POST">
                                                                 <button class="btn-minus" name="decrement-button"><i class="fa fa-minus"></i></button>
                                                                 <input type='hidden' name='prid' value='<?php echo $prid?>' />
-                                                                <input type="text" value= <?php echo $quantity?> readonly>
+                                                                <input type="text" name="quantitity" value= <?php echo $quantity?> readonly>
                                                                 <button class="btn-plus" name="increment-button"><i class="fa fa-plus"></i></button>
                                                             </form>
                                                         </td>

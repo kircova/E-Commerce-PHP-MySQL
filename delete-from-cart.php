@@ -34,7 +34,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
   // If guest
   else
   {
-
+    $guestcart = $_SESSION["cart"];
+    $prid = $_POST["prid"];
+    $value = 0;
+    for($i=0; $i<count($guestcart); $i++)
+    {
+      if($guestcart[$i][0] == $prid)
+      {
+        $value = $i;
+      }
+    }
+    array_splice($guestcart, $value, 1);
+    $_SESSION["cart"] = $guestcart;
+    header("location: cart.php");
+    exit;
   }
 }
 

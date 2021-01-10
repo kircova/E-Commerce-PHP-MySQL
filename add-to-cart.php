@@ -80,9 +80,21 @@ else
 {
   if(!isset($_SESSION["cart"]))
   {
-    $_SESSION["cart"] = [];
+    $_SESSION["cart"] = array();
   }
-  
+
+  if(isset($_POST["quantity"]) && isset($_POST["prid"]) && isset($_POST["price"]))
+  {
+    $quantity = $_POST["quantity"];
+    $prid = $_POST["prid"];
+    $price = $_POST["price"];
+
+    $temp_arr = [$prid, $price, $quantity];
+    array_push($_SESSION["cart"], $temp_arr);
+    header("location: $redirect_url");
+    exit;
+  }
+
 }
 }
 ?>

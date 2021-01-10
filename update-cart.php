@@ -18,6 +18,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     {
       $prid =   $_POST["prid"];
       $userid = $_SESSION["pid"];
+
       if(isset($_POST["increment-button"]))
       {
         $quantity = 1;
@@ -36,12 +37,24 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
       elseif(isset($_POST["decrement-button"]))
       {
+        $quantitity = $_POST["quantitity"];
         $quantity = -1;
-        $sql_statement = "UPDATE cartdetails
-                          SET quantity = quantity + '$quantity'
-                          WHERE cartdetails.cid IN (SELECT cartdetails.cid
-  															                              FROM cart
-                                                              WHERE cart.pid = '$userid' && cartdetails.prid = '$prid' && cart.cid = cartdetails.cid)";
+        if($quantitity != 1)
+        {
+          $sql_statement = "UPDATE cartdetails
+                            SET quantity = quantity + '$quantity'
+                            WHERE cartdetails.cid IN (SELECT cartdetails.cid
+    															                              FROM cart
+                                                                WHERE cart.pid = '$userid' && cartdetails.prid = '$prid' && cart.cid = cartdetails.cid)";
+        }
+        else
+        {
+          $sql_statement = "UPDATE cartdetails
+                            SET quantity = quantity + 0
+                            WHERE cartdetails.cid IN (SELECT cartdetails.cid
+    															                              FROM cart
+                                                                WHERE cart.pid = '$userid' && cartdetails.prid = '$prid' && cart.cid = cartdetails.cid)";
+        }
         $result = mysqli_query($db, $sql_statement);
         if (mysqli_num_rows($result)==0)
         {
@@ -65,7 +78,38 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
   // If guest
   else
   {
-    echo "Guest";
+    $guestcart = $_SESSION["cart"];
+    $prid =   $_POST["prid"];
+    if(isset($_POST["increment-button"]))
+    {
+      $quantity = 1;
+      for($i=0; $i<count($guestcart); $i++)
+      {
+        if($guestcart[$i][0] == $prid)
+        {
+          $guestcart[$i][2] = $guestcart[$i][2] + 1;
+        }
+      }
+
+    }
+    elseif(isset($_POST["decrement-button"]))
+    {
+      $quantitity = $_POST["quantitity"];
+      $quantity = -1;
+      if($quantitity != 1)
+      {
+        for($i=0; $i<count($guestcart); $i++)
+        {
+          if($guestcart[$i][0] == $prid)
+          {
+            $guestcart[$i][2] = $guestcart[$i][2] - 1;
+          }
+        }
+      }
+    }
+    $_SESSION["cart"] = $guestcart;
+    header("location: cart.php");
+    exit;
   }
 
 }
