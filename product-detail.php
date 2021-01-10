@@ -13,10 +13,17 @@ session_start();
 <?php
 
 $id_err = "";
-
+$comment_err = "";
+$rate = 2;
+$avg_rating = 0;
 if($_SERVER["REQUEST_METHOD"] == "GET") {
     if(isset($_GET['id'])) {
       $id = $_GET['id'];
+      if(isset($_SESSION["pid"]))
+      {
+        $personid = $_SESSION["pid"];
+      }
+      
 
       $sql_statement = "SELECT prid, pname, artist, genre, description, price, categoryId, productImgUrl, stock, isVisible
                                   FROM `product`
@@ -54,15 +61,49 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
 
       while($row = mysqli_fetch_array($check)) {
         array_push($songs_arr, $row);
+
       }
+        $sql_statement = "SELECT cm.com_text , p.name, p.surname, cm.rating, cm.time, cm.isVisible
+        FROM `comment` cm, customer c, person p
+        WHERE p.pid = c.pid and prid='$prid' and c.pid = cm.pid";
+        $check = mysqli_query($db, $sql_statement);
+        $commentarr=array();
+
+
+        while($row = mysqli_fetch_array($check)) {
+        array_push($commentarr, $row);
+        }
+
+
+
+
+        $comment_count = 0;
+        if (count($commentarr) >0 ) {
+            $comment_count = count($commentarr);
+        }
+        
+        $sql_statement = "SELECT m.pid
+        FROM makes m, orderdetails od 
+        WHERE m.oid = od.oid and od.prid = '$prid'";
+        $check = mysqli_query($db, $sql_statement);
+        $persons = array();
+        while($row = mysqli_fetch_array($check)) {
+            array_push($persons, $row);
+            }
+
+
+        
+
+
   }
 }
+
 ?>
 
 <?php
   $sql_statement = "SELECT genre
                               FROM `product`
-                              WHERE isVisible=1 
+                              WHERE isVisible=1
                               GROUP BY genre";
   $search_result = mysqli_query($db, $sql_statement);
 
@@ -135,29 +176,46 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                     </div>
                                 </div>
                                 <div class="col-md-7">
-                                    <form class="product-content" action="add-to-cart.php" method="POST">
+                                    <div class="product-content">
+                                    <?php
+                                        if((isset($commentarr) && $comment_count != 0)){
+                                            $comment_row_number = count($commentarr);
+                                            for($i=0; $i<$comment_row_number; $i++) {
+                                                $avg_rating = $avg_rating + $commentarr[$i]['rating'];
+                                            }
+                                            $avg_rating = $avg_rating / $comment_row_number;
+                                        }?>
                                         <div class="title"><h1><?php echo $pname?></h1></div>
                                         <div class="title"><h2><?php echo $artist?></h2></div>
-                                        <div class="title"><h3><?php echo ucwords(strtolower($genre))?></h3></div>
+                                        <div class="title"><h3><?php
+                                        if((isset($commentarr) && $comment_count != 0)){
+                                            for($j=0; $j<$avg_rating; $j++) {
+                                                   
+                                                ?> <i class="fa fa-star"></i><?php
+                                            }
+                                        }
+                                        else
+                                        {
+                                            echo "This product has not been reviewed.";
+                                        }?></h3></div>
+                                        <div class="title"><h4><?php echo ucwords(strtolower($genre))?></h4></div>
                                         <div class="price">
-                                            <h4>Price:</h4>
+                                            <h5>Price:</h5>
                                             <p><?php echo $price?>₺</p>
                                         </div>
                                         <div class="quantity">
-                                            <h4>Quantity:</h4>
+                                            <h5>Quantity:</h5>
                                             <div class="qty">
-                                                <button type="button" class="btn-minus"><i class="fa fa-minus"></i></button>
-                                                <input type="text" name="quantity" value="1">
-                                                <button type="button" class="btn-plus"><i class="fa fa-plus"></i></button>
+                                                <button class="btn-minus"><i class="fa fa-minus"></i></button>
+                                                <input type="text" value="1">
+                                                <button class="btn-plus"><i class="fa fa-plus"></i></button>
                                             </div>
                                         </div>
-
-                                          <input type='hidden' name='prid' value='<?php echo $prid?>' />
-                                          <input type='hidden' name='price' value='<?php echo $price?>' />
-                                          <button class="btn" ><i class="fa fa-shopping-cart"></i>Add to Cart</button>
-                                          <button class="btn" name ="buy-now"><i class="fa fa-shopping-bag"></i>Buy Now</button>
-
-                                    </form>
+                                        <div class="action">
+                                            <a class="btn" href="#"><i class="fa fa-shopping-cart"></i>Add to Cart</a>
+                                            <a class="btn" href="#"><i class="fa fa-shopping-bag"></i>Buy Now</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -172,7 +230,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                        <a class="nav-link" data-toggle="pill" href="#songs">Songs</a>
                                    </li>
                                    <li class="nav-item">
-                                        <a class="nav-link" data-toggle="pill" href="#reviews">Reviews (1)</a>
+                                        <a class="nav-link" data-toggle="pill" href="#reviews">Reviews (<?php echo $comment_count?>)</a>
                                     </li>
                                 </ul>
 
@@ -195,6 +253,99 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                             }
                                           ?>
                                         </ul>
+                                    </div>
+                                    <div id="reviews" class="container tab-pane fade">
+                                        <div class="reviews-submitted">
+                                        <?php
+                                            $comment_row_number = count($commentarr);
+                                            for($i=0; $i<$comment_row_number; $i++) {
+                                                $commentername= $commentarr[$i]['name'];
+                                                $commentersurname = $commentarr[$i]['surname'];
+                                                $comment = $commentarr[$i]['com_text'];
+                                                $rating = $commentarr[$i]['rating'];
+                                                $date_time = $commentarr[$i]['time'];
+                                                $isVisible =  $commentarr[$i]['isVisible'];
+
+                                                if ( $isVisible == 1 ){
+                                
+                                          ?>
+                                          
+                                            <div class="reviewer"> <?php echo $commentername?> <?php echo $commentersurname?> - <span><?php echo $date_time ?></span></div>
+                                            <div class="ratting">
+                                            
+                                            <?php
+                                            for($j=0; $j<$rating; $j++) {
+                                                   
+                                                ?> <i class="fa fa-star"></i><?php
+                                            }?>
+                                            
+                                           
+                                            </div>
+                                            <p>
+                                            <?php echo $comment?>
+                                            </p>
+                                        <?php
+                                        } 
+                                    }
+                                        ?>
+
+                                        </div>
+                                        <div class="reviews-submit">
+                                            <h4>Give your Review:</h4>
+
+                                            <form class="comment-form" action='product-detail-post.php?id=<?php echo $id?>' method="POST">
+                                            <div class="stars">
+                                                <input id="star-5" type="radio" name="star"value="<?php echo  $rate = 5?>"/>
+                                                <label for="star-5"></label>
+                                                <input id="star-4" type="radio" name="star"value="<?php echo  $rate = 4?>"/>
+                                                <label for="star-4"></label>
+                                                <input id="star-3" type="radio"  name="star"value="<?php  echo $rate = 3?>"/>
+                                                <label for="star-3"></label>
+                                                <input id="star-2" type="radio" name="star"value="<?php echo  $rate = 2?>"/>
+                                                <label for="star-2"></label>
+                                                <input id="star-1" type="radio"  name="star"value="<?php  echo $rate = 1?>"/>
+                                                <label for="star-1"></label>
+                                                
+                                            </div>
+
+                                            <div class="row form"<?php
+                                                                                    function function_alert($message) { 
+    
+                                                                                        // Display the alert box  
+                                                                                        echo "<script>alert('$message');</script>"; 
+                                                                                        
+                                                                                    } 
+                                                                                    ?>>
+                                            
+                                                <div class="col-sm-12">
+                                                
+                                                <?php
+                                                $person_row_number = count($persons);
+                                                $flag = false;
+                                                for($i=0; $i<$person_row_number; $i++) {
+                                                    if($persons[$i]['pid'] == $personid)
+                                                    {
+                                                        $flag = true;
+                                                    }
+                                                }
+                                    
+                                                ?>
+                                                
+                                                    <input type='hidden' name='personid' value='<?php echo  $personid?>'/>
+                                                    <input type='hidden' name='prid' value='<?php echo $prid?>' />
+                                                    <input type='hidden' name='rate' value='<?php echo $rate?>' />
+                                                        <textarea placeholder="Review" name="submitted_comment"></textarea>
+                                                        <span class="help-block">
+
+                                                        </span>
+                                                    </div>
+                                                    
+                                                    <div class="col-sm-12">
+                                                        <button name = 'comment_submit' <?php if(!(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true && $flag === true)) {echo "disabled";}?>>Submit</button>
+                                                </form>  
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -225,23 +376,14 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                               <a href="product-detail.php">
                                                   <img src="<?php echo $slider_productImgUrl?>" alt="Product Image">
                                               </a>
-                                              <form class="product-action" action="add-to-cart.php" method="POST">
-                                                  <input type='hidden' name='quantity' value=1 />
-                                                  <input type='hidden' name='prid' value='<?php echo $slider_id?>' />
-                                                  <input type='hidden' name='price' value='<?php echo $slider_price?>' />
-                                                  <button class="btn"><i class="fa fa-cart-plus"></i></button>
-
-                                              </form>
+                                              <div class="product-action">
+                                                  <a href="#"><i class="fa fa-cart-plus"></i></a>
+                                              </div>
                                           </div>
-                                          <form class="product-action" action="add-to-cart.php" method="POST">
-                                            <div class="product-price">
-                                                <h3><?php echo $slider_price?><span>₺</span></h3>
-                                                <input type='hidden' name='quantity' value=1 />
-                                                <input type='hidden' name='prid' value='<?php echo $slider_id?>' />
-                                                <input type='hidden' name='price' value='<?php echo $slider_price?>' />
-                                                <button class="btn" name='buy-now' ><i class="fa fa-shopping-cart"></i>Buy Now</button>
-                                            </div>
-                                          </form>
+                                          <div class="product-price">
+                                              <h3><?php echo $slider_price?><span>₺</span></h3>
+                                              <a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
+                                          </div>
                                       </div>
                                   </div>
                                 <?php
@@ -278,6 +420,117 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                             </nav>
                         </div>
 
+                        <div class="sidebar-widget widget-slider">
+                            <div class="sidebar-slider normal-slider">
+                                <div class="product-item">
+                                    <div class="product-title">
+                                        <a href="#">Product Name</a>
+                                        <div class="ratting">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <div class="product-image">
+                                        <a href="product-detail.php">
+                                            <img src="img/product-7.jpg" alt="Product Image">
+                                        </a>
+                                        <div class="product-action">
+                                            <a href="#"><i class="fa fa-cart-plus"></i></a>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                            <a href="#"><i class="fa fa-search"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-price">
+                                        <h3><span>$</span>99</h3>
+                                        <a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
+                                    </div>
+                                </div>
+                                <div class="product-item">
+                                    <div class="product-title">
+                                        <a href="#">Product Name</a>
+                                        <div class="ratting">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <div class="product-image">
+                                        <a href="product-detail.php">
+                                            <img src="img/product-8.jpg" alt="Product Image">
+                                        </a>
+                                        <div class="product-action">
+                                            <a href="#"><i class="fa fa-cart-plus"></i></a>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                            <a href="#"><i class="fa fa-search"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-price">
+                                        <h3><span>$</span>99</h3>
+                                        <a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
+                                    </div>
+                                </div>
+                                <div class="product-item">
+                                    <div class="product-title">
+                                        <a href="#">Product Name</a>
+                                        <div class="ratting">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <div class="product-image">
+                                        <a href="product-detail.php">
+                                            <img src="img/product-9.jpg" alt="Product Image">
+                                        </a>
+                                        <div class="product-action">
+                                            <a href="#"><i class="fa fa-cart-plus"></i></a>
+                                            <a href="#"><i class="fa fa-heart"></i></a>
+                                            <a href="#"><i class="fa fa-search"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-price">
+                                        <h3><span>$</span>99</h3>
+                                        <a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sidebar-widget brands">
+                            <h2 class="title">Our Brands</h2>
+                            <ul>
+                                <li><a href="#">Nulla </a><span>(45)</span></li>
+                                <li><a href="#">Curabitur </a><span>(34)</span></li>
+                                <li><a href="#">Nunc </a><span>(67)</span></li>
+                                <li><a href="#">Ullamcorper</a><span>(74)</span></li>
+                                <li><a href="#">Fusce </a><span>(89)</span></li>
+                                <li><a href="#">Sagittis</a><span>(28)</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="sidebar-widget tag">
+                            <h2 class="title">Tags Cloud</h2>
+                            <a href="#">Lorem ipsum</a>
+                            <a href="#">Vivamus</a>
+                            <a href="#">Phasellus</a>
+                            <a href="#">pulvinar</a>
+                            <a href="#">Curabitur</a>
+                            <a href="#">Fusce</a>
+                            <a href="#">Sem quis</a>
+                            <a href="#">Mollis metus</a>
+                            <a href="#">Sit amet</a>
+                            <a href="#">Vel posuere</a>
+                            <a href="#">orci luctus</a>
+                            <a href="#">Nam lorem</a>
+                        </div>
+                    </div>
                     <!-- Side Bar End -->
                 </div>
             </div>

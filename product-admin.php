@@ -128,6 +128,7 @@
                                             <th>Product</th>
                                             <th>Artist</th>
                                             <th>Genre</th>
+                                            <th>Description</th>
                                             <th>Price</th>
                                             <th>Stock</th>
                                             <th>Remove</th>
@@ -151,6 +152,9 @@
                                                 </td>
                                                 <td>
                                                     <input type="text" name= 'ppgenre' value="Genre">
+                                                </td>
+                                                <td>
+                                                    <input type="text" name= 'ppdescription' value="Description">
                                                 <td>
                                                       <div class="qty">
                                                         <input type="text" name = 'ppprice' value="1">
@@ -181,7 +185,8 @@
 			                               $id = $product[$i]['prid'];
 			                               $name = $product[$i]['pname'];
 			                               $artist= $product[$i]['artist'];
-			                               $genre = $product[$i]['genre'];
+                                           $genre = $product[$i]['genre'];
+                                           $description = $product[$i]['description'];
 			                               $price = $product[$i]['price'];
 			                               $stock= $product[$i]['stock'];
 			                               $productImgUrl = $product[$i]['productImgUrl'];
@@ -193,7 +198,7 @@
                                         <tr>
                                         	<form action="product-admin-post.php" method = 'POST'>
                                             <td>
-                                            	<?php echo $id?>
+                                            	<?php echo $id?>    
                                             </td>
                                             <td>
                                                  <div class="img">
@@ -209,6 +214,9 @@
                                             </td>
                                             <td>
                                             	<input type="text" name= 'pgenre' value="<?php echo $genre?>">
+                                            </td>
+                                            <td>
+                                                    <input type="text" name = 'pdescription' value="<?php echo $description?>">
                                             <td>
                                             	  <div class="qty">
                                                     <input type="text" name = 'pprice' value="<?php echo $price?>">
