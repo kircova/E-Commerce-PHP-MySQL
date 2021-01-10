@@ -19,7 +19,11 @@ $avg_rating = 0;
 if($_SERVER["REQUEST_METHOD"] == "GET") {
     if(isset($_GET['id'])) {
       $id = $_GET['id'];
-      $personid = $_SESSION["pid"];
+      if(isset($_SESSION["pid"]))
+      {
+        $personid = $_SESSION["pid"];
+      }
+      
 
       $sql_statement = "SELECT prid, pname, artist, genre, description, price, categoryId, productImgUrl, stock, isVisible
                                   FROM `product`
