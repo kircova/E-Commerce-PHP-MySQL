@@ -27,15 +27,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     if(isset($_POST['product-update']) && isset($_POST['pid']))
     {
        $product_id = $_POST['pid'];
-       $pname = $_POST['pname'];
-       $artist = $_POST['partist'];
-       $genre = $_POST['pgenre'];
-       $description = $_POST['pdescription'];
+       $pname = mysql_escape_string($_POST['pname']);
+       $artist = mysql_escape_string($_POST['partist']);
+       $genre = mysql_escape_string($_POST['pgenre']);
+       $description = mysql_escape_string($_POST['pdescription']);
        $price = $_POST['pprice'];
        $stock = $_POST['pstock'];
        $productimg = $_POST['productimg'];
 
-       $sql_statement = "UPDATE product 
+       $sql_statement = "UPDATE product
               SET product.pname = '$pname', product.artist = '$artist', product.genre = '$genre', product.description = '$description', product.price = '$price', product.stock = '$stock',product.productImgUrl = '$productimg'
               WHERE product.prid = '$product_id';";
 
@@ -51,8 +51,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
        $sstock = $_POST['ppstock'];
        $sproductimg = $_POST['pproductimg'];
 
-       $sql_statement1 = "INSERT INTO product 
-                  (product.pname, product.artist, product.genre, product.description, product.price, product.categoryId, product.productImgUrl, product.stock, product.IsVisible) 
+       $sql_statement1 = "INSERT INTO product
+                  (product.pname, product.artist, product.genre, product.description, product.price, product.categoryId, product.productImgUrl, product.stock, product.IsVisible)
                          VALUES
                   ('$spname', '$sartist', '$sgenre','$sdescription', '$sprice', 0, '$sproductimg', '$sstock', 1);";
 
