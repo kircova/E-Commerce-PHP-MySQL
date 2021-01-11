@@ -13,8 +13,8 @@
 <?php
 
   $sql_statement = "SELECT *
-					FROM order_table o, orderdetails od, makes m, person p
-					WHERE o.oid = od.oid && o.isActive = 1 && m.oid = o.oid && m.pid = p.pid
+					FROM order_table o, orderdetails od
+					WHERE o.oid = od.oid && o.isActive = 1
 					GROUP BY o.oid";
   $order_sql = mysqli_query($db, $sql_statement);
   $order = array();
@@ -135,7 +135,6 @@
 			                              {
 			                              	$oid = $order[$i]['oid'];
 
-			                              	$pid = $order[$i]['pid'];
 			                              	$name = $order[$i]['name'];
 			                              	$surname = $order[$i]['surname'];
 			                              	$email = $order[$i]['email'];
