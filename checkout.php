@@ -137,7 +137,7 @@ $name_err = $surname_err  = $email_err = $address_err =  "";
           // makes mysql_tablename
           $todays_date = date('Y-m-d');
           $pprice = $sub_price +1;
-          $sql_statement = "INSERT INTO order_table( orderdate, shipAddress, orderPrice) VALUES ( '$todays_date', '$address', '$pprice')";
+          $sql_statement = "INSERT INTO order_table( orderdate, shipAddress, orderPrice, name, surname) VALUES ( '$todays_date', '$address', '$pprice', '$name', '$surname')";
           mysqli_query($db, $sql_statement);
           $oid = mysqli_insert_id($db);
 
@@ -162,6 +162,17 @@ $name_err = $surname_err  = $email_err = $address_err =  "";
             mysqli_query($db, $sql_statement);
           }
 
+          header("location: index.php");
+          exit;
+        }
+        else
+        {
+
+          $todays_date = date('Y-m-d');
+          $pprice = $sub_price +1;
+          $sql_statement = "INSERT INTO order_table( orderdate, shipAddress, orderPrice, name, surname) VALUES ( '$todays_date', '$address', '$pprice', '$name', '$surname')";
+          mysqli_query($db, $sql_statement);
+          $_SESSION["cart"] = [];
           header("location: index.php");
           exit;
         }
@@ -268,51 +279,29 @@ $name_err = $surname_err  = $email_err = $address_err =  "";
                                         </div>
                                         <div class="payment-content" id="payment-1-show">
                                             <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt orci ac eros volutpat maximus lacinia quis diam.
+                                                Pay via Paypal
                                             </p>
                                         </div>
                                     </div>
                                     <div class="payment-method">
                                         <div class="custom-control custom-radio">
                                             <input type="radio" class="custom-control-input" id="payment-2" name="payment">
-                                            <label class="custom-control-label" for="payment-2">Payoneer</label>
+                                            <label class="custom-control-label" for="payment-2">Direct Bank Transfer</label>
                                         </div>
                                         <div class="payment-content" id="payment-2-show">
                                             <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt orci ac eros volutpat maximus lacinia quis diam.
+                                                Pay via Direct Bank Transfer
                                             </p>
                                         </div>
                                     </div>
                                     <div class="payment-method">
                                         <div class="custom-control custom-radio">
                                             <input type="radio" class="custom-control-input" id="payment-3" name="payment">
-                                            <label class="custom-control-label" for="payment-3">Check Payment</label>
+                                            <label class="custom-control-label" for="payment-3">Cash on Delivery</label>
                                         </div>
                                         <div class="payment-content" id="payment-3-show">
                                             <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt orci ac eros volutpat maximus lacinia quis diam.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="payment-method">
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" class="custom-control-input" id="payment-4" name="payment">
-                                            <label class="custom-control-label" for="payment-4">Direct Bank Transfer</label>
-                                        </div>
-                                        <div class="payment-content" id="payment-4-show">
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt orci ac eros volutpat maximus lacinia quis diam.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="payment-method">
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" class="custom-control-input" id="payment-5" name="payment">
-                                            <label class="custom-control-label" for="payment-5">Cash on Delivery</label>
-                                        </div>
-                                        <div class="payment-content" id="payment-5-show">
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt orci ac eros volutpat maximus lacinia quis diam.
+                                                Pay when it is delivered.
                                             </p>
                                         </div>
                                     </div>
