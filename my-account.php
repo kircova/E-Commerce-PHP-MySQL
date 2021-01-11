@@ -16,10 +16,31 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 }
 ?>
 
+<?php
+
+    $pid = $_SESSION['pid'];
+
+
+    $sql1_statement = "SELECT *
+                    FROM order_table o, orderdetails od, makes m, person p
+                    WHERE o.oid = od.oid && o.isActive = 1 && m.oid = o.oid && m.pid = p.pid && p.pid = '$pid'
+                    GROUP BY o.oid";
+        $order_qu = mysqli_query($db, $sql1_statement);
+        $order = array();
+
+         while($productrows = mysqli_fetch_array($order_qu)) {
+         array_push($order, $productrows);
+    }
+?>
+
+
+
+
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>E Store - eCommerce HTML Template</title>
+        <link rel="icon" href="img/icon.png">
+        <title>The Sound Machine - My Account</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="eCommerce HTML Template Free Download" name="keywords">
         <meta content="eCommerce HTML Template Free Download" name="description">
@@ -41,104 +62,18 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </head>
 
     <body>
-        <!-- Top bar Start -->
-        <div class="top-bar">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <i class="fa fa-envelope"></i>
-                        support@email.com
-                    </div>
-                    <div class="col-sm-6">
-                        <i class="fa fa-phone-alt"></i>
-                        +012-345-6789
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Top bar End -->
+        <?php include "top-bar.php";?>
 
-        <!-- Nav Bar Start -->
-        <div class="nav">
-            <div class="container-fluid">
-                <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-                    <a href="#" class="navbar-brand">MENU</a>
-                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+        <?php include "nav-bar.php";?>
 
-                    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                        <div class="navbar-nav mr-auto">
-                            <a href="index.php" class="nav-item nav-link">Home</a>
-                            <a href="product-list.php" class="nav-item nav-link">Products</a>
-                            <a href="product-detail.php" class="nav-item nav-link">Product Detail</a>
-                            <a href="cart.php" class="nav-item nav-link">Cart</a>
-                            <a href="checkout.php" class="nav-item nav-link">Checkout</a>
-                            <a href="my-account.php" class="nav-item nav-link active">My Account</a>
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">More Pages</a>
-                                <div class="dropdown-menu">
-                                    <a href="wishlist.php" class="dropdown-item">Wishlist</a>
-                                    <a href="login.php" class="dropdown-item">Login & Register</a>
-                                    <a href="contact.php" class="dropdown-item">Contact Us</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="navbar-nav ml-auto">
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User Account</a>
-                                <div class="dropdown-menu">
-                                    <a href="#" class="dropdown-item">Login</a>
-                                    <a href="#" class="dropdown-item">Register</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </div>
-        <!-- Nav Bar End -->
-
-        <!-- Bottom Bar Start -->
-        <div class="bottom-bar">
-            <div class="container-fluid">
-                <div class="row align-items-center">
-                    <div class="col-md-3">
-                        <div class="logo">
-                            <a href="index.php">
-                                <img src="img/logo.png" alt="Logo">
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="search">
-                            <input type="text" placeholder="Search">
-                            <button><i class="fa fa-search"></i></button>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="user">
-                            <a href="wishlist.php" class="btn wishlist">
-                                <i class="fa fa-heart"></i>
-                                <span>(0)</span>
-                            </a>
-                            <a href="cart.php" class="btn cart">
-                                <i class="fa fa-shopping-cart"></i>
-                                <span>(0)</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Bottom Bar End -->
+        <?php include "bottom-bar.php"?>
 
         <!-- Breadcrumb Start -->
         <div class="breadcrumb-wrap">
             <div class="container-fluid">
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Products</a></li>
+                    <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+                    <li class="breadcrumb-item"><a href="product-list.php">Products</a></li>
                     <li class="breadcrumb-item active">My Account</li>
                 </ul>
             </div>
@@ -153,8 +88,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                         <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
                             <a class="nav-link active" id="dashboard-nav" data-toggle="pill" href="#dashboard-tab" role="tab"><i class="fa fa-tachometer-alt"></i>Dashboard</a>
                             <a class="nav-link" id="orders-nav" data-toggle="pill" href="#orders-tab" role="tab"><i class="fa fa-shopping-bag"></i>Orders</a>
-                            <a class="nav-link" id="payment-nav" data-toggle="pill" href="#payment-tab" role="tab"><i class="fa fa-credit-card"></i>Payment Method</a>
-                            <a class="nav-link" id="address-nav" data-toggle="pill" href="#address-tab" role="tab"><i class="fa fa-map-marker-alt"></i>address</a>
                             <a class="nav-link" id="account-nav" data-toggle="pill" href="#account-tab" role="tab"><i class="fa fa-user"></i>Account Details</a>
                             <a class="nav-link" href="logout.php"><i class="fa fa-sign-out-alt"></i>Logout</a>
                         </div>
@@ -164,112 +97,119 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                             <div class="tab-pane fade show active" id="dashboard-tab" role="tabpanel" aria-labelledby="dashboard-nav">
                                 <h4>Dashboard</h4>
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In condimentum quam ac mi viverra dictum. In efficitur ipsum diam, at dignissim lorem tempor in. Vivamus tempor hendrerit finibus. Nulla tristique viverra nisl, sit amet bibendum ante suscipit non. Praesent in faucibus tellus, sed gravida lacus. Vivamus eu diam eros. Aliquam et sapien eget arcu rhoncus scelerisque.
+                                    Dear User, you can see your order and order details from Orders tab, you can see and update your account information from Account Details tab. Thank you for choosing our CS306 project.
                                 </p>
                             </div>
+
                             <div class="tab-pane fade" id="orders-tab" role="tabpanel" aria-labelledby="orders-nav">
                                 <div class="table-responsive">
                                     <table class="table table-bordered">
                                         <thead class="thead-dark">
                                             <tr>
-                                                <th>No</th>
-                                                <th>Product</th>
-                                                <th>Date</th>
-                                                <th>Price</th>
-                                                <th>Status</th>
-                                                <th>Action</th>
+                                                <th>Order ID</th>
+                                                <th>Products Ordered</th>
+                                                <th>Order Price</th>
+                                                <th>Order Date</th>
+                                                <th>Order Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php
+                                              $row_number=count($order);
+                                              for($i=0;$i<$row_number;$i++)
+                                              {
+                                                $oid = $order[$i]['oid'];
+
+                                                $pid = $order[$i]['pid'];
+                                                $name = $order[$i]['name'];
+                                                $surname = $order[$i]['surname'];
+                                                $email = $order[$i]['email'];
+                                                $pass = $order[$i]['pass'];
+
+
+                                                $orderdate = $order[$i]['orderdate'];
+                                                $orderPrice = $order[$i]['orderPrice'];
+                                                $orderStatus = $order[$i]['orderStatus'];
+                                                $price = $order[$i]['price'];
+
+                                                  $sql1_statement = "SELECT product.pname
+                                                                FROM order_table o, orderdetails od, product
+                                                                WHERE o.oid = od.oid && od.prid = product.prid && o.oid = '$oid'";
+                                                      $product_order = mysqli_query($db, $sql1_statement);
+                                                      $product = array();
+
+                                                      while($productrows = mysqli_fetch_array($product_order)) {
+                                                        array_push($product, $productrows);
+                                                      }
+
+                                              ?>
                                             <tr>
-                                                <td>1</td>
-                                                <td>Product Name</td>
-                                                <td>01 Jan 2020</td>
-                                                <td>$99</td>
-                                                <td>Approved</td>
-                                                <td><button class="btn">View</button></td>
+                                                 <td>
+                                                <?php echo $oid?>
+                                                </td>
+
+                                            <td>
+                                                <?php
+                                                  $productrownum=count($product);
+                                                  for($j=0;$j<$productrownum;$j++)
+                                                      {
+                                                        echo $j + 1 ;
+                                                        echo ' - ' ;
+                                                        echo $product[$j]['pname'];
+                                                        echo "<br>\n";
+                                                      }
+                                                  ?>
+                                            </td>
+
+                                                    <td>
+                                                        <?php echo $orderdate?>
+                                                    </td>
+                                                    <td>
+                                                            <?php echo $orderPrice?>
+                                                            <span>₺</span>
+                                                    </td>
+                                                <td><?php echo $orderStatus?></td>
                                             </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Product Name</td>
-                                                <td>01 Jan 2020</td>
-                                                <td>$99</td>
-                                                <td>Approved</td>
-                                                <td><button class="btn">View</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>Product Name</td>
-                                                <td>01 Jan 2020</td>
-                                                <td>$99</td>
-                                                <td>Approved</td>
-                                                <td><button class="btn">View</button></td>
-                                            </tr>
-                                        </tbody>
+                                         <?php
+                                         }
+                                         ?>
+
+                                          </tbody>  
                                     </table>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="payment-tab" role="tabpanel" aria-labelledby="payment-nav">
-                                <h4>Payment Method</h4>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In condimentum quam ac mi viverra dictum. In efficitur ipsum diam, at dignissim lorem tempor in. Vivamus tempor hendrerit finibus. Nulla tristique viverra nisl, sit amet bibendum ante suscipit non. Praesent in faucibus tellus, sed gravida lacus. Vivamus eu diam eros. Aliquam et sapien eget arcu rhoncus scelerisque.
-                                </p>
-                            </div>
-                            <div class="tab-pane fade" id="address-tab" role="tabpanel" aria-labelledby="address-nav">
-                                <h4>Address</h4>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <h5>Payment Address</h5>
-                                        <p>123 Payment Street, Los Angeles, CA</p>
-                                        <p>Mobile: 012-345-6789</p>
-                                        <button class="btn">Edit Address</button>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <h5>Shipping Address</h5>
-                                        <p>123 Shipping Street, Los Angeles, CA</p>
-                                        <p>Mobile: 012-345-6789</p>
-                                        <button class="btn">Edit Address</button>
-                                    </div>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="account-tab" role="tabpanel" aria-labelledby="account-nav">
                                 <h4>Account Details</h4>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <input class="form-control" type="text" placeholder="First Name">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input class="form-control" type="text" placeholder="Last Name">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input class="form-control" type="text" placeholder="Mobile">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input class="form-control" type="text" placeholder="Email">
-                                    </div>
-                                    <div class="col-md-12">
-                                        <input class="form-control" type="text" placeholder="Address">
-                                    </div>
-                                    <div class="col-md-12">
-                                        <button class="btn">Update Account</button>
-                                        <br><br>
-                                    </div>
-                                </div>
+                                  <form action="my-account-post.php" method = 'POST'>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <input class="form-control" type="text" name= 'name' value="<?php echo $name?>">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input class="form-control" type="text" name= 'surname' value="<?php echo $surname?>">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input class="form-control" type="text" name= 'email' value="<?php echo $email?>">
+                                            </div>
+                                            <div class="col-md-12">
+                                                <input type='hidden' name='pid' value='<?php echo $pid?>'/>
+                                                    <button class="btn" name= 'user-update'>Update Information</button>
+                                                    <br><br>
+                                            </div>
+                                        </div>
+                                    </form>
                                 <h4>Password change</h4>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <input class="form-control" type="password" placeholder="Current Password">
+                                <form action="my-account-post.php" method = 'POST'>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <input class="form-control" type="text" name= 'newpassword' value="<?php echo $pass?>">
+                                        </div>
+                                        <div class="col-md-12">
+                                            <input type='hidden' name='pid' value='<?php echo $pid?>'/>
+                                            <button class="btn" name= 'password-update'>Update Password</button>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <input class="form-control" type="text" placeholder="New Password">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input class="form-control" type="text" placeholder="Confirm Password">
-                                    </div>
-                                    <div class="col-md-12">
-                                        <button class="btn">Save Changes</button>
-                                    </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -278,17 +218,16 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         </div>
         <!-- My Account End -->
 
-        <!-- Footer Start -->
-        <div class="footer">
+ <div class="footer">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-3 col-md-6">
                         <div class="footer-widget">
                             <h2>Get in Touch</h2>
                             <div class="contact-info">
-                                <p><i class="fa fa-map-marker"></i>123 E Store, Los Angeles, USA</p>
-                                <p><i class="fa fa-envelope"></i>email@example.com</p>
-                                <p><i class="fa fa-phone"></i>+123-456-7890</p>
+                                <p><i class="fa fa-map-marker"></i>34 SU Store, Los Angeles, USA</p>
+                                <p><i class="fa fa-envelope"></i>vinly@sabanciuniv.edu</p>
+                                <p><i class="fa fa-phone"></i>+90-456-7890</p>
                             </div>
                         </div>
                     </div>
@@ -297,13 +236,13 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                         <div class="footer-widget">
                             <h2>Follow Us</h2>
                             <div class="contact-info">
-                                <div class="social">
-                                    <a href=""><i class="fab fa-twitter"></i></a>
-                                    <a href=""><i class="fab fa-facebook-f"></i></a>
-                                    <a href=""><i class="fab fa-linkedin-in"></i></a>
-                                    <a href=""><i class="fab fa-instagram"></i></a>
-                                    <a href=""><i class="fab fa-youtube"></i></a>
-                                </div>
+                            <div class="social">
+                                <a href="https://twitter.com/sabanciu?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor"><i class="fab fa-twitter"></i></a>
+                                <a href="https://www.facebook.com/sabanciuniv.edu/"><i class="fab fa-facebook-f"></i></a>
+                                <a href="https://www.linkedin.com/school/sabanci-university/"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="https://www.instagram.com/sabanci_university/?hl=en"><i class="fab fa-instagram"></i></a>
+                                <a href="https://www.youtube.com/channel/UCr_JmMmZntUFfyCEGWVIorQ"><i class="fab fa-youtube"></i></a>
+                            </div>
                             </div>
                         </div>
                     </div>
