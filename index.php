@@ -23,7 +23,7 @@ session_start();
 <?php
   $sql_statement = "SELECT genre
                               FROM `product`
-                              WHERE isVisible=1 
+                              WHERE isVisible=1
                               GROUP BY genre ";
   $search_result = mysqli_query($db, $sql_statement);
 
@@ -310,7 +310,7 @@ session_start();
                                     <form class="product-action" action="add-to-cart.php" method="POST">
                                     <div class="product-price">
                                         <h3><?php echo $price ?><span>₺</span></h3>
-                                        
+
                                         <input type='hidden' name='quantity' value=1 />
                                         <input type='hidden' name='prid' value='<?php echo $id?>' />
                                         <input type='hidden' name='price' value='<?php echo $price?>' />
@@ -370,78 +370,7 @@ session_start();
         </div>
         <!-- Review End -->
 
-        <!-- Footer Start -->
-<div class="footer">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-widget">
-                            <h2>Get in Touch</h2>
-                            <div class="contact-info">
-                                <p><i class="fa fa-map-marker"></i>34 SU Store, Los Angeles, USA</p>
-                                <p><i class="fa fa-envelope"></i>vinly@sabanciuniv.edu</p>
-                                <p><i class="fa fa-phone"></i>+90-456-7890</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-widget">
-                            <h2>Follow Us</h2>
-                            <div class="contact-info">
-                            <div class="social">
-                                <a href="https://twitter.com/sabanciu?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor"><i class="fab fa-twitter"></i></a>
-                                <a href="https://www.facebook.com/sabanciuniv.edu/"><i class="fab fa-facebook-f"></i></a>
-                                <a href="https://www.linkedin.com/school/sabanci-university/"><i class="fab fa-linkedin-in"></i></a>
-                                <a href="https://www.instagram.com/sabanci_university/?hl=en"><i class="fab fa-instagram"></i></a>
-                                <a href="https://www.youtube.com/channel/UCr_JmMmZntUFfyCEGWVIorQ"><i class="fab fa-youtube"></i></a>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-widget">
-                            <h2>Company Info</h2>
-                            <ul>
-                                <li><a href="#">About Us</a></li>
-                                <li><a href="#">Privacy Policy</a></li>
-                                <li><a href="#">Terms & Condition</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-widget">
-                            <h2>Purchase Info</h2>
-                            <ul>
-                                <li><a href="#">Pyament Policy</a></li>
-                                <li><a href="#">Shipping Policy</a></li>
-                                <li><a href="#">Return Policy</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row payment align-items-center">
-                    <div class="col-md-6">
-                        <div class="payment-method">
-                            <h2>We Accept:</h2>
-                            <img src="img/payment-method.png" alt="Payment Method" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="payment-security">
-                            <h2>Secured By:</h2>
-                            <img src="img/godaddy.svg" alt="Payment Security" />
-                            <img src="img/norton.svg" alt="Payment Security" />
-                            <img src="img/ssl.svg" alt="Payment Security" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Footer End -->
+        <?php include "footer.php";?>
 
         <!-- Footer Bottom Start -->
         <div class="footer-bottom">
