@@ -137,7 +137,7 @@ $name_err = $surname_err  = $email_err = $address_err =  "";
           // makes mysql_tablename
           $todays_date = date('Y-m-d');
           $pprice = $sub_price +1;
-          $sql_statement = "INSERT INTO order_table( orderdate, shipAddress, orderPrice, name, surname) VALUES ( '$todays_date', '$address', '$pprice', '$name', '$surname')";
+          $sql_statement = "INSERT INTO order_table( orderdate, shipAddress, orderPrice, name, surname, email) VALUES ( '$todays_date', '$address', '$pprice', '$name', '$surname', '$email')";
           mysqli_query($db, $sql_statement);
           $oid = mysqli_insert_id($db);
 
@@ -170,8 +170,19 @@ $name_err = $surname_err  = $email_err = $address_err =  "";
 
           $todays_date = date('Y-m-d');
           $pprice = $sub_price +1;
-          $sql_statement = "INSERT INTO order_table( orderdate, shipAddress, orderPrice, name, surname) VALUES ( '$todays_date', '$address', '$pprice', '$name', '$surname')";
+          $sql_statement = "INSERT INTO order_table( orderdate, shipAddress, orderPrice, name, surname, email) VALUES ( '$todays_date', '$address', '$pprice', '$name', '$surname', '$email')";
           mysqli_query($db, $sql_statement);
+          $oid = mysqli_insert_id($db);
+          $rowcount = count($usercart);
+          for($a=0;$a< $rowcount;$a++)
+          {
+            $product_price = $usercart[$a]['price'];
+            $product_prid = $usercart[$a]['prid'];
+            $product_quantity = $usercart[$a]['quantity'];
+            $sql_statement = "INSERT INTO orderdetails VALUES ('$oid','$product_prid', '$product_price', '$product_quantity')";
+            mysqli_query($db, $sql_statement);
+          }
+
           $_SESSION["cart"] = [];
           header("location: index.php");
           exit;
@@ -296,7 +307,7 @@ $name_err = $surname_err  = $email_err = $address_err =  "";
                                     </div>
                                     <div class="payment-method">
                                         <div class="custom-control custom-radio">
-                                            <input type="radio" class="custom-control-input" id="payment-3" name="payment">
+                                            <input type="radio" class="custom-control-input" id="payment-3" name="payment" checked>
                                             <label class="custom-control-label" for="payment-3">Cash on Delivery</label>
                                         </div>
                                         <div class="payment-content" id="payment-3-show">
