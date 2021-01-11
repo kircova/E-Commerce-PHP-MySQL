@@ -17,7 +17,6 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle active" data-toggle="dropdown">More Pages</a>
                         <div class="dropdown-menu">
-                            <a href="wishlist.php" class="dropdown-item active">Wishlist</a>
                             <a href="login.php" class="dropdown-item">Login & Register</a>
                             <a href="contact.php" class="dropdown-item">Contact Us</a>
                         </div>
