@@ -88,9 +88,27 @@ else
     $quantity = $_POST["quantity"];
     $prid = $_POST["prid"];
     $price = $_POST["price"];
+    $guestcart = $_SESSION["cart"];
+    $ind = -1;
+    for($i=0; $i<count($guestcart); $i++)
+    {
+      if($guestcart[$i][0] == $prid)
+      {
+        $ind = $i;
+      }
+    }
 
-    $temp_arr = [$prid, $price, $quantity];
-    array_push($_SESSION["cart"], $temp_arr);
+    if($ind != -1)
+    {
+      $guestcart[$ind][2] = $guestcart[$ind][2] + $quantity;
+    }
+    else
+    {
+      $temp_arr = [$prid, $price, $quantity];
+      array_push($guestcart, $temp_arr);
+    }
+
+    $_SESSION["cart"] = $guestcart;
     header("location: $redirect_url");
     exit;
   }

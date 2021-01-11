@@ -22,12 +22,16 @@ session_start();
 ?>
 
 <?php
-// Check if the user is logged in, if not then redirect him to login page
+
+$name = $surname  = $email = $address = "";
+$name_err = $surname_err  = $email_err = $address_err =  "";
+
+
    $cart_err = "";
   if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)
   {
          $userid = $_SESSION["pid"];
-          $sql_statement = "SELECT  cartdetails.price, cartdetails.quantity
+          $sql_statement = "SELECT  cartdetails.price, cartdetails.quantity, cartdetails.prid
                                     FROM `cart`, `cartdetails`, `product`
                                     WHERE '$userid' = cart.pid && cart.cid = cartdetails.cid && product.prid = cartdetails.prid
                                     GROUP BY cartdetails.prid";
@@ -45,7 +49,20 @@ session_start();
   }
   else if(isset($_SESSION["cart"]) && count($_SESSION["cart"]) != 0)
   {
-
+    $guestcart = $_SESSION["cart"];
+    $usercart = array();
+    for($i=0; $i<count($guestcart); $i++)
+    {
+      $temp_prid = $guestcart[$i][0];
+      $sql_statement = "SELECT product.prid, product.productImgUrl,product.pname
+                        FROM `product`
+                        WHERE '$temp_prid' = product.prid";
+      $search_result = mysqli_query($db, $sql_statement);
+      $row = mysqli_fetch_array($search_result);
+      $row["price"] = $guestcart[$i][1];
+      $row["quantity"] = $guestcart[$i][2];
+      array_push($usercart, $row);
+    }
   }
   else
   {
@@ -62,6 +79,93 @@ session_start();
     for($a=0;$a< $rowcount;$a++)
     {
       $sub_price += ($usercart[$a]['price'] * $usercart[$a]['quantity']);
+    }
+  }
+
+  if($_SERVER["REQUEST_METHOD"] == "POST")
+  {
+    function test_input($data) {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+      }
+    if(isset($_POST["place-order-button"]))
+    {
+      // Name validation
+
+      if(empty($_POST['namee'])) {
+        $name_err = "Please enter a name.";
+      }
+      else {
+        $name = test_input($_POST['namee']);
+      }
+
+      // Surname validation
+
+      if(empty($_POST['surnamee'])) {
+        $surname_err = "Please enter a surname.";
+      }
+      else {
+        $surname = test_input($_POST['surnamee']);
+      }
+
+      // Mail validation
+
+      if(empty($_POST['emaile'])) {
+        $email_err = "Please enter an email.";
+      }
+      else {
+        $email = test_input($_POST['emaile']);
+      }
+
+      // Address validation
+
+      if(empty($_POST['addresse'])) {
+        $address_err = "Please enter the address.";
+      }
+      else {
+        $address = test_input($_POST['addresse']);
+      }
+
+      if(empty($name_err) && empty($surname_err) && empty($email_err) && empty($address_err))
+      {
+        if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)
+        {
+          $pid = $_SESSION["pid"];
+
+          // makes mysql_tablename
+          $todays_date = date('Y-m-d');
+          $pprice = $sub_price +1;
+          $sql_statement = "INSERT INTO order_table( orderdate, shipAddress, orderPrice) VALUES ( '$todays_date', '$address', '$pprice')";
+          mysqli_query($db, $sql_statement);
+          $oid = mysqli_insert_id($db);
+
+
+          $sql_statement = "INSERT INTO makes VALUES ('$oid','$pid')";
+          mysqli_query($db, $sql_statement);
+
+          $rowcount = count($usercart);
+          for($a=0;$a< $rowcount;$a++)
+          {
+            $product_price = $usercart[$a]['price'];
+            $product_prid = $usercart[$a]['prid'];
+            $product_quantity = $usercart[$a]['quantity'];
+            $pid = $_SESSION["pid"];
+            $sql_statement = "INSERT INTO orderdetails VALUES ('$oid','$product_prid', '$product_price', '$product_quantity')";
+            mysqli_query($db, $sql_statement);
+
+            $sql_statement = "DELETE FROM cartdetails
+      			                              WHERE prid = '$product_prid' && cid IN 	(SELECT cart.cid
+                                                                           FROM cart
+                                                                           WHERE pid = '$pid');";
+            mysqli_query($db, $sql_statement);
+          }
+
+          header("location: index.php");
+          exit;
+        }
+      }
     }
   }
 
@@ -122,19 +226,23 @@ session_start();
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label>First Name</label>
-                                        <input class="form-control" type="text" placeholder="First Name">
+                                        <input class="form-control <?php echo (!empty($name_err)) ? 'has-error' : ''; ?>" type="text" name="name" placeholder="First Name" value="<?php echo $name;?>">
+                                        <span class="help-block"><?php echo $name_err; ?></span>
                                     </div>
                                     <div class="col-md-6">
                                         <label>Last Name</label>
-                                        <input class="form-control" type="text" placeholder="Last Name">
+                                        <input class="form-control <?php echo (!empty($surname_err)) ? 'has-error' : ''; ?>" type="text" name="surname" placeholder="Last Name" value="<?php echo $surname;?>">
+                                        <span class="help-block"><?php echo $surname_err; ?></span>
                                     </div>
                                     <div class="col-md-6">
                                         <label>E-mail</label>
-                                        <input class="form-control" type="text" placeholder="E-mail">
+                                        <input class="form-control <?php echo (!empty($email_err)) ? 'has-error' : ''; ?>" type="text" name="email" placeholder="E-mail" value="<?php echo $email;?>">
+                                        <span class="help-block"><?php echo $email_err; ?></span>
                                     </div>
                                     <div class="col-md-12">
                                         <label>Address</label>
-                                        <input class="form-control" type="text" placeholder="Address">
+                                        <input class="form-control <?php echo (!empty($address_err)) ? 'has-error' : ''; ?>" type="text" name="address" placeholder="Address" value="<?php echo $address;?>">
+                                        <span class="help-block"><?php echo $address_err; ?></span>
                                     </div>
                                 </div>
                             </div>
@@ -210,7 +318,22 @@ session_start();
                                     </div>
                                 </div>
                                 <div class="checkout-btn">
-                                    <button type="button" <?php if($sub_price <= 0) {echo "disabled";}?>> <?php if($sub_price <= 0) {echo "Cart is empty";} else {echo "Place Order";} ?></button>
+                                  <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
+                                    <script>
+                                    function buldum() {
+                                        document.getElementById('namelala').setAttribute('value', document.getElementsByName('name')[0].value);
+                                        document.getElementById('surnamelala').setAttribute('value', document.getElementsByName('surname')[0].value);
+                                        document.getElementById('emaillala').setAttribute('value', document.getElementsByName('email')[0].value);
+                                        document.getElementById('addresslala').setAttribute('value', document.getElementsByName('address')[0].value);
+                                      }
+                                    </script>
+                                    <input type='hidden' id="namelala" name='namee'  />
+                                    <input type='hidden' id="surnamelala" name='surnamee' />
+                                    <input type='hidden' id="emaillala" name='emaile' />
+                                    <input type='hidden' id="addresslala" name='addresse' />
+
+                                    <button class="btn" name="place-order-button" onclick="buldum()" <?php if($sub_price <= 0) {echo "disabled";}?>> <?php if($sub_price <= 0) {echo "Cart is empty";} else {echo "Place Order";} ?></button>
+                                  </form>
                                 </div>
                             </div>
                         </div>
