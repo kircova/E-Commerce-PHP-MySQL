@@ -27,10 +27,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     if(isset($_POST['product-update']) && isset($_POST['pid']))
     {
        $product_id = $_POST['pid'];
-       $pname = mysql_escape_string($_POST['pname']);
-       $artist = mysql_escape_string($_POST['partist']);
-       $genre = mysql_escape_string($_POST['pgenre']);
-       $description = mysql_escape_string($_POST['pdescription']);
+       $pname = addslashes(($_POST['pname']));
+       $artist = addslashes(($_POST['partist']));
+       $genre = addslashes(($_POST['pgenre']));
+       $description = addslashes(($_POST['pdescription']));
        $price = $_POST['pprice'];
        $stock = $_POST['pstock'];
        $productimg = $_POST['productimg'];
