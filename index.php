@@ -71,7 +71,7 @@ session_start();
 
 
 <?php
-  $sql_statement = "SELECT * FROM person, customer WHERE person.pid = customer.pid AND (person.pid = 33 OR person.pid = 34 OR person.pid = 35 OR person.pid = 36)";
+  $sql_statement = "SELECT * FROM person, customer WHERE person.pid = customer.pid AND (person.pid = 33 OR person.pid = 34 OR person.pid = 35 OR person.pid = 36 OR person.pid = 31)";
 
   $search_result = mysqli_query($db, $sql_statement);
   $customer_array = array();

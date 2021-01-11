@@ -92,10 +92,45 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
             }
 
 
+        if(isset($_SESSION["pid"]))
+        {
+            $personid = $_SESSION["pid"];
+            $sql_statement = "SELECT *
+            From   (SELECT COUNT(*), genre
+            FROM   order_table o, orderdetails od, makes m, person p, product pr 
+            WHERE o.oid = od.oid && o.isActive = 1 && m.oid = o.oid && m.pid = p.pid and od.prid = pr.prid and od.prid = pr.prid and m.pid = 21
+            GROUP BY pr.genre
+            ORDER BY COUNT(*) DESC
+            LIMIT 1) As A, product p
+            WHERE p.genre = A.genre";
+            $check = mysqli_query($db, $sql_statement);
+            $rec_product= array();
+      
+            while($rows = mysqli_fetch_array($check)) {
+              array_push($rec_product, $rows);
+            }
+
+            $rec_product = array_unique($rec_product, SORT_REGULAR);
+            $row_number_rec_product=count($rec_product);
+
+        }
+        else{
+            $row_number_rec_product=0;
+        }
 
 
+        }
+            
+           
 
-  }
+    
+
+    $sql_statement = "SELECT *
+    FROM order_table o, orderdetails od, makes m, person p, product pr
+    WHERE o.oid = od.oid && o.isActive = 1 && m.oid = o.oid && m.pid = p.pid  && p.pid = '$id'and od.prid = pr.prid and od.prid = pr.prid";
+
+
+  
 }
 
 ?>
@@ -114,6 +149,12 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
   }
     $genrecategory = array_unique($genrecategory, SORT_REGULAR);
     $row_number_genre=count($genrecategory);
+
+
+
+    
+
+
 ?>
 
 <html lang="en">
@@ -432,15 +473,14 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                         </div>
                         <?php }?>
                     </div>
-
-                    <!-- Side Bar Start -->
-                    <div class="col-lg-4 sidebar">
+                                        <!-- Side Bar Start -->
+                                        <div class="col-lg-4 sidebar">
                         <div class="sidebar-widget category">
                             <h2 class="title">Category</h2>
                             <nav class="navbar bg-light">
                                 <ul class="navbar-nav">
                                     <li class="nav-item">
-                                        <?php
+                                    <?php
                                           for($a=0;$a<$row_number_genre - 1;$a++)
                                           {
                                            $genres = $genrecategory[$a]['genre'];
@@ -454,7 +494,71 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                 </ul>
                             </nav>
                         </div>
-                    </div>
+
+                        <?php if ($row_number_rec_product != 0 ) { ?>
+                            <div class="section-header">
+                                <h2>Recommended for you</h2>
+
+                        <div class="sidebar-widget widget-slider">
+                            <div class="sidebar-slider normal-slider">
+
+                              <?php
+                                $row_number=count($rec_product);
+
+                                for($i=0;$i<$row_number;$i++)
+                                {
+                                     $slider_id = $rec_product[$i]['prid'];
+                                     if($prid != $slider_id) {
+                                     $slider_name = $rec_product[$i]['pname'];
+                                     $slider_price = $rec_product[$i]['price'];
+                                     $slider_productImgUrl = $rec_product[$i]['productImgUrl'];
+                                ?>
+                                  <div class="col-lg-3">
+                                      <div class="product-item">
+                                          <div class="product-title">
+                                              <a href="product-detail.php?id=<?php echo $slider_id?>"><?php echo $slider_name?></a>
+                                          </div>
+                                          <div class="product-image">
+                                              <a href="product-detail.php">
+                                                  <img src="<?php echo $slider_productImgUrl?>" alt="Product Image">
+                                              </a>
+                                              <form class="product-action" action="add-to-cart.php" method="POST">
+                                                  <input type='hidden' name='quantity' value=1 />
+                                                  <input type='hidden' name='prid' value='<?php echo $slider_id?>' />
+                                                  <input type='hidden' name='price' value='<?php echo $slider_price?>' />
+                                                  <button class="btn"><i class="fa fa-cart-plus"></i></button>
+
+                                              </form>
+                                          </div>
+                                          <form class="product-action" action="add-to-cart.php" method="POST">
+                                            <div class="product-price">
+                                                <h3><?php echo $slider_price?><span>₺</span></h3>
+                                                <input type='hidden' name='quantity' value=1 />
+                                                <input type='hidden' name='prid' value='<?php echo $slider_id?>' />
+                                                <input type='hidden' name='price' value='<?php echo $slider_price?>' />
+                                                <button class="btn" name='buy-now' ><i class="fa fa-shopping-cart"></i>Buy Now</button>
+                                            </div>
+                                          </form>
+                                      </div>
+                                  </div>
+                                <?php
+                                    }
+
+                                 }
+
+                                 ?>
+
+                            </div>
+                                
+                            </div>
+                        </div>
+                        <?php } ?>
+                        
+                        
+                    <!-- Side Bar Start -->
+                   
+
+      
                     <!-- Side Bar End -->
                 </div>
             </div>

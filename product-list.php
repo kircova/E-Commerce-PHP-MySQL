@@ -65,6 +65,18 @@ session_start();
                                   ORDER BY orderdetails.quantity DESC";
     $search_result = filterTable($sql_statement, $db);
   }
+  else if(isset($_GET["rating"]))
+  {
+    $query = $_GET["rating"];
+    $sql_statement = "SELECT *
+    FROM product p
+    INNER JOIN (SELECT cast(AVG(rating) as int) as average_rating , p.prid FROM `comment` cm, product p
+        WHERE cm.prid = p.prid
+        GROUP BY p.prid) as temp
+    ON p.prid = temp.prid
+    ORDER BY average_rating DESC";
+    $search_result = filterTable($sql_statement, $db);
+  }
   else if(isset($_GET["0to100"]))
   {
     $query = $_GET["0to100"];
@@ -226,6 +238,7 @@ session_start();
                                                         <a href='product-list.php?hightolow' class="dropdown-item">Highest Price</a>
                                                         <a href='product-list.php?alphabetical' class="dropdown-item">Alphabetical</a>
                                                         <a href='product-list.php?mostsale' class="dropdown-item">Most sale</a>
+                                                        <a href='product-list.php?rating' class="dropdown-item">Higher to lower rating</a>
                                                     </div>
                                                 </div>
                                             </div>
