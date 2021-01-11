@@ -174,7 +174,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                          }
                                          ?>
 
-                                          </tbody>  
+                                          </tbody>
                                     </table>
                                 </div>
                             </div>

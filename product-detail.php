@@ -23,7 +23,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
       {
         $personid = $_SESSION["pid"];
       }
-      
+
 
       $sql_statement = "SELECT prid, pname, artist, genre, description, price, categoryId, productImgUrl, stock, isVisible
                                   FROM `product`
@@ -81,9 +81,9 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
         if (count($commentarr) >0 ) {
             $comment_count = count($commentarr);
         }
-        
+
         $sql_statement = "SELECT m.pid
-        FROM makes m, orderdetails od 
+        FROM makes m, orderdetails od
         WHERE m.oid = od.oid and od.prid = '$prid'";
         $check = mysqli_query($db, $sql_statement);
         $persons = array();
@@ -92,7 +92,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
             }
 
 
-        
+
 
 
   }
@@ -176,7 +176,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                     </div>
                                 </div>
                                 <div class="col-md-7">
-                                    <div class="product-content">
+                                    <form class="product-content" action="add-to-cart.php" method="POST">
                                     <?php
                                         if((isset($commentarr) && $comment_count != 0)){
                                             $comment_row_number = count($commentarr);
@@ -190,7 +190,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                         <div class="title"><h3><?php
                                         if((isset($commentarr) && $comment_count != 0)){
                                             for($j=0; $j<$avg_rating; $j++) {
-                                                   
+
                                                 ?> <i class="fa fa-star"></i><?php
                                             }
                                         }
@@ -206,16 +206,17 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                         <div class="quantity">
                                             <h5>Quantity:</h5>
                                             <div class="qty">
-                                                <button class="btn-minus"><i class="fa fa-minus"></i></button>
-                                                <input type="text" value="1">
-                                                <button class="btn-plus"><i class="fa fa-plus"></i></button>
+                                              <button type="button" class="btn-minus"><i class="fa fa-minus"></i></button>
+                                              <input type="text" name="quantity" value="1">
+                                              <button type="button" class="btn-plus"><i class="fa fa-plus"></i></button>
                                             </div>
                                         </div>
-                                        <div class="action">
-                                            <a class="btn" href="#"><i class="fa fa-shopping-cart"></i>Add to Cart</a>
-                                            <a class="btn" href="#"><i class="fa fa-shopping-bag"></i>Buy Now</a>
-                                        </div>
-                                    </div>
+                                        <input type='hidden' name='prid' value='<?php echo $prid?>' />
+                                         <input type='hidden' name='price' value='<?php echo $price?>' />
+                                         <button class="btn" ><i class="fa fa-shopping-cart"></i>Add to Cart</button>
+                                         <button class="btn" name ="buy-now"><i class="fa fa-shopping-bag"></i>Buy Now</button>
+
+                                   </form>
                                 </div>
                             </div>
                         </div>
@@ -267,21 +268,21 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                                 $isVisible =  $commentarr[$i]['isVisible'];
 
                                                 if ( $isVisible == 1 ){
-                                
+
                                           ?>
-                                          
+
                                             <div class="reviewer"> <?php echo $commentername?> <?php echo $commentersurname?> - <span><?php echo $date_time ?></span></div>
                                             <div class="ratting">
-                                            
+
                                             <?php
                                             for($j=0; $j<$rating; $j++) {
-                                                   
+
                                                 ?> <i class="fa fa-star"></i><?php
                                             }?>
-                                            
-                                           
+
+
                                             </div>
-                                            
+
                                             <p>
                                             <?php echo $comment?>
                                             <?php
@@ -289,7 +290,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                             {
                                                 if($commentarr[$i]['pid'] == $personid)
                                                 {
-                                                    
+
                                                     ?><form action="product-detail-post.php?id=<?php echo $id?>" method = 'POST'>
                                                     <input type='hidden' name='prid' value='<?php echo $prid?>' />
                                                     <input type='hidden' name='commentid' value='<?php echo $commentarr[$i]['cid']?>' />
@@ -300,13 +301,13 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                                     </form><?php
                                                 }
                                             }
-                                            
+
                                             ?>
-                                            
+
                                             </p>
-                                            
+
                                         <?php
-                                        } 
+                                        }
                                         }
                                         ?>
 
@@ -326,25 +327,25 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                                 <label for="star-2"></label>
                                                 <input id="star-1" type="radio"  name="star"value="<?php  echo $rate = 1?>"/>
                                                 <label for="star-1"></label>
-                                                
+
                                             </div>
 
                                             <div class="row form"<?php
-                                                                                    function function_alert($message) { 
-    
-                                                                                        // Display the alert box  
-                                                                                        echo "<script>alert('$message');</script>"; 
-                                                                                        
-                                                                                    } 
+                                                                                    function function_alert($message) {
+
+                                                                                        // Display the alert box
+                                                                                        echo "<script>alert('$message');</script>";
+
+                                                                                    }
                                                                                     ?>>
-                                            
+
                                                 <div class="col-sm-12">
-                                                
+
                                                 <?php
                                                 if(isset($_SESSION["pid"]))
                                                 {
                                                   $personid = $_SESSION["pid"];
-                                                
+
                                                 $person_row_number = count($persons);
                                                 $flag = false;
                                                 for($i=0; $i<$person_row_number; $i++) {
@@ -355,7 +356,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                                 }
                                                 }
                                                 ?>
-                                                
+
                                                     <input type='hidden' name='personid' value='<?php echo  $personid?>'/>
                                                     <input type='hidden' name='prid' value='<?php echo $prid?>' />
                                                     <input type='hidden' name='rate' value='<?php echo $rate?>' />
@@ -364,10 +365,10 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
 
                                                         </span>
                                                     </div>
-                                                    
+
                                                     <div class="col-sm-12">
                                                         <button name = 'comment-submit' <?php if(!(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true && $flag === true)) {echo "disabled";}?>>Submit</button>
-                                                </form>  
+                                                </form>
                                                 </div>
                                             </div>
                                         </div>
@@ -401,14 +402,23 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                               <a href="product-detail.php">
                                                   <img src="<?php echo $slider_productImgUrl?>" alt="Product Image">
                                               </a>
-                                              <div class="product-action">
-                                                  <a href="#"><i class="fa fa-cart-plus"></i></a>
-                                              </div>
+                                              <form class="product-action" action="add-to-cart.php" method="POST">
+                                                  <input type='hidden' name='quantity' value=1 />
+                                                  <input type='hidden' name='prid' value='<?php echo $slider_id?>' />
+                                                  <input type='hidden' name='price' value='<?php echo $slider_price?>' />
+                                                  <button class="btn"><i class="fa fa-cart-plus"></i></button>
+
+                                              </form>
                                           </div>
-                                          <div class="product-price">
-                                              <h3><?php echo $slider_price?><span>₺</span></h3>
-                                              <a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
-                                          </div>
+                                          <form class="product-action" action="add-to-cart.php" method="POST">
+                                            <div class="product-price">
+                                                <h3><?php echo $slider_price?><span>₺</span></h3>
+                                                <input type='hidden' name='quantity' value=1 />
+                                                <input type='hidden' name='prid' value='<?php echo $slider_id?>' />
+                                                <input type='hidden' name='price' value='<?php echo $slider_price?>' />
+                                                <button class="btn" name='buy-now' ><i class="fa fa-shopping-cart"></i>Buy Now</button>
+                                            </div>
+                                          </form>
                                       </div>
                                   </div>
                                 <?php
