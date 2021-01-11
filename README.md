@@ -1,6 +1,6 @@
 # E-Commerce Site - Group Project
 
-Developed a fully functional Vinyl Store E-commerce website and built database to support it
+Developed a fully functional Vinyl Store E-commerce website and built a database to support it
 
 - Shopping is available without account creation
 - Users can change passwords and their information & see their previous invoices
