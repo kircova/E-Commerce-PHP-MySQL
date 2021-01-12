@@ -76,10 +76,16 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
 
 
 
-
+        $visibleCommentcounts = 0;
         $comment_count = 0;
         if (count($commentarr) >0 ) {
             $comment_count = count($commentarr);
+        }
+        for($i=0; $i<$comment_count; $i++)
+        {
+            if($commentarr[$i]['isVisible'] == 1){
+                $visibleCommentcounts ++;
+            }
         }
 
         $sql_statement = "SELECT m.pid
@@ -272,7 +278,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                        <a class="nav-link" data-toggle="pill" href="#songs">Songs</a>
                                    </li>
                                    <li class="nav-item">
-                                        <a class="nav-link" data-toggle="pill" href="#reviews">Reviews (<?php echo $comment_count?>)</a>
+                                        <a class="nav-link" data-toggle="pill" href="#reviews">Reviews (<?php echo $visibleCommentcounts?> of <?php echo $comment_count?>)</a>
                                     </li>
                                 </ul>
 
@@ -309,7 +315,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                                 $isVisible =  $commentarr[$i]['isVisible'];
 
                                                 if ( $isVisible == 1 ){
-
+                                                    $visibleCommentcounts++;
                                           ?>
 
                                             <div class="reviewer"> <?php echo $commentername?> <?php echo $commentersurname?> - <span><?php echo $date_time ?></span></div>
@@ -371,7 +377,7 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
 
                                             </div>
 
-                                            <div class="row form"<?php
+                                            <div class="row form"<?php 
                                                                                     function function_alert($message) {
 
                                                                                         // Display the alert box
@@ -408,7 +414,14 @@ if($_SERVER["REQUEST_METHOD"] == "GET") {
                                                     </div>
 
                                                     <div class="col-sm-12">
-                                                        <button name = 'comment-submit' <?php if(!(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true && $flag === true)) {echo "disabled";}?>>Submit</button>
+                                                        <button name = 'comment-submit' 
+                                                        <?php 
+                                                            if(!(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true && $flag === true ))
+                                                            {
+                                                                    echo "disabled";
+                                                            }
+
+                                                        ?>>Submit</button>
                                                 </form>
                                                 </div>
                                             </div>
