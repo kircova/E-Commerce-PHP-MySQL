@@ -34,6 +34,28 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 ?>
 
 
+<?php
+
+    $pid = $_SESSION['pid'];
+
+    $sql2_statement = "SELECT *
+                    FROM person
+                    WHERE person.pid = '$pid'";
+        $personq = mysqli_query($db, $sql2_statement);
+        $person1 = array();
+
+         while($productrows = mysqli_fetch_array($personq)) {
+         array_push($person1, $productrows);
+    }
+
+
+    $pid = $person1[0]['pid'];
+    $name = $person1[0]['name'];
+    $surname = $person1[0]['surname'];
+    $email = $person1[0]['email'];
+    $pass = $person1[0]['pass'];
+
+?>
 
 
 <html lang="en">
@@ -119,12 +141,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                               for($i=0;$i<$row_number;$i++)
                                               {
                                                 $oid = $order[$i]['oid'];
-
-                                                $pid = $order[$i]['pid'];
-                                                $name = $order[$i]['name'];
-                                                $surname = $order[$i]['surname'];
-                                                $email = $order[$i]['email'];
-                                                $pass = $order[$i]['pass'];
 
 
                                                 $orderdate = $order[$i]['orderdate'];
