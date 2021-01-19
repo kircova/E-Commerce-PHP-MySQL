@@ -176,6 +176,14 @@ if(isset($_POST['login-user'])) {
 
               if(mysqli_stmt_execute($stmt)){
 
+                $id = mysqli_insert_id($db);
+
+                $sql_statement = "INSERT INTO customer(pid) VALUES ( '$id')";
+                mysqli_query($db, $sql_statement);
+                $sql_statement = "INSERT INTO cart(pid) VALUES ( '$id')";
+                mysqli_query($db, $sql_statement);
+
+
                 // Store data in session variables
                 $_SESSION["loggedin"] = true;
                 $_SESSION["pid"] = $id;
