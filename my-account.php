@@ -130,8 +130,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                             <tr>
                                                 <th>Order ID</th>
                                                 <th>Products Ordered</th>
-                                                <th>Order Price</th>
                                                 <th>Order Date</th>
+                                                <th>Order Price</th>
                                                 <th>Order Status</th>
                                             </tr>
                                         </thead>
