@@ -1,4 +1,4 @@
-# E-Commerce Site - Group Project
+# E-Commerce Site
 
 Developed a fully functional Vinyl Store E-commerce website and built a database to support it
 
